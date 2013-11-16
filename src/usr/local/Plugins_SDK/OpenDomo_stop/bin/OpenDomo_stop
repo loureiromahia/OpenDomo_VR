@@ -1,0 +1,5 @@
+#!/bin/bash
+espeak -ves "Hasta la próxima. Para volver a conectar, diga Hola OpenDomo"
+echo "FIN" > ESTADO
+echo "identification" > MODE 
+

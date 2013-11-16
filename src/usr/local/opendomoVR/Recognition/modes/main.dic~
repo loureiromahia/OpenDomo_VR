@@ -1,0 +1,76 @@
+#PLUGIN: dateDisplay
+qué día es
+  dateDisplay
+#END
+#PLUGIN: EjemploPlugin
+Ir a (LINE place)
+  gmaps "https://maps.google.com/maps?q=$place$"
+#END
+#PLUGIN: SocialPlugin
+<E,e>stado <n,N>uevo
+  socialPoster
+#END
+#PLUGIN: MediaControl
+Escuchar (LINE song)
+  mediaControl "$song$"
+<v,V>olumen <s,S>ubir
+  mediaControl volume_down
+<v,V>olume <u,U>p
+  mediaControl volume_up
+<m,M>ute
+  mediaControl volume_mute
+pause
+  mediaControl pause
+play
+  mediaControl play
+previous
+  mediaControl prev
+next
+  mediaControl next
+#END
+#PLUGIN: FileBrowser
+abrir documentos
+  file-browser 'xdg-user-dir DOCUMENTS | xargs nautilus'
+escuchar música
+  file-browser 'xdg-user-dir MUSIC | xargs nautilus'
+abrir carpeta personal
+  file-browser 'xdg-user-dir | xargs nautilus'
+ver videos
+  file-browser 'xdg-user-dir VIDEOS | xargs nautilus'
+ver fotos
+  file-browser 'xdg-user-dir PICTURES | xargs nautilus'
+abrir descargas
+  file-browser 'xdg-user-dir DOWNLOAD | xargs nautilus'
+#END
+#PLUGIN: GoogleMaps
+dónde está (LINE place)
+  gmaps "https://maps.google.com/maps?q=$place$"
+#END
+<dí,habla> (LINE words)
+  say "$words$"
+<type,write> (LINE words)
+  type "$words$\\r"
+copy[ this]
+  type '\\Cc'
+paste[ this]
+  type '\\Cv'
+
+dictation mode
+  mode dictation
+
+<o,O>pen <r,R>epository
+	goto "http://palaver.bmandesigns.com"
+
+<s,S>tatus
+    result_from_call "git status"
+
+<g,G>o[ ]to (LINE site)
+  goto "$site$"
+
+open <g,G>oogle <c,C>hrome
+  open 'google-chrome'
+open does not exit
+  open 'bob'
+
+<<e,E>dit,<c,C>hange> <m,M>y <i,I>nfo
+  edit_details

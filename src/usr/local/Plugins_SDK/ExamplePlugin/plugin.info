@@ -1,0 +1,8 @@
+#Plugin.info automatically generated
+name = ExamplePlugin
+version = 1.0
+file = ExamplePlugin
+configs = settings.conf
+author = Manuel Angel Loureiro
+description = 
+actions =
