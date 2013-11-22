@@ -13,7 +13,7 @@ echo "Copy operating files : ./src/usr/local/opendomoVR  ==> ~/OpenDomo_VR "
 sudo cp -r src/usr/local/opendomoVR/* /usr/local/opendomo/vr/.
 
 echo "Copy plugin files : ./src/usr/local/Plugins_SDK  ==> ~/Plugins_SDK "
-sudo cp -r src/usr/local/Plugins_SDK/* /usr/local/opendomo/voiceCommands/.
+sudo cp -r src/usr/local/voiceCommands/* /usr/local/opendomo/voiceCommands/.
 
 echo "Copy documentation files : ./doc  ==> ~/OpenDomo_VR/doc/. "
 sudo mkdir -p /usr/local/opendomo/vr/doc

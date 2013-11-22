@@ -22,8 +22,8 @@ sudo cp -r doc/* /usr/local/opendomo/vr/doc/.
 echo "Copy test files : ./test  ==> ~/OpenDomo_VR/test/. "
 sudo mkdir -p /usr/local/opendomo/vr/test
 sudo cp -r doc/* /usr/local/opendomo/vr/test/.
-sudo chown -r manu:manu /usr/local/opendomo/vr
-sudo chown -r manu:manu /usr/local/opendomo/voiceCommands
+sudo chown -R manu:manu /usr/local/opendomo/vr
+sudo chown -R manu:manu /usr/local/opendomo/voiceCommands
 
 echo "Copy initialization files : ./src/etc/init.d/start_opendomoVR.sh  ==> /etc/init.d/start_opendomoVR.sh "
 sudo cp  src/etc/init.d/start_opendomoVR.sh  /etc/init.d/start_opendomoVR.sh
