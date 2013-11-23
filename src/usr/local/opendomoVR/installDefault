@@ -73,9 +73,11 @@ def main():
 	return 0
 
 if __name__ == "__main__":
-	res = subprocess.Popen("zenity --forms --add-entry='First Name' --add-entry='Last Name' --add-entry='Email' --add-entry='Language (en,es,pt)' --text='User Information' --title='Palaver User Configurationon'", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
+	res = subprocess.Popen("zenity --forms --add-entry='First Name' --add-entry='Last Name' --add-entry='Email' --add-entry='Language (en,es,pt)' --text='User Information' --title='OpenDomoVR User Configurationon'", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
 	res = res.split("|")
-	with open(home+"/.palaver.d/UserInfo",'w') as data:
+#	with open(home+"/.palaver.d/UserInfo",'w') as data:
+#In OpenDomo, config is in /etc/opendomo/speech
+	with open("/etc/opendomo/speech/UserInfo",'w') as data:
 		data.write("FIRST="+res[0])
 		data.write("\nLAST="+res[1])
 		data.write("\nEMAIL="+res[2])

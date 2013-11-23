@@ -1,6 +1,6 @@
 #!/bin/bash
 #Setup path:
-cd /home/manu/OpenDomo_VR
+cd /usr/local/opendomo/VR
 echo "identification" > MODE  
 # File: identification.dic, contains only 1 plugin: OpenDomo_start
 echo "NOK" > RESULTADO

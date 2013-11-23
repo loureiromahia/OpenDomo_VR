@@ -47,9 +47,14 @@ encCode = 5
 
 home = subprocess.Popen("echo $HOME", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
 
-pluginDataBaseLocation = home + "/.palaver.d/plugins.db"
+#pluginDataBaseLocation = home + "/.palaver.d/plugins.db"
 
-configRootFolder = home+"/.palaver.d/config/"
+#configRootFolder = home+"/.palaver.d/config/"
+#In case of OpenDomo Base location =/etc/opendomo/speech
+pluginDataBaseLocation = "/etc/opendomo/speech/plugins.db"
+
+configRootFolder = "/etc/opendomo/speech/config/"
+
 
 if not os.path.exists(configRootFolder):
 	os.system("mkdir "+configRootFolder)
@@ -353,7 +358,8 @@ elif args.i != '':
 						os.system("chmod +x "+root+"Recognition/bin/"+exe)
 					for c in configs:
 						if c.endswith(".conf") == False:
-							os.system("chmod +x "+home+"/.palaver.d/config/"+name+"/"+c)
+							#os.system("chmod +x "+home+"/.palaver.d/config/"+name+"/"+c)
+							os.system("chmod +x /etc/opendomo/speech/config/"+name+"/"+c)
 				con = sql.connect(pluginDataBaseLocation)
 				with open('InstallResult','w') as d:
 					d.write(name+" Installed")
