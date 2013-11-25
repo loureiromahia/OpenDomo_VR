@@ -1,0 +1,8 @@
+#Plugin.info automatically generated
+name = LucesOFF
+version = 1.2
+file = LucesOFF
+configs = settings.conf
+author = Manuel Angel Loureiro
+description = Switch off lights on specific room 
+actions = switch off lights

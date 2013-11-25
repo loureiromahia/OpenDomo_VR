@@ -34,8 +34,6 @@ cp Recognition/config/defaultMain.dic Recognition/modes/main.dic
 ./installDefault
 ./plugins -i /usr/local/opendomo/voiceCommands/OpenDomo_start/OpenDomo_start.sp
 ./plugins -i /usr/local/opendomo/voiceCommands/OpenDomo_stop/OpenDomo_stop.sp
-./plugins -i /usr/local/opendomo/voiceCommands/LucesON/LucesON.sp
-./plugins -i /usr/local/opendomo/voiceCommands/LucesOFF/LucesOFF.sp
 echo "Install start_opendomoVR.sh to run forever in background" 
 sudo update-rc.d start_opendomoVR.sh defaults
 

@@ -1,0 +1,5 @@
+apagar luz (LINE Objeto)
+  LucesON "$Objeto$"
+apagar luces (LINE Objeto)
+  LucesON "$Objeto$"
+
