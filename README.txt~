@@ -16,7 +16,7 @@ INSTALLATION
 
 For building the package, run: 
 
-	./mkpkg.sh
+	./mkpkg_opendomoVR.sh
 
 This script will prepare the directory structure:
 
