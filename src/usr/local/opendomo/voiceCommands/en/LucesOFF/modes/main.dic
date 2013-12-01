@@ -1,0 +1,5 @@
+switch OFF light (LINE Objeto)
+  LucesOFF "$Objeto$"
+switch OFF lights (LINE Objeto)
+  LucesOFF "$Objeto$"
+

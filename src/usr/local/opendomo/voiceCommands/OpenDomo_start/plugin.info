@@ -1,9 +1,0 @@
-#Plugin.info automatically generated
-name = OpenDomo_start
-version = 1.0
-file = OpenDomo_start
-configs = settings.conf
-author = Manuel Angel Loureiro
-description = Start Session with OpenDomo Voice Recogniser. After this event, OpenDomo starts to recognise Opendomo commands.  
-actions = espeak -ves "Bienvenido a OpenDomo. Acciones: Encender o Apagar Luces de Cocina o Salon o Dormitorio, Subir o Bajar Persianas de Cocina, Salón o Dormitorio"
-

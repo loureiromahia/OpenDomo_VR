@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# To be updated with the specific command in OpenDomo
+#Temporarily, an espeak command is issued
+grep -i  $1 /etc/opendomo/places/* >/dev/null 2>&1
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+if [[ $? -eq 0 ]] 
+then 
+	$ESPEAK "Encendiendo luces de"
+	$ESPEAK $1
+else 
+	$ESPEAK "No esta definida la zona"
+	$ESPEAK $1
+fi 
+ 
+ 
+
+

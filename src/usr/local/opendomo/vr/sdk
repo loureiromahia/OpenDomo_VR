@@ -7,10 +7,13 @@ args = parser.parse_args()
 
 root = ''.join([e+'/' for e in os.path.realpath(__file__).split('/')[0:-1]])
 home = subprocess.Popen("echo $HOME", shell=True, stdout=subprocess.PIPE).communicate()[0].replace('\n','')
+with open ("/etc/opendomo/lang", "r") as myfile:
+    IDIOMA=myfile.read().replace('\n', '')
+myfile.close()
 
 if args.c != '':
 	print "Creating new plugin"
-	pdir = "/usr/local/opendomo/voiceCommands/"+args.c+"/"
+	pdir = "/usr/local/opendomo/voiceCommands/"+IDIOMA+"/"+args.c+"/"
 	os.system("mkdir -p "+pdir+"bin/")
 	os.system("mkdir -p "+pdir+"config/")
 	os.system("mkdir -p "+pdir+"modes/")
@@ -40,7 +43,7 @@ if args.c != '':
 	print "Created plugin in "+pdir
 if args.p != '':
 	import tarfile
-	pdir = "/usr/local/opendomo/voiceCommands/"+args.p+"/"
+	pdir = "/usr/local/opendomo/voiceCommands/"+IDIOMA+"/"+args.p+"/"
 	os.system("nano "+pdir+"plugin.info")
 	sp = tarfile.open(pdir+args.p+".sp","w:gz")
 	sp.add(pdir+"plugin.info","plugin.info")
