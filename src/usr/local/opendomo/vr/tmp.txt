@@ -1,0 +1,1 @@
+/etc/opendomo/control/cocina/di01.info

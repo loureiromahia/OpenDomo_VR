@@ -1,6 +1,9 @@
 #!/bin/bash
+#Generate the data for managing switches. Identify the zones in which light or clima can be activated.
+#Data is retrieved from  /etc/opendomo/control
+./generate_switch_data.sh
 #Setup path:
-cd /usr/local/opendomo/VR
+cd /usr/local/opendomo/vr
 echo "identification" > MODE  
 # File: identification.dic, contains only 1 plugin: OpenDomo_start
 echo "NOK" > RESULTADO
