@@ -1,7 +1,7 @@
 #!/bin/bash
-#Generate the data for managing switches. Identify the zones in which light or clima can be activated.
+#Generate the data for managing ports. Retrieves the actual port data to collect,  light data, clima, sensors, analog ports.
 #Data is retrieved from  /etc/opendomo/control
-./generate_switch_data.sh
+./generate_port_data.sh
 #Setup path:
 cd /usr/local/opendomo/vr
 echo "identification" > MODE  
