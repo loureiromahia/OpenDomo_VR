@@ -1,10 +1,33 @@
+#PLUGIN: VarClimate
+<ajustar> termostato (LINE Objeto)
+  VarClimate "$Objeto$"
+
+#END
+#PLUGIN: VarLight
+<ajustar> luz (LINE Objeto)
+  VarLight "$Objeto$"
+
+#END
+#PLUGIN: MusicOFF
+#END
+#PLUGIN: MusicON
+activar música (LINE Objeto)
+  MusicON "$Objeto$"
+
+#END
+#PLUGIN: VideoOFF
+desactivar video (LINE Objeto)
+  VideoOFF "$Objeto$"
+
+#END
+#PLUGIN: VideoON
+activar video (LINE Objeto)
+  VideoON "$Objeto$"
+
+#END
 #PLUGIN: Sensors
 informar de (LINE Objeto)
   Sensors "$Objeto$"
-#END
-#PLUGIN: OpenDomo_start
-Hola OpenDomo
-  OpenDomo_start
 #END
 #PLUGIN: ClimaOFF
 apagar clima (LINE Objeto)
@@ -34,6 +57,10 @@ encender luces (LINE Objeto)
 #PLUGIN: OpenDomo_stop
 <A,a>diós OpenDomo
   OpenDomo_stop
+#END
+#PLUGIN: OpenDomo_start
+Hola OpenDomo
+  OpenDomo_start
 #END
 <say,speak> (LINE words)
   say "$words$"

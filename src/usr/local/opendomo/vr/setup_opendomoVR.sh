@@ -83,6 +83,10 @@ fi
 ./plugins -i /usr/local/opendomo/voiceCommands/$IDIOMA/ClimaON/ClimaON.sp
 ./plugins -i /usr/local/opendomo/voiceCommands/$IDIOMA/ClimaOFF/ClimaOFF.sp
 ./plugins -i /usr/local/opendomo/voiceCommands/$IDIOMA/Sensors/Sensors.sp
+./plugins -i /usr/local/opendomo/voiceCommands/$IDIOMA/VideoON/VideoON.sp
+./plugins -i /usr/local/opendomo/voiceCommands/$IDIOMA/VideoOFF/VideoOFF.sp
+./plugins -i /usr/local/opendomo/voiceCommands/$IDIOMA/VideoON/MusicON.sp
+./plugins -i /usr/local/opendomo/voiceCommands/$IDIOMA/VideoOFF/MusicOFF.sp
 echo "Install start_opendomoVR.sh to run forever in background" 
 sudo update-rc.d start_opendomoVR.sh defaults
 

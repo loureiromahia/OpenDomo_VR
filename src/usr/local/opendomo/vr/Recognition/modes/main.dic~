@@ -1,9 +1,27 @@
-#PLUGIN: OpenDomo_start
-Hola OpenDomo
-  OpenDomo_start
+#PLUGIN: VarLight
+luz (LINE Objeto1 Objeto2)
+  VarLight "$Objeto1$" "$Objeto2$"
+
+#END
+#PLUGIN: MusicOFF
+#END
+#PLUGIN: MusicON
+activar música (LINE Objeto)
+  MusicON "$Objeto$"
+
+#END
+#PLUGIN: VideoOFF
+desactivar video (LINE Objeto)
+  VideoOFF "$Objeto$"
+
+#END
+#PLUGIN: VideoON
+activar video (LINE Objeto)
+  VideoON "$Objeto$"
+
 #END
 #PLUGIN: Sensors
-informar de  (LINE Objeto)
+informar de (LINE Objeto)
   Sensors "$Objeto$"
 #END
 #PLUGIN: ClimaOFF
@@ -34,6 +52,10 @@ encender luces (LINE Objeto)
 #PLUGIN: OpenDomo_stop
 <A,a>diós OpenDomo
   OpenDomo_stop
+#END
+#PLUGIN: OpenDomo_start
+Hola OpenDomo
+  OpenDomo_start
 #END
 <say,speak> (LINE words)
   say "$words$"
