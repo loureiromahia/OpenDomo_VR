@@ -1,6 +1,6 @@
 #Plugin.info automatically generated
 name = VarClimate
-version = 1.0
+version = 1.1
 file = VarClimate
 configs = settings.conf
 author = Manuel Angel Loureiro  
