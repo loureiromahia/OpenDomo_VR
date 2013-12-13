@@ -1,3 +1,5 @@
-<ajustar> termostato (LINE Objeto)
+<ajustar,cambiar> termostato (LINE Objeto)
+  VarClimate "$Objeto$"
+termostato (LINE Objeto)
   VarClimate "$Objeto$"
 

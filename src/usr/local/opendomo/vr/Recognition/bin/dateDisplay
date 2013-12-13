@@ -1,4 +1,0 @@
-#!/bin/bash
-i=$(date)
-echo $i >> Microphone/result
-./pycmd result

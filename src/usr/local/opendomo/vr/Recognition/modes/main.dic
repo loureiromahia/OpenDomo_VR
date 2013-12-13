@@ -1,10 +1,14 @@
 #PLUGIN: VarClimate
-<ajustar> termostato (LINE Objeto)
+<ajustar,cambiar> termostato (LINE Objeto)
+  VarClimate "$Objeto$"
+termostato (LINE Objeto)
   VarClimate "$Objeto$"
 
 #END
 #PLUGIN: VarLight
-<ajustar> luz (LINE Objeto)
+<ajustar,cambiar> luz (LINE Objeto)
+  VarLight "$Objeto$"
+luz (LINE Objeto)
   VarLight "$Objeto$"
 
 #END
