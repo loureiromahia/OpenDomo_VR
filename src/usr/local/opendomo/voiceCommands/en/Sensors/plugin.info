@@ -1,0 +1,8 @@
+#Plugin.info automatically generated
+name = Sensors
+version = 1.3
+file = Sensors
+configs = settings.conf
+author = Manuel Angel Loureiro  
+description = Informs of the actual value of an input port= sensor
+actions = Describes the actual value and the units of this sensor
