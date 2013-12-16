@@ -1,0 +1,5 @@
+<adjust,change> temperature (LINE Objeto)
+  VarClimate "$Objeto$"
+temperature (LINE Objeto)
+  VarClimate "$Objeto$"
+

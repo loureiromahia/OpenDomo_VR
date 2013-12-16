@@ -1,0 +1,8 @@
+#Plugin.info automatically generated
+name = ClimaOFF
+version = 1.1
+file = ClimaOFF
+configs = settings.conf
+author = Manuel Angel Loureiro  
+description = switch off climate on a specific room
+actions =

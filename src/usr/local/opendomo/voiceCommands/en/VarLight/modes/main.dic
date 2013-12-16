@@ -1,0 +1,5 @@
+<adjust,change> light (LINE Objeto)
+  VarLight "$Objeto$"
+light (LINE Objeto)
+  VarLight "$Objeto$"
+
