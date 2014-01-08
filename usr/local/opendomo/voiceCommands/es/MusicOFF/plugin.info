@@ -1,0 +1,9 @@
+#Plugin.info automatically generated
+name = MusicOFF
+version = 1.1
+file = MusicOFF
+configs = settings.conf
+author = Manuel Angel Loureiro  
+description = Deactivate music in a zone
+actions =Deactivate music in a zone
+

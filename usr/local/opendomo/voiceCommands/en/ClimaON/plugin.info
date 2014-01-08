@@ -1,0 +1,8 @@
+#Plugin.info automatically generated
+name = ClimaON
+version = 1.1
+file = ClimaON
+configs = settings.conf
+author = Manuel Angel Loureiro  
+description = Switch ON Climate in a specific area
+actions =

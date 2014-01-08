@@ -1,0 +1,4 @@
+deactivate music (LINE Objeto)
+  MusicON "$Objeto$"
+music off (LINE Objeto)
+  MusicON "$Objeto$"

@@ -1,0 +1,8 @@
+#Plugin.info automatically generated
+name = MusicON
+version = 1.1
+file = MusicON
+configs = settings.conf
+author = Manuel Angel Loureiro  
+description =  Activate Music in a zone
+actions = Activate Music in a zone
