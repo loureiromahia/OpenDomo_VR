@@ -1,6 +1,13 @@
 #!/bin/bash
 #Generate the data for managing ports. Retrieves the actual port data to collect,  light data, clima, sensors, analog ports.
 #Data is retrieved from  /etc/opendomo/control
+if [ -f /etc/opendomo/speech/SETUPDONE ]
+then
+	echo "SET UP DONE,, Voice Recognition can go on"
+else
+	echo "SETTING UP ENVIRONMENT, with voice from Antonio (spanish) /Arthur (english)"
+	/usr/local/opendomo/vr/setup_opendomoVR.sh A
+fi
 /usr/local/opendomo/vr/generate_port_data.sh
 #Setup path:
 cd /usr/local/opendomo/vr
