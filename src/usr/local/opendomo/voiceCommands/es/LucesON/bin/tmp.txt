@@ -1,1 +1,0 @@
-/etc/opendomo/places/cocina:description='Cocina'

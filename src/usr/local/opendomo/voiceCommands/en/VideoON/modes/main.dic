@@ -1,6 +1,0 @@
-activate video (LINE Objeto)
-  VideoON "$Objeto$"
-video on (LINE Objeto)
-  VideoON "$Objeto$"
-
-

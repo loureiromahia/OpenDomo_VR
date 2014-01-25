@@ -1,4 +1,0 @@
-switch ON Light (LINE Objeto)
-  LucesON "$Objeto$"
-switch ON Lights (LINE Objeto)
-  LucesON "$Objeto$"

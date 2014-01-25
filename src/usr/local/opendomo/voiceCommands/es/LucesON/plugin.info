@@ -1,8 +1,0 @@
-#Plugin.info automatically generated
-name = LucesON
-version = 1.4
-file = LucesON
-configs = settings.conf
-author = Manuel Angel Loureiro
-description = Switch Lights ON, on the room identified 
-actions = Switch Lights ON
