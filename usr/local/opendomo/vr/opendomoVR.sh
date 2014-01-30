@@ -5,8 +5,14 @@ if [ -f /etc/opendomo/speech/SETUPDONE ]
 then
 	echo "SET UP DONE,, Voice Recognition can go on"
 else
-	echo "SETTING UP ENVIRONMENT, with voice from Antonio (spanish) /Arthur (english)"
-	/usr/local/opendomo/vr/setup_opendomoVR.sh A
+	echo "SETTING UP ENVIRONMENT, with default voice character from Antonio (spanish) /Arthur (english)"
+	read IDIOMA < /etc/opendomo/lang
+	if [ "$IDIOMA" == "es" ]
+	then
+		/usr/local/opendomo/services/config/configureVoiceSystem.sh antonio.es
+	else
+		/usr/local/opendomo/services/config/configureVoiceSystem.sh arthur.en
+	fi
 fi
 /usr/local/opendomo/vr/generate_port_data.sh
 #Setup path:

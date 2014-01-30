@@ -57,9 +57,9 @@ xautomation
 3.SETUP: 
 
 
-In Opendomo_VR directory (/usr/local/opendomo/vr)  , run the following command:
+In OpenDomo config directory (/usr/local/opendomo/services/config)  , run the following command:
 
-  		./setup_opendomoVR.sh
+  		./configureVoiceSystem.sh
    
    This setup script will install opendomoVR.sh to run forever every time the system is started and will let you customize your installation, depending on your preferences.
 
