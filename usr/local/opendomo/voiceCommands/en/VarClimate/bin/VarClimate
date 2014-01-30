@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# To be checked in a real  opendomo environment.This script is based in a  system in which dummy ports are configured
+#
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+
+SITIO=`echo $1 |cut -d " " -f1 -`
+TEMPERATURA=`echo $1 |cut -d " " -f2 -`
+switch=`grep -i $SITIO /etc/opendomo/speech/varclimate.conf | cut -d ":" -f1 -`
+
+if [ -z "$switch" ] 
+then 
+	$ESPEAK "There is not thermostat in zone"
+	$ESPEAK $SITIO
+else	
+	switch=`echo $switch | sed -e s/"info"/"value"/g`
+	switch="/var/opendomo/control$switch"
+	setport.sh $switch $TEMPERATURA 	
+	$ESPEAK "Changing  temperature to"
+	$ESPEAK $TEMPERATURA
+	$ESPEAK "in zone "
+	$ESPEAK $SITIO
+fi 
+ 
+ 

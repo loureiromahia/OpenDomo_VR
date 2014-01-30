@@ -1,0 +1,8 @@
+#!/bin/bash
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+echo $ESPEAK
+$ESPEAK "Bienvenido a OpenDomo. Comandos posibles"
+$ESPEAK "Encender  o Apagar Luces de Cocina o Salón o Dormitorio"
+$ESPEAK "Abrir o Cerrar Persianas de Cocina o Salón o Dormitorio"
+echo "main" > MODE 
+

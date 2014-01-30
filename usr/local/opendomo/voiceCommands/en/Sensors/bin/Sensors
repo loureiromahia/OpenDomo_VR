@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# To be checked in a real  opendomo environment.This script is based in a  system in which dummy ports are configured
+#
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+switch=`grep -i $1 /etc/opendomo/speech/sensors.conf | cut -d ":" -f1 -`
+if [ -z "$switch" ] 
+then 
+	$ESPEAK "It is not defined sensor"
+	$ESPEAK $1
+else	
+	switch=`echo $switch | sed -e s/"info"/"value"/g`
+	switch="/var/opendomo/control$switch"
+	value=`cat $switch`
+	units=`grep -i $1 /etc/opendomo/speech/sensors.conf | cut -d ":" -f3 -`
+	$ESPEAK $1
+	$ESPEAK "Actual value"
+	if [ -z $value ] || [ "$value" = "" ]
+	then	
+		$ESPEAK "it is not defined"
+	else
+		$ESPEAK $value	
+		if [ -n "$units" ]
+		then
+			$ESPEAK $units
+		fi
+	fi
+fi 
+ 
+ 

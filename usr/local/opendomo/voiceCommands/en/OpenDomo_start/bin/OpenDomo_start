@@ -1,0 +1,8 @@
+#!/bin/bash
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+echo $ESPEAK
+$ESPEAK "Wellcome to OpenDomo. Posible commands: "
+$ESPEAK "Switch On or OFF lights on Kitchen, living room or sleeping rooms"
+$ESPEAK "Manage Heating Temperature "
+echo "main" > MODE 
+
