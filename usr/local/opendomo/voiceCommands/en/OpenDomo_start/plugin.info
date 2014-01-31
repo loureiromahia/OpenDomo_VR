@@ -1,6 +1,6 @@
 #Plugin.info automatically generated
 name = OpenDomo_start
-version = 1.6
+version = 1.7
 file = OpenDomo_start
 configs = settings.conf
 author = Manuel Angel Loureiro

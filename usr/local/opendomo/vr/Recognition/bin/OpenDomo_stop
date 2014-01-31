@@ -1,6 +1,6 @@
 #!/bin/bash
 read ESPEAK < /etc/opendomo/speech/espeak.dat
-$ESPEAK "Hasta la próxima. Para volver a conectar, diga Hola OpenDomo"
+$ESPEAK "Speak to you next time. To reconnect again,say : Hello OpenDomo"
 echo "FIN" > ESTADO
 echo "identification" > MODE 
 
