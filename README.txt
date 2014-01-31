@@ -14,13 +14,13 @@ INSTALLATION
 ============
 1. BUILDING:
 
-For building the package, run: 
+For building the package, install from git in OpenDomo: 
 
-	./mkpkg.sh
+./plugin_add_from_gh.sh loureiromahia OpenDomo_VR
 
 This script will prepare the directory structure:
 
-- /etc/init.d/start_opendomoVR.sh : script to run forever Opendomo_VR sw.
+- /etc/init.d/opendomoVRd : script to run forever Opendomo_VR sw.
 - /usr/local/opendomo/vr : Operating SW
 - /usr/local/opendomo/voiceCommands : Speech recognition commands
   
@@ -69,8 +69,16 @@ The mechanism to decode the speech uses Google API recognition that has a very g
 
 4. EXECUTING:
 
+If Voice Recognition is not autostarted with previous script (./configureVoiceSystem.sh), you can always run it manually executing:
+
+	/usr/local/opendomo/vr/opendomoVR.sh
+ 
+
+5. OPERATION MODES:
+
 OpenDomo_VR has two MODEs of operation:
 - Identification: In this mode OpenDomo_VR only accepts the voice command "Hello XXXX", where XXXX is the name of the installation.
 - Normal: After a correct Identification, OpenDomo_VR switches to MODE =Normal. In this mode  OpenDomo recognizes all the defined voice commands for this installation (switch on/off lights, music control...). OpenDomo_VR keeps in this mode until a "Bye" Voice Command is issued. If this Bye is  issued , OpenDomo_VR switch again to Identification MODE, not accepting a new command until a correct identification is issued.
 
 Note that all these status are Operational OpenDomo_VR Modes. When the user is not in the installation, or during the night(while he is sleeping) OpenDomo_VR  daemon is not running.   
+

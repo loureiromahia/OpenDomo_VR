@@ -24,7 +24,7 @@ fi
 
 #sudo apt-get install make gcc sox python-argparse wget espeak xautomation xvkbd 
 # gcc and make are not necessary: No compilation will be done in Production Systems. Only used in development  
-sudo apt-get install sox python-argparse wget espeak xautomation xvkbd 
+sudo apt-get install sox python-argparse espeak flac 
 #For OpenDomo we are going to use /etc/opendomo/speech, instead of $HOME/.palaver.d/
 CONFIGDIR="/etc/opendomo/speech"
 DIR="$(pwd)"

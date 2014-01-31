@@ -4,5 +4,8 @@ echo $ESPEAK
 $ESPEAK "Wellcome to OpenDomo. Posible commands: "
 $ESPEAK "Switch On or OFF lights on Kitchen, living room or sleeping rooms"
 $ESPEAK "Manage Heating Temperature "
-echo "main" > MODE 
+echo "main" > MODE
+flac -f /usr/local/opendomo/vr/recording.flac
+cp /usr/local/opendomo/vr/recording.wav /var/opendomo/tmp/recognition.wav
+logevent notice odvr "Voice handshake" /var/opendomo/tmp/recognition.wav 
 
