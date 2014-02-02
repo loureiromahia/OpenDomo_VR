@@ -124,6 +124,7 @@ cd /usr/local/opendomo/vr
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/VarLight/VarLight.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/VarClimate/VarClimate.sp
 echo "Install voiceSystem.sh , so that opendomoVR.sh run forever in background" 
+sudo cp /usr/local/opendomo/daemons/voiceSystem.sh /etc/init.d/.
 sudo update-rc.d voiceSystem.sh defaults 99
 #Create the file /etc/opendomo/speech/SETUPDONE, to indicate that setup has been alerady performed
 #When running the voice recognition, opendomoVR.sh will check if this file exists, if not, it will run automatically the setup, with default parameter.
