@@ -36,6 +36,16 @@ DIR="$(pwd)"
 #cd Recognition
 #make
 #cd ..
+#Copiar versión compilada de dictionary, dependiendo del HW:
+#
+
+if [-z grep -c ARM /proc/cpuinfo]
+then
+	cp Recognition/dictionary.ARM Recognition/dictionary
+else
+	cp Recognition/dictionary.i386 Recognition/dictionary
+fi
+#
 echo "Clean directories from previous installations"
 rm Recognition/modes/main.dic
 rm Recognition/bin/ -r
