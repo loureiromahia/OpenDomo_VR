@@ -40,10 +40,12 @@ DIR="$(pwd)"
 #Copiar versión compilada de dictionary, dependiendo del HW:
 #
 ISARM=`grep -c ARM /proc/cpuinfo`
-if [ -z $ISARM ]
+if [ $ISARM -ne 1 ]
 then
+	echo "Configurado dictionary para arquitectura i686"	
 	cp Recognition/dictionary.i686 Recognition/dictionary
 else
+	echo "Configurado dictionary para arquitectura ARM"	
 	cp Recognition/dictionary.ARM Recognition/dictionary
 fi
 #
