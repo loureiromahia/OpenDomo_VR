@@ -27,6 +27,7 @@ fi
 sudo apt-get install sox python-argparse espeak flac 
 #For OpenDomo we are going to use /etc/opendomo/speech, instead of $HOME/.palaver.d/
 CONFIGDIR="/etc/opendomo/speech"
+cd /usr/local/opendomo/vr
 DIR="$(pwd)"
 #Compiling dictionary.c:
 
@@ -38,12 +39,12 @@ DIR="$(pwd)"
 #cd ..
 #Copiar versión compilada de dictionary, dependiendo del HW:
 #
-
-if [-z grep -c ARM /proc/cpuinfo]
+ISARM=`grep -c ARM /proc/cpuinfo`
+if [ -z $ISARM ]
 then
-	cp Recognition/dictionary.ARM Recognition/dictionary
+	cp Recognition/dictionary.i686 Recognition/dictionary
 else
-	cp Recognition/dictionary.i386 Recognition/dictionary
+	cp Recognition/dictionary.ARM Recognition/dictionary
 fi
 #
 echo "Clean directories from previous installations"
