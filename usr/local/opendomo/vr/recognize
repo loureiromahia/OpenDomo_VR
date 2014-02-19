@@ -75,11 +75,12 @@ if [ "$EXIT" == 0 ];then
 #ML,06/11/2013
 #    espeak -ves "Entendido"
 #ML,29/11/2013
-	read ESPEAK < $USER_DIR/espeak.dat
-	grep SiEntendido $USER_DIR/frases |cut -d ":" -f2 > FRASE
-	$ESPEAK < FRASE
+#	read ESPEAK < $USER_DIR/espeak.dat
+#	grep SiEntendido $USER_DIR/frases |cut -d ":" -f2 > FRASE
+#	$ESPEAK < FRASE
 #$ESPEAK 'grep SiEntendido $USER_DIR/frases |cut -d ":" -f2'
-
+#ML, 19/02/2014:
+	/usr/local/opendomo/vr/espeak.sh "SiEntendido"
     	echo  "OK" > RESULTADO
     	exit 0
 #elif [ "$EXIT" == 2 ];then
@@ -91,8 +92,10 @@ else
 #	"$COMMAND" ""
 #    espeak -ves "No le he entendido, ¿puede repetir? "
 #ML,29/11/2013
-	read ESPEAK < $USER_DIR/espeak.dat
-	grep NoEntendido $USER_DIR/frases |cut -d ":" -f2 > FRASE
-	$ESPEAK < FRASE
+#	read ESPEAK < $USER_DIR/espeak.dat
+#	grep NoEntendido $USER_DIR/frases |cut -d ":" -f2 > FRASE
+#	$ESPEAK < FRASE
+#ML, 19/02/2014:
+	/usr/local/opendomo/vr/espeak.sh "NoEntendido"
      	echo "NOK" > RESULTADO
 fi

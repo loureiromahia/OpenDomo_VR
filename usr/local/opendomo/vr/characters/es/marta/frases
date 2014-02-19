@@ -5,3 +5,31 @@ ClimaOFFswoff: Apagando Clima en
 ClimaOFFalready: Ya está apagado el clima en
 ClimaONswon: Encendiendo Clima en
 ClimaONalready: Ya está encendido el clima en
+LucesOFFswoff: Apagando luces de
+LucesOFFalready: Ya está apagada la luz en
+LucesONswon: Encendiendo luces de
+LucesONalready: Ya está encendida la luz en  
+MusicOFFswoff: Desactivando música en
+MusicOFFalready: Ya está apagada la música en 
+MusicONswon: Activando música en
+MusicONalready: Ya está activada la música en 
+StartBienvenido: Bienvenido a OpenDomo. Comandos posibles
+StartComandos: Encender o Apagar Luces o Climatización o Música o Vídeo
+StartSensores: Información de estado de sensores
+StartAyuda: Si necesita ayuda, diga: Ayuda
+Stop: Hasta la próxima. Para volver a conectar, diga Hola OpenDomo
+Sensorsnotdefsens: No esta definido el sensor
+Sensorsvalor: valor actual 
+Sensorsnotdef: no está definido
+VarClimatenoterm: No hay termostato en zona
+VarClimatecambiando: Cambiando la temperatura a
+VarClimatezona: en zona
+VarLightnoreg: No hay regulador de luz en zona
+VarLightcambiando: Cambiando el nivel de luz a
+VarLightzona: en zona
+VideoOFFswoff: Desactivando video vigilancia en
+VideoOFFalready: Ya está desactivada la video vigilancia en
+VideoONswon: Activando video vigilancia en
+VideoONalready: Ya está activada la video vigilancia en
+
+
