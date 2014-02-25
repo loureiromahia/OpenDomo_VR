@@ -6,7 +6,7 @@ read ESPEAK < /etc/opendomo/speech/espeak.dat
 switch=`grep -i $1 /etc/opendomo/speech/video.conf | cut -d ":" -f1 -`
 if [ -z "$switch" ] 
 then 
-	$ESPEAK "It is not defined the zone "
+	$ESPEAK "No esta definida la zona"
 	$ESPEAK $1
 else	
 	switch=`echo $switch | sed -e s/"info"/"value"/g`
@@ -15,10 +15,10 @@ else
 	if [ "$value" = "on" ]
 	then
 		setport.sh $switch "on" 	
-		$ESPEAK "Deactivating video in"
+		$ESPEAK "Desactivando video vigilancia en"
 		$ESPEAK $1
 	else
-		$ESPEAK "It is already deactivated video in "
+		$ESPEAK "Ya está desactivada la video vigilancia en "
 		$ESPEAK $1
 	fi 	
 fi 

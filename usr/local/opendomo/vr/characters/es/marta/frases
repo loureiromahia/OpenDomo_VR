@@ -14,10 +14,10 @@ MusicOFFalready: Ya está apagada la música en
 MusicONswon: Activando música en
 MusicONalready: Ya está activada la música en 
 StartBienvenido: Bienvenido a OpenDomo. Comandos posibles
-StartComandos: Encender o Apagar Luces o Climatización o Música o Vídeo
-StartSensores: Información de estado de sensores
-StartAyuda: Si necesita ayuda, diga: Ayuda
-Stop: Hasta la próxima. Para volver a conectar, diga Hola OpenDomo
+StartComandos: Encender o Apagar Luces o Climatizacion o Musica o Video
+StartSensores: Informacion de estado de sensores
+StartAyuda: Si necesita ayuda, diga, Ayuda
+Stop: Hasta la proxima. Para volver a conectar, diga Hola OpenDomo
 Sensorsnotdefsens: No esta definido el sensor
 Sensorsvalor: valor actual 
 Sensorsnotdef: no está definido

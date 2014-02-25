@@ -17,4 +17,14 @@
 USER_DIR="/etc/opendomo/speech"
 read ESPEAK < $USER_DIR/espeak.dat
 grep $1 $USER_DIR/frases |cut -d ":" -f2 > FRASE
+if [ $# -ge 2 ]; then
+	grep $2 $USER_DIR/frases |cut -d ":" -f2 >> FRASE
+fi
+if [ $# -ge 3 ]; then
+	grep $3 $USER_DIR/frases |cut -d ":" -f2 >> FRASE
+fi
+if [ $# -ge 4 ]; then
+	grep $4 $USER_DIR/frases |cut -d ":" -f2 >> FRASE
+fi	
+		
 $ESPEAK < FRASE
