@@ -1,8 +1,9 @@
 #Plugin.info automatically generated
 name = VideoOFF
-version = 1.0
+version = 2.0
 file = VideoOFF
 configs = settings.conf
 author = Manuel Angel Loureiro  
 description = Deactivate Video Cameras in a specific zone
 actions = Deactivate Video Cameras in a specific zone 
+Updated to last strategy on phrases

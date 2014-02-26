@@ -12,13 +12,13 @@ else
 	switch=`echo $switch | sed -e s/"info"/"value"/g`
 	switch="/var/opendomo/control$switch"
 	value=`cat $switch`
-	if [ "$value" = "off" ]
+	if [ "$value" = "on" ]
 	then
 		setport.sh $switch "on" 	
-		$ESPEAK "Activando video vigilancia en"
+		$ESPEAK "Desactivando video vigilancia en"
 		$ESPEAK $1
 	else
-		$ESPEAK "Ya está activada la video vigilancia en "
+		$ESPEAK "Ya está desactivada la video vigilancia en "
 		$ESPEAK $1
 	fi 	
 fi 

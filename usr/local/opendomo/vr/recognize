@@ -80,7 +80,7 @@ if [ "$EXIT" == 0 ];then
 #	$ESPEAK < FRASE
 #$ESPEAK 'grep SiEntendido $USER_DIR/frases |cut -d ":" -f2'
 #ML, 19/02/2014:
-	/usr/local/opendomo/vr/espeak.sh "SiEntendido"
+#	/usr/local/opendomo/vr/espeak.sh "SiEntendido"
     	echo  "OK" > RESULTADO
     	exit 0
 #elif [ "$EXIT" == 2 ];then

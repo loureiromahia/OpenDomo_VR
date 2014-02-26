@@ -1,8 +1,9 @@
 #Plugin.info automatically generated
 name = VarLight
-version = 1.3
+version = 2.0
 file = VarLight
 configs = settings.conf
 author =Manuel Angel Loureiro  
 description = Change the lighting level
 actions = Change a variable light regulator in a specific zone to the value indicated by the user
+Upodated to last strategy on phrases

@@ -1,3 +1,5 @@
 activar video (LINE Objeto)
   VideoON "$Objeto$"
+encender video (LINE Objeto)
+  VideoON "$Objeto$"
 

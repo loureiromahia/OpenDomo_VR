@@ -1,3 +1,5 @@
 activar música (LINE Objeto)
   MusicON "$Objeto$"
+encender música (LINE Objeto)
+  MusicON "$Objeto$"
 

@@ -18,7 +18,7 @@ else
 	setport.sh $switch $TEMPERATURA 	
 	$ESPEAK "Cambiando la temperatura a"
 	$ESPEAK $TEMPERATURA
-	$ESPEAK "en zona"
+	$ESPEAK "en zona "
 	$ESPEAK $SITIO
 fi 
  

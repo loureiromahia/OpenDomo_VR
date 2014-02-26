@@ -18,7 +18,7 @@ else
 	setport.sh $switch $VOLUMEN 	
 	$ESPEAK "Cambiando el nivel de luz a"
 	$ESPEAK $VOLUMEN
-	$ESPEAK "en"
+	$ESPEAK "en zona "
 	$ESPEAK $SITIO
 fi 
  

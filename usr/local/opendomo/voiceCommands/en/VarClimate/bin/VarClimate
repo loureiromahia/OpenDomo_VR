@@ -10,15 +10,15 @@ switch=`grep -i $SITIO /etc/opendomo/speech/varclimate.conf | cut -d ":" -f1 -`
 
 if [ -z "$switch" ] 
 then 
-	$ESPEAK "There is not thermostat in zone"
+	/usr/local/opendomo/vr/espeak.sh VarClimatenoterm	
 	$ESPEAK $SITIO
 else	
 	switch=`echo $switch | sed -e s/"info"/"value"/g`
 	switch="/var/opendomo/control$switch"
 	setport.sh $switch $TEMPERATURA 	
-	$ESPEAK "Changing  temperature to"
+	/usr/local/opendomo/vr/espeak.sh VarClimatecambiando
 	$ESPEAK $TEMPERATURA
-	$ESPEAK "in zone "
+	/usr/local/opendomo/vr/espeak.sh VarClimatezona
 	$ESPEAK $SITIO
 fi 
  

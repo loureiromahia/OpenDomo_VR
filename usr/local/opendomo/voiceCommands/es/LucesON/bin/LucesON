@@ -6,7 +6,7 @@ read ESPEAK < /etc/opendomo/speech/espeak.dat
 switch=`grep -i $1 /etc/opendomo/speech/light.conf | cut -d ":" -f1 -`
 if [ -z "$switch" ] 
 then 
-	$ESPEAK "No esta definida la zona"
+	/usr/local/opendomo/vr/espeak.sh NoDef
 	$ESPEAK $1
 else	
 	switch=`echo $switch | sed -e s/"info"/"value"/g`
@@ -15,10 +15,10 @@ else
 	if [ "$value" = "off" ]
 	then
 		setport.sh $switch "on" 	
-		$ESPEAK "Encendiendo luces de"
+		/usr/local/opendomo/vr/espeak.sh LucesONswon
 		$ESPEAK $1
 	else
-		$ESPEAK "Ya está encendida la zona"
+		/usr/local/opendomo/vr/espeak.sh LucesONalready
 		$ESPEAK $1
 	fi 	
 fi 

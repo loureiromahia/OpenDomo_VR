@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# To be updated with the specific command in OpenDomo
-#Temporarily, an espeak command is issued
+# To be checked in a real  opendomo environment.This script is based in a  system in which dummy ports are configured
+#
 read ESPEAK < /etc/opendomo/speech/espeak.dat
 switch=`grep -i $1 /etc/opendomo/speech/light.conf | cut -d ":" -f1 -`
 if [ -z "$switch" ] 

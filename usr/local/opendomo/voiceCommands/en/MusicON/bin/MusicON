@@ -6,7 +6,7 @@ read ESPEAK < /etc/opendomo/speech/espeak.dat
 switch=`grep -i $1 /etc/opendomo/speech/music.conf | cut -d ":" -f1 -`
 if [ -z "$switch" ] 
 then 
-	$ESPEAK "It is note defined the zone"
+	/usr/local/opendomo/vr/espeak.sh NoDef
 	$ESPEAK $1
 else	
 	switch=`echo $switch | sed -e s/"info"/"value"/g`
@@ -15,10 +15,10 @@ else
 	if [ "$value" = "off" ]
 	then
 		setport.sh $switch "on" 	
-		$ESPEAK "Activating music in"
+		/usr/local/opendomo/vr/espeak.sh MusicONswon
 		$ESPEAK $1
 	else
-		$ESPEAK "It is already activated the music in "
+		/usr/local/opendomo/vr/espeak.sh MusicONalready
 		$ESPEAK $1
 	fi 	
 fi 

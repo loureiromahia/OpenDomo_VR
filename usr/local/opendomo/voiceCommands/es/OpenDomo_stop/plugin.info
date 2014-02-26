@@ -1,8 +1,9 @@
 #Plugin.info automatically generated
 name = OpenDomo_stop
-version = 1.2
+version = 2.0
 file = OpenDomo_stop
 configs = settings.conf
 author = Manuel Angel Loureiro
 description = Stops OpenDomo to listen . Voice Recognition in OpenDomo is stopped
-actions = Say Goodbay, and changes ESTADO to FIN
+actions = Say Goodbay, and changes ESTADO to FIN. 
+Updated to new strategy for phrases

@@ -1,8 +1,9 @@
 #Plugin.info automatically generated
 name = LucesON
-version = 1.3
+version = 2.0
 file = LucesON
 configs = settings.conf
 author = Manuel Angel Loureiro
 description = Switch Lights ON, on the room identified 
 actions = Switch Lights ON
+Updated to new strategy on phrases

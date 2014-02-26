@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# To be checked in a real  opendomo environment.This script is based in a  system in which dummy ports are configured
+#
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+switch=`grep -i $1 /etc/opendomo/speech/clima.conf | cut -d ":" -f1 -`
+if [ -z "$switch" ] 
+then 
+	/usr/local/opendomo/vr/espeak.sh NoDef	
+	$ESPEAK $1
+else	
+	switch=`echo $switch | sed -e s/"info"/"value"/g`
+	switch="/var/opendomo/control$switch"
+	value=`cat $switch`
+	if [ "$value" = "on" ]
+	then
+		setport.sh $switch "off" 
+		/usr/local/opendomo/vr/espeak.sh ClimaOFFswoff		
+		$ESPEAK $1
+	else
+		/usr/local/opendomo/vr/espeak.sh ClimaOFFalready	
+		$ESPEAK $1
+	fi 	
+fi 
+ 

@@ -6,7 +6,7 @@ read ESPEAK < /etc/opendomo/speech/espeak.dat
 switch=`grep -i $1 /etc/opendomo/speech/sensors.conf | cut -d ":" -f1 -`
 if [ -z "$switch" ] 
 then 
-	$ESPEAK "No esta definido el sensor"
+	/usr/local/opendomo/vr/espeak.sh NoDef
 	$ESPEAK $1
 else	
 	switch=`echo $switch | sed -e s/"info"/"value"/g`
@@ -14,10 +14,10 @@ else
 	value=`cat $switch`
 	units=`grep -i $1 /etc/opendomo/speech/sensors.conf | cut -d ":" -f3 -`
 	$ESPEAK $1
-	$ESPEAK "valor actual"
+	/usr/local/opendomo/vr/espeak.sh Sensorsvalor
 	if [ -z $value ] || [ "$value" = "" ]
 	then	
-		$ESPEAK "no está definido"
+		/usr/local/opendomo/vr/espeak.sh Sensorsnotdef
 	else
 		$ESPEAK $value	
 		if [ -n "$units" ]

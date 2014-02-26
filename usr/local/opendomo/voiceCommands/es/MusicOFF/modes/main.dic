@@ -1,3 +1,5 @@
 desactivar música (LINE Objeto)
   MusicOFF "$Objeto$"
+apagar música (LINE Objeto)
+  MusicOFF "$Objeto$"
 

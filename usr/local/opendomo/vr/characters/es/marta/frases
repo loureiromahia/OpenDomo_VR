@@ -1,18 +1,18 @@
 SiEntendido: entendido
 NoEntendido: No he entendido, ¿puede repetir?
-NoDef: No está definida la zona
+NoDef: No esta definida la zona
 ClimaOFFswoff: Apagando Clima en
-ClimaOFFalready: Ya está apagado el clima en
+ClimaOFFalready: Ya esta apagado el clima en
 ClimaONswon: Encendiendo Clima en
-ClimaONalready: Ya está encendido el clima en
+ClimaONalready: Ya esta encendido el clima en
 LucesOFFswoff: Apagando luces de
-LucesOFFalready: Ya está apagada la luz en
+LucesOFFalready: Ya esta apagada la luz en
 LucesONswon: Encendiendo luces de
-LucesONalready: Ya está encendida la luz en  
-MusicOFFswoff: Desactivando música en
-MusicOFFalready: Ya está apagada la música en 
-MusicONswon: Activando música en
-MusicONalready: Ya está activada la música en 
+LucesONalready: Ya esta encendida la luz en  
+MusicOFFswoff: Desactivando musica en
+MusicOFFalready: Ya esta apagada la musica en 
+MusicONswon: Activando musica en
+MusicONalready: Ya esta activada la musica en 
 StartBienvenido: Bienvenido a OpenDomo. Comandos posibles
 StartComandos: Encender o Apagar Luces o Climatizacion o Musica o Video
 StartSensores: Informacion de estado de sensores
@@ -28,8 +28,8 @@ VarLightnoreg: No hay regulador de luz en zona
 VarLightcambiando: Cambiando el nivel de luz a
 VarLightzona: en zona
 VideoOFFswoff: Desactivando video vigilancia en
-VideoOFFalready: Ya está desactivada la video vigilancia en
+VideoOFFalready: Ya esta desactivada la video vigilancia en
 VideoONswon: Activando video vigilancia en
-VideoONalready: Ya está activada la video vigilancia en
+VideoONalready: Ya esta activada la video vigilancia en
 
 

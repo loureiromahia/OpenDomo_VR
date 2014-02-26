@@ -15,10 +15,10 @@ else
 	if [ "$value" = "off" ]
 	then
 		setport.sh $switch "on" 	
-		$ESPEAK "Activando clima en"
+		$ESPEAK "Encendiendo clima en"
 		$ESPEAK $1
 	else
-		$ESPEAK "Ya está activado el clima en "
+		$ESPEAK "Ya está encendido el clima en "
 		$ESPEAK $1
 	fi 	
 fi 

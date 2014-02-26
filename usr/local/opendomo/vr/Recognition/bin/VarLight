@@ -10,15 +10,15 @@ switch=`grep -i $SITIO /etc/opendomo/speech/varlight.conf | cut -d ":" -f1 -`
 
 if [ -z "$switch" ] 
 then 
-	$ESPEAK "No hay regulador de luz en zona"
+	/usr/local/opendomo/vr/espeak.sh VarLightnoreg
 	$ESPEAK $SITIO
 else	
 	switch=`echo $switch | sed -e s/"info"/"value"/g`
 	switch="/var/opendomo/control$switch"
 	setport.sh $switch $VOLUMEN 	
-	$ESPEAK "Cambiando el nivel de luz a"
+	/usr/local/opendomo/vr/espeak.sh VarLightcambiando
 	$ESPEAK $VOLUMEN
-	$ESPEAK "en zona "
+	/usr/local/opendomo/vr/espeak.sh VarLightzona
 	$ESPEAK $SITIO
 fi 
  

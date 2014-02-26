@@ -1,8 +1,9 @@
 #Plugin.info automatically generated
 name = VarClimate
-version = 1.2
+version = 2.0
 file = VarClimate
 configs = settings.conf
 author = Manuel Angel Loureiro  
 description = Change the temperature level in a specific zone
 actions = Change ºC temperature level in a specific zone 
+Updated to new strategy on phrases

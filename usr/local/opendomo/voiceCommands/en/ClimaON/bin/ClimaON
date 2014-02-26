@@ -6,7 +6,7 @@ read ESPEAK < /etc/opendomo/speech/espeak.dat
 switch=`grep -i $1 /etc/opendomo/speech/clima.conf | cut -d ":" -f1 -`
 if [ -z "$switch" ] 
 then 
-	$ESPEAK "It is not defined the zone "
+	/usr/local/opendomo/vr/espeak.sh NoDef
 	$ESPEAK $1
 else	
 	switch=`echo $switch | sed -e s/"info"/"value"/g`
@@ -14,11 +14,11 @@ else
 	value=`cat $switch`
 	if [ "$value" = "off" ]
 	then
-		setport.sh $switch "on" 	
-		$ESPEAK "Switching on climate in"
+		setport.sh $switch "on" 
+		/usr/local/opendomo/vr/espeak.sh ClimaONswon	
 		$ESPEAK $1
 	else
-		$ESPEAK "It is already switched on climate in "
+		/usr/local/opendomo/vr/espeak.sh ClimaONalready	
 		$ESPEAK $1
 	fi 	
 fi 

@@ -1,2 +1,4 @@
 informar de (LINE Objeto)
   Sensors "$Objeto$"
+estado de (LINE Objeto)
+  Sensors "$Objeto$"
