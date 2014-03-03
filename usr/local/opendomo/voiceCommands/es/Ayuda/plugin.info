@@ -1,0 +1,8 @@
+#Plugin.info automatically generated
+name = Ayuda
+version = 1.0
+file = Ayuda
+configs = settings.conf
+author = M.Loureiro 
+description = Generate speech fie with all the posible actions in the installation
+actions = It checks the ports of the specific installation and generates speech with all the commands available 
