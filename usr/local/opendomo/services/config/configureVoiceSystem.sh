@@ -135,9 +135,7 @@ fi
 # Next command is not necessary, as all the commands will be explicitly intalled using plugins commands  
 #./installDefault
 cd /usr/local/opendomo/vr
-#First, configure language to generate the AYUDA file
 cp generate_port_data_$IDIOMA.sh generate_port_data.sh
-#And last... install available voiceCommands 
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/OpenDomo_start/OpenDomo_start.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/OpenDomo_stop/OpenDomo_stop.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/LucesON/LucesON.sp
@@ -151,6 +149,7 @@ cp generate_port_data_$IDIOMA.sh generate_port_data.sh
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/MusicOFF/MusicOFF.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/VarLight/VarLight.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/VarClimate/VarClimate.sp
+./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/Ayuda/Ayuda.sp
 ##Next changes are no longer necessary, as the procedures to autostart forever, will be perormed, using 
 ## OpenDomo specific procedures.
 #
