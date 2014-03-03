@@ -62,8 +62,8 @@ rm $CONFIGDIR/plugins.db
 rm $CONFIGDIR/UserInfo
 rm $CONFIGDIR/config -r
 
-sudo mkdir -p $CONFIGDIR
-sudo chown -R 1000:1000 $CONFIGDIR
+mkdir -p $CONFIGDIR
+chown -R 1000:1000 $CONFIGDIR
 #Changed the owner to 1000:1000...in opendomo: admin,,, in normal Debian installations: user id
 cp Recognition/config/defaultBin Recognition/bin -r
 
