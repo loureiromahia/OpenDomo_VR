@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# To be checked in a real  opendomo environment.This script is based in a  system in which dummy ports are configured
+#
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+$ESPEAK < /etc/opendomo/speech/AYUDA
