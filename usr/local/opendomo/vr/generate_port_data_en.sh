@@ -27,9 +27,9 @@ do
 		#the name...
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/light.conf
 		#Generate AYUDA
-		echo "Encender luz" >> /etc/opendomo/speech/AYUDA		
+		echo "switch ON light" >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-		echo "Apagar luz" >> /etc/opendomo/speech/AYUDA		
+		echo "switch OFF light" >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
 	fi
 done < tmp.txt
@@ -55,9 +55,9 @@ do
 		#the name...	
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/clima.conf
 		#Generate AYUDA		
-		echo "Encender clima" >> /etc/opendomo/speech/AYUDA		
+		echo "switch ON climate" >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-		echo "Apagar clima" >> /etc/opendomo/speech/AYUDA		
+		echo "switch OFF climate" >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
 	fi	
 done < tmp.txt
@@ -84,9 +84,9 @@ do
 		#the name...	
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/video.conf
 		#Generate AYUDA 		
-		echo "Activar video" >> /etc/opendomo/speech/AYUDA		
+		echo "Activate video" >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-		echo "Desactivar video" >> /etc/opendomo/speech/AYUDA		
+		echo "Deactivate video" >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
 		
 	fi	
@@ -114,9 +114,9 @@ do
 		#the name...	
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/music.conf
 		#Generate AYUDA 		
-		echo "Activar musica" >> /etc/opendomo/speech/AYUDA		
+		echo "Activate music" >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-		echo "Desactivar musica" >> /etc/opendomo/speech/AYUDA		
+		echo "Deactivate music" >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
 	fi	
 done < tmp.txt
@@ -149,7 +149,7 @@ do
 		# when blank in units, it means a digital sensor (ON/OFF)	
 		cat  $line | grep units | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/sensors.conf
 		#Generate AYUDA 		
-		echo "Informar de" >> /etc/opendomo/speech/AYUDA		
+		echo "Inform about" >> /etc/opendomo/speech/AYUDA		
 		echo -n $stri >> /etc/opendomo/speech/AYUDA
 	
 	fi	
@@ -177,9 +177,9 @@ do
 			#the name...
 			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/varlight.conf
 			#Generate AYUDA 		
-			echo "Ajustar termostato " >> /etc/opendomo/speech/AYUDA		
+			echo "Change temperature " >> /etc/opendomo/speech/AYUDA		
 			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-			echo "valor en grados" >> /etc/opendomo/speech/AYUDA		
+			echo "value in degrees" >> /etc/opendomo/speech/AYUDA		
 		fi
 	fi
 done < tmp.txt
@@ -206,14 +206,14 @@ do
 			#the name...
 			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/varclimate.conf
 			#Generate AYUDA 		
-			echo "Ajustar luz " >> /etc/opendomo/speech/AYUDA		
+			echo "Change Light " >> /etc/opendomo/speech/AYUDA		
 			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-			echo "valor en porcentaje" >> /etc/opendomo/speech/AYUDA		
+			echo "value in percentage" >> /etc/opendomo/speech/AYUDA		
 		fi
 	fi
 done < tmp.txt
 echo " Zonas con reguladores de temperatura:"
 cat /etc/opendomo/speech/varclimate.conf
 #Generate AYUDA 		
-echo "Adios OpenDomo " >> /etc/opendomo/speech/AYUDA		
+echo "Bye OpenDomo " >> /etc/opendomo/speech/AYUDA		
 			

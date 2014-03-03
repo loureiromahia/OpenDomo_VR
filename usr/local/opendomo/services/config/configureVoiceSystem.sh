@@ -135,6 +135,9 @@ fi
 # Next command is not necessary, as all the commands will be explicitly intalled using plugins commands  
 #./installDefault
 cd /usr/local/opendomo/vr
+#First, configure language to generate the AYUDA file
+cp generate_port_data_$IDIOMA.sh generate_port_data.sh
+#And last... install available voiceCommands 
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/OpenDomo_start/OpenDomo_start.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/OpenDomo_stop/OpenDomo_stop.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/LucesON/LucesON.sp
