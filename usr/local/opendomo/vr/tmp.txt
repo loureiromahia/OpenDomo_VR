@@ -2,4 +2,3 @@
 /etc/opendomo/control/comedor/ai02.info
 /etc/opendomo/control/comedor/do04.info
 /etc/opendomo/control/comedor/do02.info
-/etc/opendomo/control/comedor/do04.info~
