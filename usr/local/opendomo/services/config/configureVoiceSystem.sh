@@ -150,6 +150,7 @@ cp generate_port_data_$IDIOMA.sh generate_port_data.sh
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/VarLight/VarLight.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/VarClimate/VarClimate.sp
 ./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/Ayuda/Ayuda.sp
+./plugins -f -i /usr/local/opendomo/voiceCommands/$IDIOMA/menu/menu.sp
 ##Next changes are no longer necessary, as the procedures to autostart forever, will be perormed, using 
 ## OpenDomo specific procedures.
 #
