@@ -1,0 +1,70 @@
+#!/bin/bash
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+if [ "$1" = "0" ]
+then
+	# This option, restarts MENU, to the first level	
+	/usr/local/opendomo/vr/espeak.sh Menu0
+	echo "menu0" > MENU
+else
+	read menu < MENU
+	case "$menu" in
+	menu0)
+		case "$1" in
+			1)
+			/usr/local/opendomo/vr/espeak.sh Menu1
+			echo "menu1" > MENU 
+			;;
+			2)
+			/usr/local/opendomo/vr/espeak.sh Menu2
+			echo "menu2" > MENU
+			;; 
+			3)
+			/usr/local/opendomo/vr/espeak.sh Menu3
+			echo "menu3" > MENU
+			;;
+			10)
+			#10 ==> Volver
+			/usr/local/opendomo/vr/espeak.sh Menu0
+			echo "menu0" > MENU
+			;;
+			11)
+			#11 ==> Salir del modo menú
+			/usr/local/opendomo/vr/espeak.sh Menusalir
+			echo "no" > MENU
+			;;   
+			else)
+			#Opción no válida. Repetir opciones de menu
+			/usr/local/opendomo/vr/espeak.sh Menunoval Menu0 
+			
+			;;   
+		esac
+		;;
+	menu1)
+		case "$1" in
+			1)
+			/usr/local/opendomo/vr/espeak.sh Menu1
+			echo "menu1" > MENU
+			;; 
+			2)
+			/usr/local/opendomo/vr/espeak.sh Menu2
+			echo "menu2" > MENU
+			;; 
+			3)
+			/usr/local/opendomo/vr/espeak.sh Menu3
+			echo "menu3" > MENU
+			;;
+			10)
+			#10 ==> Volver
+			/usr/local/opendomo/vr/espeak.sh Menu0
+			echo "menu0" > MENU
+			;;
+			11)
+			#11 ==> Salir del modo menú
+			/usr/local/opendomo/vr/espeak.sh Menu5
+			echo "no" > MENU
+			;;   
+		esac
+		;;
+	esac
+fi
+

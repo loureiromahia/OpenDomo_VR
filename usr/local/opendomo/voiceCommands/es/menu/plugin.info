@@ -1,0 +1,8 @@
+#Plugin.info automatically generated
+name = menu
+version = 1.1
+file = menu
+configs = settings.conf
+author = M.Loureiro  
+description = Navigates over web menu of OpenDomo
+actions =

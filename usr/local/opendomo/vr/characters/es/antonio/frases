@@ -1,3 +1,4 @@
+
 SiEntendido: entendido
 NoEntendido: No he entendido, ¿puede repetir?
 NoDef: No esta definida la zona
@@ -31,5 +32,7 @@ VideoOFFswoff: Desactivando video vigilancia en
 VideoOFFalready: Ya esta desactivada la video vigilancia en
 VideoONswon: Activando video vigilancia en
 VideoONalready: Ya esta activada la video vigilancia en
-
-
+Menu0: Menu principal.Para acceso a menu de control, diga 1. Para acceso a menu herramientas, diga 2. Para acceso a menu configuracion, diga 3. Para salir  del modo menu,diga Salir
+Menu1: Menu de Control. Si quiere listar controladores, diga 1. Si quiere cambiar estado, diga 2. Si quiere volver al menú anterior, diga Volver. Si quiere salir del modo guiado, diga Salir.
+Menusalir: Ha decidido salir del modo menu. Para volver a entrar, diga menu
+Menunoval: Opcion incorrecta 
