@@ -27,9 +27,9 @@ do
 		#the name...
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/light.conf
 		#Generate AYUDA
-		echo "switch ON light" >> /etc/opendomo/speech/AYUDA		
+		echo -n "switch ON light " >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-		echo "switch OFF light" >> /etc/opendomo/speech/AYUDA		
+		echo -n "switch OFF light " >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
 	fi
 done < tmp.txt
@@ -55,9 +55,9 @@ do
 		#the name...	
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/clima.conf
 		#Generate AYUDA		
-		echo "switch ON climate" >> /etc/opendomo/speech/AYUDA		
+		echo -n "switch ON climate " >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-		echo "switch OFF climate" >> /etc/opendomo/speech/AYUDA		
+		echo -n "switch OFF climate " >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
 	fi	
 done < tmp.txt
@@ -84,9 +84,9 @@ do
 		#the name...	
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/video.conf
 		#Generate AYUDA 		
-		echo "Activate video" >> /etc/opendomo/speech/AYUDA		
+		echo -n "Activate video " >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-		echo "Deactivate video" >> /etc/opendomo/speech/AYUDA		
+		echo -n "Deactivate video " >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
 		
 	fi	
@@ -114,9 +114,9 @@ do
 		#the name...	
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/music.conf
 		#Generate AYUDA 		
-		echo "Activate music" >> /etc/opendomo/speech/AYUDA		
+		echo -n "Activate music " >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-		echo "Deactivate music" >> /etc/opendomo/speech/AYUDA		
+		echo -n "Deactivate music " >> /etc/opendomo/speech/AYUDA		
 		cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
 	fi	
 done < tmp.txt
@@ -149,8 +149,8 @@ do
 		# when blank in units, it means a digital sensor (ON/OFF)	
 		cat  $line | grep units | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/sensors.conf
 		#Generate AYUDA 		
-		echo "Inform about" >> /etc/opendomo/speech/AYUDA		
-		echo -n $stri >> /etc/opendomo/speech/AYUDA
+		echo -n "Inform about " >> /etc/opendomo/speech/AYUDA		
+		echo $stri >> /etc/opendomo/speech/AYUDA
 	
 	fi	
 done < tmp.txt
@@ -177,9 +177,10 @@ do
 			#the name...
 			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/varlight.conf
 			#Generate AYUDA 		
-			echo "Change temperature " >> /etc/opendomo/speech/AYUDA		
-			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-			echo "value in degrees" >> /etc/opendomo/speech/AYUDA		
+			echo -n "Change temperature " >> /etc/opendomo/speech/AYUDA		
+			stri=`cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g`
+			echo -n $stri >> /etc/opendomo/speech/AYUDA			
+			echo " value, degrees" >> /etc/opendomo/speech/AYUDA		
 		fi
 	fi
 done < tmp.txt
@@ -206,9 +207,10 @@ do
 			#the name...
 			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/varclimate.conf
 			#Generate AYUDA 		
-			echo "Change Light " >> /etc/opendomo/speech/AYUDA		
-			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA
-			echo "value in percentage" >> /etc/opendomo/speech/AYUDA		
+			echo -n "Change Light " >> /etc/opendomo/speech/AYUDA		
+			stri=`cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g`
+			echo -n $stri >> /etc/opendomo/speech/AYUDA
+			echo " value, percentage" >> /etc/opendomo/speech/AYUDA		
 		fi
 	fi
 done < tmp.txt
