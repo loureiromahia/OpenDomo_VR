@@ -33,6 +33,12 @@ VideoOFFalready: Ya esta desactivada la video vigilancia en
 VideoONswon: Activando video vigilancia en
 VideoONalready: Ya esta activada la video vigilancia en
 Menu0: Menu principal.Para acceso a menu de control, diga 1. Para acceso a menu herramientas, diga 2. Para acceso a menu configuracion, diga 3. Para salir  del modo menu,diga Salir
-Menu1: Menu de Control. Si quiere listar controladores, diga 1. Si quiere cambiar estado, diga 2. Si quiere volver al menú anterior, diga Volver. Si quiere salir del modo guiado, diga Salir.
+Menu1: Menu de Control. Si quiere listar controladores, diga 1. Si quiere cambiar estado de instalacion, diga 2. Si quiere volver al menú anterior, diga Volver. Si quiere salir del modo menu, diga Salir.
+Menu11: Listar controladores. Para interruptores de luz, diga 1. Para interruptores de clima, diga 2. Para interruptores de musica, diga 3. Para videovigilancia, diga 4.  Para sensores, diga 5. Para termostatos variables, diga 6. Para reguladores de luz, diga 7. Si quiere volver al menú anterior, diga Volver. Si quiere salir del modo menu, diga Salir.
+Menu12: Cambiar estado. Si quiere activado, diga 1. Si quiere vigilancia, diga 2. Si quiere desactivado, diga 3. Si quiere volver al menú anterior, diga Volver. Si quiere salir del modo menu, diga Salir 
 Menusalir: Ha decidido salir del modo menu. Para volver a entrar, diga menu
-Menunoval: Opcion incorrecta 
+Menunoval: Opcion incorrecta
+Menuno: Opcion no valida. No esta en modo menu. Para entrar en modo menu , diga menu.
+Menucambestactiv: Modo activo activado. Si quiere volver al menú anterior, diga Volver. Si quiere salir del modo menu, diga Salir 
+Menucambestvig: Modo vigilancia activado. Si quiere volver al menú anterior, diga Volver. Si quiere salir del modo menu, diga Salir 
+Menucambestdesac: Modo desactivo activado. Si quiere volver al menú anterior, diga Volver. Si quiere salir del modo menu, diga Salir 
