@@ -4,35 +4,36 @@ if [ "$1" = "0" ]
 then
 	# This option, restarts MENU, to the first level	
 	/usr/local/opendomo/vr/espeak.sh Menu0
-	echo "menu0" > MENU
+	echo "menu0" > /usr/local/opendomo/vr/MENU
 else
-	read menu < MENU
+	read menu < /usr/local/opendomo/vr/MENU
 	case "$menu" in
 	no)
-		/usr/local/opendomo/vr/espeak.sh Menuno	
+		/usr/local/opendomo/vr/espeak.sh MenuNo
+		;;	
 	menu0)
 		case "$1" in
 			1)
-			/usr/local/opendomo/vr/espeak.sh Menu1
-			echo "menu1" > MENU 
+			/usr/local/opendomo/vr/espeak.sh Menu1e
+			echo "menu1" > /usr/local/opendomo/vr/MENU 
 			;;
 			2)
-			/usr/local/opendomo/vr/espeak.sh Menu2
-			echo "menu2" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu2e
+			echo "menu2" > /usr/local/opendomo/vr/MENU
 			;; 
 			3)
-			/usr/local/opendomo/vr/espeak.sh Menu3
-			echo "menu3" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu3e
+			echo "menu3" > /usr/local/opendomo/vr/MENU
 			;;
 			10)
 			#10 ==> Volver. En este caso, como estamos en el Menu principal (Menu0) repetimos el mismo Menu0
 			/usr/local/opendomo/vr/espeak.sh Menu0
-			echo "menu0" > MENU
+			echo "menu0" > /usr/local/opendomo/vr/MENU
 			;;
 			11)
 			#11 ==> Salir del modo menú
 			/usr/local/opendomo/vr/espeak.sh Menusalir
-			echo "no" > MENU
+			echo "no" > /usr/local/opendomo/vr/MENU
 			;;   
 			else)
 			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado
@@ -45,28 +46,28 @@ else
 			1)
 			#Listar controladores
 			# Agrupar controladores por tipo, de acuerdo a lo que hay en AYUDA
-			/usr/local/opendomo/vr/espeak.sh Menu11
-			echo "menu11" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu11e
+			echo "menu11" > /usr/local/opendomo/vr/MENU
 			;; 
 			2)
 			#Cambiar estado
 			#Preguntar estado  y acabar
-			/usr/local/opendomo/vr/espeak.sh Menu12
-			echo "menu12" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu12e
+			echo "menu12" > /usr/local/opendomo/vr/MENU
 			;; 
 			10)
 			#10 ==> Volver
 			/usr/local/opendomo/vr/espeak.sh Menu0
-			echo "menu0" > MENU
+			echo "menu0" > /usr/local/opendomo/vr/MENU
 			;;
 			11)
 			#11 ==> Salir del modo menú
 			/usr/local/opendomo/vr/espeak.sh Menusalir
-			echo "no" > MENU
+			echo "no" > /usr/local/opendomo/vr/MENU
 			;;   
 			else)
 			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado
-			/usr/local/opendomo/vr/espeak.sh Menunoval Menu1
+			/usr/local/opendomo/vr/espeak.sh Menunoval Menu1e
 			;;   
 
 		esac
@@ -76,58 +77,58 @@ else
 			1)
 			#Luces
 			# 
-			/usr/local/opendomo/vr/espeak.sh Menu111
-			echo "menu111" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu111e
+			echo "menu111" > /usr/local/opendomo/vr/MENU
 			;; 
 			2)
 			#Clima
 			# 
-			/usr/local/opendomo/vr/espeak.sh Menu112
-			echo "menu112" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu112e
+			echo "menu112" > /usr/local/opendomo/vr/MENU
 			;; 
 			3)
 			#Musica
 			# 
-			/usr/local/opendomo/vr/espeak.sh Menu113
-			echo "menu113" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu113e
+			echo "menu113" > /usr/local/opendomo/vr/MENU
 			;; 
 			4)
 			#VideoVigilancia
 			# 
-			/usr/local/opendomo/vr/espeak.sh Menu114
-			echo "menu114" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu114e
+			echo "menu114" > /usr/local/opendomo/vr/MENU
 			;; 
 			5)
 			#Sensores
 			# 
-			/usr/local/opendomo/vr/espeak.sh Menu115
-			echo "menu115" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu115e
+			echo "menu115" > /usr/local/opendomo/vr/MENU
 			;; 
 			6)
 			#Termostatos
 			# 
-			/usr/local/opendomo/vr/espeak.sh Menu116
-			echo "menu116" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu116e
+			echo "menu116" > /usr/local/opendomo/vr/MENU
 			;; 
 			7)
 			#Reguladores de Luz
 			# 
-			/usr/local/opendomo/vr/espeak.sh Menu117
-			echo "menu117" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu117e
+			echo "menu117" > /usr/local/opendomo/vr/MENU
 			;; 
 			10)
 			#10 ==> Volver
 			/usr/local/opendomo/vr/espeak.sh Menu0
-			echo "menu0" > MENU
+			echo "menu0" > /usr/local/opendomo/vr/MENU
 			;;
 			11)
 			#11 ==> Salir del modo menú
 			/usr/local/opendomo/vr/espeak.sh Menusalir
-			echo "no" > MENU
+			echo "no" > /usr/local/opendomo/vr/MENU
 			;;   
 			else)
 			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado
-			/usr/local/opendomo/vr/espeak.sh Menunoval Menu1
+			/usr/local/opendomo/vr/espeak.sh Menunoval Menu11e
 			;;   
 
 		esac
@@ -143,24 +144,24 @@ else
 			2)
 			#Pasar a modo vigilancia
 			#
-			echo "Cambio de estado a modo activado: setSystemState.sh secured"
+			echo "Cambio de estado a modo vigilancia: setSystemState.sh secured"
 			/usr/local/opendomo/vr/espeak.sh Menucambestvig
 			;; 
 			3)
 			#Pasar a modo desactivado
 			#Volver luego al menu anterior
-			echo "Cambio de estado a modo activado: setSystemState.sh sleeping"
+			echo "Cambio de estado a modo sleeping: setSystemState.sh sleeping"
 			/usr/local/opendomo/vr/espeak.sh Menucambestdesac
 			;; 
 			10)
 			#10 ==> Volver
-			/usr/local/opendomo/vr/espeak.sh Menu0
-			echo "menu0" > MENU
+			/usr/local/opendomo/vr/espeak.sh Menu1e
+			echo "menu1" > /usr/local/opendomo/vr/MENU
 			;;
 			11)
 			#11 ==> Salir del modo menú
 			/usr/local/opendomo/vr/espeak.sh Menusalir
-			echo "no" > MENU
+			echo "no" > /usr/local/opendomo/vr/MENU
 			;;   
 			else)
 			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado

@@ -17,7 +17,8 @@ fi
 /usr/local/opendomo/vr/generate_port_data.sh
 #Setup path:
 cd /usr/local/opendomo/vr
-echo "identification" > MODE  
+echo "identification" > MODE
+echo "no" > MENU  
 # File: identification.dic, contains only 1 plugin: OpenDomo_start
 echo "NOK" > RESULTADO
 read resultado < RESULTADO

@@ -1,79 +1,115 @@
+#PLUGIN: menu
+menú
+  menu 0
+1
+  menu 1
+2
+  menu 2
+3
+  menu 3
+4
+  menu 4
+5
+  menu 5
+6
+  menu 6
+7
+  menu 7
+8
+  menu 8
+9
+  menu 9
+volver
+  menu 10
+salir
+  menu 11
+
+
+
+#END
+#PLUGIN: Ayuda
+ayuda
+ Ayuda 
+#END
 #PLUGIN: VarClimate
-<adjust,change> temperature (LINE Objeto)
+<ajustar,cambiar> termostato (LINE Objeto)
   VarClimate "$Objeto$"
-temperature (LINE Objeto)
+termostato (LINE Objeto)
   VarClimate "$Objeto$"
 
 #END
 #PLUGIN: VarLight
-<adjust,change> light (LINE Objeto)
+<ajustar,cambiar> luz (LINE Objeto)
   VarLight "$Objeto$"
-light (LINE Objeto)
+luz (LINE Objeto)
   VarLight "$Objeto$"
 
 #END
 #PLUGIN: MusicOFF
-deactivate music (LINE Objeto)
-  MusicON "$Objeto$"
-music off (LINE Objeto)
-  MusicON "$Objeto$"
+desactivar música (LINE Objeto)
+  MusicOFF "$Objeto$"
+apagar música (LINE Objeto)
+  MusicOFF "$Objeto$"
+
 #END
 #PLUGIN: MusicON
-activate music (LINE Objeto)
+activar música (LINE Objeto)
   MusicON "$Objeto$"
-music on (LINE Objeto)
+encender música (LINE Objeto)
   MusicON "$Objeto$"
 
 #END
 #PLUGIN: VideoOFF
-deactivate video (LINE Objeto)
+desactivar video (LINE Objeto)
   VideoOFF "$Objeto$"
-video off (LINE Objeto)
+apagar video (LINE Objeto)
   VideoOFF "$Objeto$"
+
 #END
 #PLUGIN: VideoON
-activate video (LINE Objeto)
+activar video (LINE Objeto)
   VideoON "$Objeto$"
-video on (LINE Objeto)
+encender video (LINE Objeto)
   VideoON "$Objeto$"
-
 
 #END
 #PLUGIN: Sensors
-inform about (LINE Objeto)
+informar de (LINE Objeto)
+  Sensors "$Objeto$"
+estado de (LINE Objeto)
   Sensors "$Objeto$"
 #END
 #PLUGIN: ClimaOFF
-switch off climate (LINE Objeto)
+apagar clima (LINE Objeto)
   ClimaOFF "$Objeto$"
-climate off (LINE Objeto)
+desactivar clima (LINE Objeto)
   ClimaOFF "$Objeto$"
 #END
 #PLUGIN: ClimaON
-switch on climate (LINE Objeto)
+encender clima (LINE Objeto)
   ClimaON "$Objeto$"
-climate on (LINE Objeto)
+activar clima (LINE Objeto)
   ClimaON "$Objeto$"
 #END
 #PLUGIN: LucesOFF
-switch OFF light (LINE Objeto)
+apagar luz (LINE Objeto)
   LucesOFF "$Objeto$"
-switch OFF lights (LINE Objeto)
+apagar luces (LINE Objeto)
   LucesOFF "$Objeto$"
 
 #END
 #PLUGIN: LucesON
-switch ON Light (LINE Objeto)
+encender luz (LINE Objeto)
   LucesON "$Objeto$"
-switch ON Lights (LINE Objeto)
+encender luces (LINE Objeto)
   LucesON "$Objeto$"
 #END
 #PLUGIN: OpenDomo_stop
-Bye OpenDomo
+<A,a>diós OpenDomo
   OpenDomo_stop
 #END
 #PLUGIN: OpenDomo_start
-hello open Domo
+Hola OpenDomo
   OpenDomo_start
 #END
 <say,speak> (LINE words)

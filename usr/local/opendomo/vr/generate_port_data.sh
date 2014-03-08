@@ -177,8 +177,10 @@ do
 			#the name...
 			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/varlight.conf
 			#Generate AYUDA 		
-			echo -n "Ajustar termostato, valor en grados " >> /etc/opendomo/speech/AYUDA		
-			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA	
+			echo -n "Ajustar termostato " >> /etc/opendomo/speech/AYUDA		
+			stri=`cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g`
+			echo -n $stri >> /etc/opendomo/speech/AYUDA
+			echo " valor, grados " >> /etc/opendomo/speech/AYUDA
 		fi
 	fi
 done < tmp.txt
@@ -205,8 +207,10 @@ do
 			#the name...
 			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/varclimate.conf
 			#Generate AYUDA 		
-			echo -n "Ajustar luz, valor en porcentaje " >> /etc/opendomo/speech/AYUDA		
-			cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g >> /etc/opendomo/speech/AYUDA	
+			echo -n "Ajustar luz " >> /etc/opendomo/speech/AYUDA		
+			stri=`cat $line | grep zone | cut -d "=" -f2 - | sed s/"'"/""/g`
+			echo -n $stri >> /etc/opendomo/speech/AYUDA
+			echo " valor, porcentaje " >> /etc/opendomo/speech/AYUDA		
 		fi
 	fi
 done < tmp.txt
