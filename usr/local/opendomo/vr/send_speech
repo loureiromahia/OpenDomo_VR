@@ -18,7 +18,7 @@ if [ -z "$1" ];then
     exit 1
 fi
 
-wget -qO- --post-file "$1" --header 'Content-type: audio/x-flac; rate=16000' "$URL" > result.json
+wget -qO- --post-file "$1" --header 'Content-type: audio/x-flac; rate=8000' "$URL" > result.json
 
 RESULT="$(cat result.json | sed 's/^[^[]*\[{\"utterance\":\"\([^\"]*\)\".*/\1/')"
 

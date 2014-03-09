@@ -118,8 +118,8 @@ else
 			;; 
 			10)
 			#10 ==> Volver
-			/usr/local/opendomo/vr/espeak.sh Menu0
-			echo "menu0" > /usr/local/opendomo/vr/MENU
+			/usr/local/opendomo/vr/espeak.sh Menu1e
+			echo "menu1" > /usr/local/opendomo/vr/MENU
 			;;
 			11)
 			#11 ==> Salir del modo menú
@@ -134,6 +134,44 @@ else
 		esac
 		;;
 	menu12)
+		case "$1" in
+			1)
+			#Pasar a modo activo
+			#
+			/usr/local/opendomo/setSystemState.sh activ
+			/usr/local/opendomo/vr/espeak.sh Menucambestactiv
+			;; 
+			2)
+			#Pasar a modo vigilancia
+			#
+			/usr/local/opendomo/setSystemState.sh secured
+			/usr/local/opendomo/vr/espeak.sh Menucambestvig
+			;; 
+			3)
+			#Pasar a modo desactivado
+			#Volver luego al menu anterior
+			/usr/local/opendomo/setSystemState.sh sleeping
+			/usr/local/opendomo/vr/espeak.sh Menucambestdesac
+			;; 
+			10)
+			#10 ==> Volver
+			/usr/local/opendomo/vr/espeak.sh Menu1e
+			echo "menu1" > /usr/local/opendomo/vr/MENU
+			;;
+			11)
+			#11 ==> Salir del modo menú
+			/usr/local/opendomo/vr/espeak.sh Menusalir
+			echo "no" > /usr/local/opendomo/vr/MENU
+			;;   
+			else)
+			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado
+			/usr/local/opendomo/vr/espeak.sh Menunoval Menu12
+			;;   
+
+		esac
+		;;
+	menu111,menu112,menu113,menu114)
+		
 		case "$1" in
 			1)
 			#Pasar a modo activo
