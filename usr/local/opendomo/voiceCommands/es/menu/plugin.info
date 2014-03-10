@@ -1,8 +1,12 @@
 #Plugin.info automatically generated
 name = menu
-version = 1.3
+version = 1.5
 file = menu
 configs = settings.conf
 author = M.Loureiro  
 description = Navigates over web menu of OpenDomo
-actions =
+actions = Implemented:
+-Main Menu
+-Menu 1: Control Menu: 
+	- Change Status 
+	- Port Setting Menu's(improved):  Change ports : Light, Climate, Music, Video,Sensors, VarLights and VarClimate 

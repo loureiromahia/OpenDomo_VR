@@ -41,4 +41,5 @@ Menunoval: Opcion incorrecta
 MenuNo: Opcion incorrecta. No esta en modo menu. Para entrar en modo menu , diga menu.
 Menucambestactiv: Modo activo activado. Si quiere volver al menu anterior, diga Volver. Si quiere salir del modo menu, diga Salir 
 Menucambestvig: Modo vigilancia activado. Si quiere volver al menu anterior, diga Volver. Si quiere salir del modo menu, diga Salir 
-Menucambestdesac: Modo desactivo activado. Si quiere volver al menu anterior, diga Volver. Si quiere salir del modo menu, diga Salir 
+Menucambestdesac: Modo desactivo activado. Si quiere volver al menu anterior, diga Volver. Si quiere salir del modo menu, diga Salir
+MenuONOFF: Opcion incorrecta. Para la zona que desee, diga numero ON para encender o numero OFF para apagar 
