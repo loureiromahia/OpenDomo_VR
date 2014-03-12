@@ -1,5 +1,6 @@
 #!/bin/bash
 read ESPEAK < /etc/opendomo/speech/espeak.dat
+read menu < /usr/local/opendomo/vr/MENU
 if [ "$1" = "0" ]
 then
 	# This option, restarts MENU, to the first level	
@@ -25,12 +26,12 @@ then
 		/usr/local/opendomo/vr/espeak.sh Menu0
 		echo "menu0" > /usr/local/opendomo/vr/MENU
 		;;		
-	menu11,menu12)
+	menu11|menu12)
 		#20 ==> Volver
 		/usr/local/opendomo/vr/espeak.sh Menu1e
 		echo "menu1" > /usr/local/opendomo/vr/MENU
 		;;
-	menu111,menu112,menu113,menu114,menu115,menu116,menu117)
+	menu111|menu112|menu113|menu114|menu115|menu116|menu117)
 		# This option, restarts MENU, to the previous level	
 		/usr/local/opendomo/vr/espeak.sh Menu11e
 		echo "menu11" > /usr/local/opendomo/vr/MENU
@@ -39,7 +40,7 @@ then
 
 
 else
-	read menu < /usr/local/opendomo/vr/MENU
+	
 	#Clean posible "opción" prefix
 	par1=`echo $1 |cut -d " " -f1 -`
 	if [ "$par1" = "opción" ]
@@ -183,7 +184,7 @@ else
 		if [ "$par1" = "activar" ]
 		then
 			/usr/local/opendomo/vr/Recognition/bin/LucesON $zona
-		elif [ "$par2" = "desactivar" ]
+		elif [ "$par1" = "desactivar" ]
 		then
 			/usr/local/opendomo/vr/Recognition/bin/LucesOFF $zona
 		else
@@ -247,20 +248,20 @@ else
 		/usr/local/opendomo/vr/Recognition/bin/Sensors $zona
 		;;
 	menu116)
-		#Here, use original string($1)...No "opcion" as prefix in this case prefix is "valor"
+		#Here, use original string($1)...No "opcion" as prefix in this case
 		#Fields "value" nrzone value(ºC)  
-		par1=`echo $1 |cut -d " " -f2 -`
-		par2=`echo $1 |cut -d " " -f3 -`	 
+		par1=`echo $1 |cut -d " " -f1 -`
+		par2=`echo $1 |cut -d " " -f2 -`	 
 		zona=`grep $par1 /etc/opendomo/speech/varclimatemenu.txt |  cut -d " " -f1 -`
 		#VarClimate has 1 parameter with both parameters, separated by one space
 		line=$zona" "$par2
 		/usr/local/opendomo/vr/Recognition/bin/VarClimate $line
 		;;
 	menu117)
-		#Here, use original string($1)...No "opcion" as prefix in this case prefix is "valor"
+		#Here, use original string($1)...No "opcion" as prefix in this case
 		#Fields "value" nrzone value(%)  
-		par1=`echo $1 |cut -d " " -f2 -`
-		par2=`echo $1 |cut -d " " -f3 -`	 
+		par1=`echo $1 |cut -d " " -f1 -`
+		par2=`echo $1 |cut -d " " -f2 -`	 
 		zona=`grep $par1 /etc/opendomo/speech/varlightmenu.txt |  cut -d " " -f1 -`
 		#VarClimate has 1 parameter with both parameters, separated by one space
 		line=$zona" "$par2
