@@ -5,19 +5,55 @@ then
 	# This option, restarts MENU, to the first level	
 	/usr/local/opendomo/vr/espeak.sh Menu0
 	echo "menu0" > /usr/local/opendomo/vr/MENU
-elif [ "$1" = "11" ]
+elif [ "$1" = "21" ]
 then
-	#11 ==> Salir del modo menú
+	#21 ==> Salir del modo menú
 	/usr/local/opendomo/vr/espeak.sh Menusalir
 	echo "no" > /usr/local/opendomo/vr/MENU
+elif [ "$1" = "20" ]
+then
+	#20 ==> Volver al menu anterior.
+	# Por reagrupación de codige mejor tratarlo junto
+	case "$menu" in
+	menu0)
+		#20 ==> Volver. En este caso, como estamos en el Menu principal (Menu0) repetimos el mismo Menu0
+		/usr/local/opendomo/vr/espeak.sh Menu0
+		echo "menu0" > /usr/local/opendomo/vr/MENU
+		;;
+	menu1)	
+		#20 ==> Volver
+		/usr/local/opendomo/vr/espeak.sh Menu0
+		echo "menu0" > /usr/local/opendomo/vr/MENU
+		;;		
+	menu11,menu12)
+		#20 ==> Volver
+		/usr/local/opendomo/vr/espeak.sh Menu1e
+		echo "menu1" > /usr/local/opendomo/vr/MENU
+		;;
+	menu111,menu112,menu113,menu114,menu115,menu116,menu117)
+		# This option, restarts MENU, to the previous level	
+		/usr/local/opendomo/vr/espeak.sh Menu11e
+		echo "menu11" > /usr/local/opendomo/vr/MENU
+		;;
+	esac
+
+
 else
 	read menu < /usr/local/opendomo/vr/MENU
+	#Clean posible "opción" prefix
+	par1=`echo $1 |cut -d " " -f1 -`
+	if [ "$par1" = "opción" ]
+	then
+		p1=`echo $1 |cut -d " " -f2 -`
+	else
+		p1=`echo $1 |cut -d " " -f1 -`
+	fi
 	case "$menu" in
 	no)
 		/usr/local/opendomo/vr/espeak.sh MenuNo
 		;;	
 	menu0)
-		case "$1" in
+		case "$p1" in
 			1)
 			/usr/local/opendomo/vr/espeak.sh Menu1e
 			echo "menu1" > /usr/local/opendomo/vr/MENU 
@@ -30,11 +66,6 @@ else
 			/usr/local/opendomo/vr/espeak.sh Menu3e
 			echo "menu3" > /usr/local/opendomo/vr/MENU
 			;;
-			10)
-			#10 ==> Volver. En este caso, como estamos en el Menu principal (Menu0) repetimos el mismo Menu0
-			/usr/local/opendomo/vr/espeak.sh Menu0
-			echo "menu0" > /usr/local/opendomo/vr/MENU
-			;;
 			else)
 			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado
 			/usr/local/opendomo/vr/espeak.sh Menunoval Menu0
@@ -42,7 +73,7 @@ else
 		esac
 		;;
 	menu1)
-		case "$1" in
+		case "$p1" in
 			1)
 			#Listar controladores
 			# Agrupar controladores por tipo, de acuerdo a lo que hay en AYUDA
@@ -55,11 +86,7 @@ else
 			/usr/local/opendomo/vr/espeak.sh Menu12e
 			echo "menu12" > /usr/local/opendomo/vr/MENU
 			;; 
-			10)
-			#10 ==> Volver
-			/usr/local/opendomo/vr/espeak.sh Menu0
-			echo "menu0" > /usr/local/opendomo/vr/MENU
-			;;
+
 			else)
 			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado
 			/usr/local/opendomo/vr/espeak.sh Menunoval Menu1e
@@ -68,7 +95,7 @@ else
 		esac
 		;;
 	menu11)
-		case "$1" in
+		case "$p1" in
 			1)
 			#Luces
 			# 
@@ -111,11 +138,7 @@ else
 			$ESPEAK < /etc/opendomo/speech/varlightmenu.txt
 			echo "menu117" > /usr/local/opendomo/vr/MENU
 			;; 
-			10)
-			#10 ==> Volver
-			/usr/local/opendomo/vr/espeak.sh Menu1e
-			echo "menu1" > /usr/local/opendomo/vr/MENU
-			;;
+
 			else)
 			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado
 			/usr/local/opendomo/vr/espeak.sh Menunoval Menu11e
@@ -124,7 +147,7 @@ else
 		esac
 		;;
 	menu12)
-		case "$1" in
+		case "$p1" in
 			1)
 			#Pasar a modo activo
 			#
@@ -143,11 +166,7 @@ else
 			/usr/local/opendomo/setSystemState.sh sleeping
 			/usr/local/opendomo/vr/espeak.sh Menucambestdesac
 			;; 
-			10)
-			#10 ==> Volver
-			/usr/local/opendomo/vr/espeak.sh Menu1e
-			echo "menu1" > /usr/local/opendomo/vr/MENU
-			;;
+		
 			else)
 			#Opción no válida. Repetir opciones de menu, y quedarse en el mismo estado
 			/usr/local/opendomo/vr/espeak.sh Menunoval Menu12
@@ -156,139 +175,96 @@ else
 		esac
 		;;
 	menu111)
-		if [ "$1" = "10" ]
+		#Here, use original string($1).No "opcion" prefix in this case prefix is "activar/desactivar"
+		#Fields <activar/desactivar> nrzone  
+		par1=`echo $1 |cut -d " " -f1 -`
+		par2=`echo $1 |cut -d " " -f2 -`	 
+		zona=`grep $par2 /etc/opendomo/speech/lightmenu.txt |  cut -d " " -f1 -`
+		if [ "$par1" = "activar" ]
 		then
-			# This option, restarts MENU, to the first level	
-			/usr/local/opendomo/vr/espeak.sh Menu11e
-			echo "menu11" > /usr/local/opendomo/vr/MENU
+			/usr/local/opendomo/vr/Recognition/bin/LucesON $zona
+		elif [ "$par2" = "desactivar" ]
+		then
+			/usr/local/opendomo/vr/Recognition/bin/LucesOFF $zona
 		else
-			#Fields <activar/desactivar> nrzone  
-			par1=`echo $1 |cut -d " " -f1 -`
-			par2=`echo $1 |cut -d " " -f2 -`	 
-			zona=`grep $par2 /etc/opendomo/speech/lightmenu.txt |  cut -d " " -f1 -`
-			if [ "$par1" = "activar" ]
-			then
-				/usr/local/opendomo/vr/Recognition/bin/LucesON $zona
-			elif [ "$par2" = "desactivar" ]
-			then
-				/usr/local/opendomo/vr/Recognition/bin/LucesOFF $zona
-			else
-				/usr/local/opendomo/vr/espeak.sh MenuONOFF
-			fi		
-		
-		fi
+			/usr/local/opendomo/vr/espeak.sh MenuONOFF
+		fi		
 		;;
 	menu112)
-		if [ "$1" = "10" ]
+		#Here, use original string($1).No "opcion" prefix in this case prefix is "activar/desactivar"
+		#Fields <activar/desactivar> nrzone  
+		par1=`echo $1 |cut -d " " -f1 -`
+		par2=`echo $1 |cut -d " " -f2 -`	 
+		zona=`grep $par2 /etc/opendomo/speech/climamenu.txt |  cut -d " " -f1 -`
+		if [ "$par1" = "activar" ]
 		then
-			# This option, restarts MENU, to the first level	
-			/usr/local/opendomo/vr/espeak.sh Menu11e
-			echo "menu11" > /usr/local/opendomo/vr/MENU
+			/usr/local/opendomo/vr/Recognition/bin/ClimaON $zona
+		elif [ "$par1" = "deactivar" ]
+		then
+			/usr/local/opendomo/vr/Recognition/bin/ClimaOFF $zona
 		else
-			#Fields <activar/desactivar> nrzone  
-			par1=`echo $1 |cut -d " " -f1 -`
-			par2=`echo $1 |cut -d " " -f2 -`	 
-			zona=`grep $par2 /etc/opendomo/speech/climamenu.txt |  cut -d " " -f1 -`
-			if [ "$par1" = "activar" ]
-			then
-				/usr/local/opendomo/vr/Recognition/bin/ClimaON $zona
-			elif [ "$par1" = "deactivar" ]
-			then
-				/usr/local/opendomo/vr/Recognition/bin/ClimaOFF $zona
-			else
-				/usr/local/opendomo/vr/espeak.sh MenuONOFF
-			fi
+			/usr/local/opendomo/vr/espeak.sh MenuONOFF
 		fi		
 		;;
 	menu113)
-		if [ "$1" = "10" ]
+		#Here, use original string($1).No "opcion" prefix in this case prefix is "activar/desactivar"
+		#Fields <activar/desactivar> nrzone  
+		par1=`echo $1 |cut -d " " -f1 -`
+		par2=`echo $1 |cut -d " " -f2 -`	 
+		zona=`grep $par2 /etc/opendomo/speech/musicmenu.txt |  cut -d " " -f1 -`		
+
+		if [ "$par1" = "activar" ]
 		then
-			# This option, restarts MENU, to the first level	
-			/usr/local/opendomo/vr/espeak.sh Menu11e
-			echo "menu11" > /usr/local/opendomo/vr/MENU
-		else		
-			#Fields <activar/desactivar> nrzone  
-			par1=`echo $1 |cut -d " " -f1 -`
-			par2=`echo $1 |cut -d " " -f2 -`	 
-			zona=`grep $par2 /etc/opendomo/speech/musicmenu.txt |  cut -d " " -f1 -`		
-		
-			if [ "$par1" = "activar" ]
-			then
-				/usr/local/opendomo/vr/Recognition/bin/MusicON $zona
-			elif [ "$par1" = "desactivar" ]
-			then
-				/usr/local/opendomo/vr/Recognition/bin/MusicOFF $zona
-			else
-				/usr/local/opendomo/vr/espeak.sh MenuONOFF
-			fi	
-		fi	
+			/usr/local/opendomo/vr/Recognition/bin/MusicON $zona
+		elif [ "$par1" = "desactivar" ]
+		then
+			/usr/local/opendomo/vr/Recognition/bin/MusicOFF $zona
+		else
+			/usr/local/opendomo/vr/espeak.sh MenuONOFF
+		fi		
 		;;
 	menu114)
-				if [ "$1" = "10" ]
+		#Here, use original string($1).No "opcion" prefix in this case prefix is "activar/desactivar"		
+		#Fields <activar/desactivar> nrzone   
+		par1=`echo $1 |cut -d " " -f1 -`
+		par2=`echo $1 |cut -d " " -f2 -`	 
+		zona=`grep $par2 /etc/opendomo/speech/videomenu.txt |  cut -d " " -f1 -`		 
+	
+		if [ "$par1" = "activar" ]
 		then
-			# This option, restarts MENU, to the first level	
-			/usr/local/opendomo/vr/espeak.sh Menu11e
-			echo "menu11" > /usr/local/opendomo/vr/MENU
+			/usr/local/opendomo/vr/Recognition/bin/VideoON $zona
+		elif [ "$par1" = "desactivar" ]
+		then
+			/usr/local/opendomo/vr/Recognition/bin/VideoOFF $zona
 		else
-			#Fields <activar/desactivar> nrzone   
-			par1=`echo $1 |cut -d " " -f1 -`
-			par2=`echo $1 |cut -d " " -f2 -`	 
-			zona=`grep $par2 /etc/opendomo/speech/videomenu.txt |  cut -d " " -f1 -`		 
-		
-			if [ "$par1" = "activar" ]
-			then
-				/usr/local/opendomo/vr/Recognition/bin/VideoON $zona
-			elif [ "$par1" = "desactivar" ]
-			then
-				/usr/local/opendomo/vr/Recognition/bin/VideoOFF $zona
-			else
-				/usr/local/opendomo/vr/espeak.sh MenuONOFF
-			fi
+			/usr/local/opendomo/vr/espeak.sh MenuONOFF
 		fi		
 		;;
 	menu115)
-		if [ "$1" = "10" ]
-		then
-			# This option, restarts MENU, to the first level	
-			/usr/local/opendomo/vr/espeak.sh Menu11e
-			echo "menu11" > /usr/local/opendomo/vr/MENU
-		else
-			#Field nrsensor
-			 zona=`grep $1 /etc/opendomo/speech/sensorsmenu.txt |  cut -d " " -f1 -`
-			/usr/local/opendomo/vr/Recognition/bin/Sensors $zona
-		fi
+		#Here, "opción" is applicable..., use $p1,filtered
+		#Field nrsensor
+		 zona=`grep $p1 /etc/opendomo/speech/sensorsmenu.txt |  cut -d " " -f1 -`
+		/usr/local/opendomo/vr/Recognition/bin/Sensors $zona
 		;;
 	menu116)
-		if [ "$1" = "10" ]
-		then
-			# This option, restarts MENU, to the first level	
-			/usr/local/opendomo/vr/espeak.sh Menu11e
-			echo "menu11" > /usr/local/opendomo/vr/MENU
-		else
-			#Fields "value" nrzone value(ºC)  
-			par1=`echo $1 |cut -d " " -f2 -`
-			par2=`echo $1 |cut -d " " -f3 -`	 
-			zona=`grep $par1 /etc/opendomo/speech/varclimatemenu.txt |  cut -d " " -f1 -`
-			#VarClimate has 1 parameter with both parameters, separated by one space
-			line=$zona" "$par2
-			/usr/local/opendomo/vr/Recognition/bin/VarClimate $line
-		fi
+		#Here, use original string($1)...No "opcion" as prefix in this case prefix is "valor"
+		#Fields "value" nrzone value(ºC)  
+		par1=`echo $1 |cut -d " " -f2 -`
+		par2=`echo $1 |cut -d " " -f3 -`	 
+		zona=`grep $par1 /etc/opendomo/speech/varclimatemenu.txt |  cut -d " " -f1 -`
+		#VarClimate has 1 parameter with both parameters, separated by one space
+		line=$zona" "$par2
+		/usr/local/opendomo/vr/Recognition/bin/VarClimate $line
 		;;
 	menu117)
-		if [ "$1" = "10" ]
-		then
-			# This option, restarts MENU, to the first level	
-			/usr/local/opendomo/vr/espeak.sh Menu11e
-			echo "menu11" > /usr/local/opendomo/vr/MENU
-		else
-			#Fields "value" nrzone value(%)  
-			par1=`echo $1 |cut -d " " -f2 -`
-			par2=`echo $1 |cut -d " " -f3 -`	 
-			zona=`grep $par1 /etc/opendomo/speech/varlightmenu.txt |  cut -d " " -f1 -`
-			#VarClimate has 1 parameter with both parameters, separated by one space
-			line=$zona" "$par2
-			/usr/local/opendomo/vr/Recognition/bin/VarLight $line
-		fi
+		#Here, use original string($1)...No "opcion" as prefix in this case prefix is "valor"
+		#Fields "value" nrzone value(%)  
+		par1=`echo $1 |cut -d " " -f2 -`
+		par2=`echo $1 |cut -d " " -f3 -`	 
+		zona=`grep $par1 /etc/opendomo/speech/varlightmenu.txt |  cut -d " " -f1 -`
+		#VarClimate has 1 parameter with both parameters, separated by one space
+		line=$zona" "$par2
+		/usr/local/opendomo/vr/Recognition/bin/VarLight $line
 		;;	 		 			 			 			 			 		 	
 	esac
 fi
