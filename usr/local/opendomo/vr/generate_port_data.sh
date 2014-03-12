@@ -7,7 +7,34 @@ if  [ -f /etc/opendomo/speech/AYUDA ]
 then	
 	rm /etc/opendomo/speech/AYUDA
 fi
+
 touch /etc/opendomo/speech/AYUDA
+
+#generate CONFIG file, containing the options of config menu
+if  [ -f /etc/opendomo/speech/CONFIG ]
+then	
+	rm /etc/opendomo/speech/CONFIG
+fi
+touch /etc/opendomo/speech/CONFIG
+cd /usr/local/opendomo/services/config/
+grep '#desc' * | grep -n "#desc" | sed 's/#desc://' >> /etc/opendomo/speech/CONFIG
+cd /usr/local/opendomo/vr
+#generate configmenu.txt file, containing the voice stream, with the options
+if  [ -f /etc/opendomo/speech/configmenu.txt ]
+then	
+	rm /etc/opendomo/speech/configmenu.txt
+fi
+touch /etc/opendomo/speech/configmenu.txt
+echo "Menu configuracion " >> configmenu.txt
+while read line
+do	
+	echo -n " Para " >> /etc/opendomo/speech/configmenu.txt	
+	stri=`echo $line | cut -d ":" -f3 -`
+	echo -n $stri >>  /etc/opendomo/speech/configmenu.txt
+	echo -n " , diga " >> /etc/opendomo/speech/configmenu.txt
+	echo $line | cut -d ":" -f1 - >> /etc/opendomo/speech/configmenu.txt
+done < /etc/opendomo/speech/CONFIG
+
 # Lights:
 grep -ir "light" /etc/opendomo/control/* | cut -d ":" -f1 - > tmp.txt
 if  [ -f /etc/opendomo/speech/light.conf ]

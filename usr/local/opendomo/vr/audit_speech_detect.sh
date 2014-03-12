@@ -5,8 +5,6 @@ while [ $vrlife = true ]
 do
 	#audit every 60 sec
 	sleep 60
-	pr=`ps -eaf | grep -c "recognize"`
-	echo "Recognize" $pr	
 	
 	if [ `ps -eaf | grep -c "recording.flac"` -lt 2 ] && [ `ps -eaf | grep -c "autodetect"` -ge 2 ] 
 	then

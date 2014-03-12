@@ -1,6 +1,6 @@
 #Plugin.info automatically generated
 name = menu
-version = 1.5
+version = 1.6
 file = menu
 configs = settings.conf
 author = M.Loureiro  
@@ -10,3 +10,4 @@ actions = Implemented:
 -Menu 1: Control Menu: 
 	- Change Status 
 	- Port Setting Menu's(improved):  Change ports : Light, Climate, Music, Video,Sensors, VarLights and VarClimate 
+	- First draft of Config Menu

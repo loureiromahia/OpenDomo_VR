@@ -21,7 +21,7 @@ then
 		/usr/local/opendomo/vr/espeak.sh Menu0
 		echo "menu0" > /usr/local/opendomo/vr/MENU
 		;;
-	menu1)	
+	menu1|menu2|menu3)	
 		#20 ==> Volver
 		/usr/local/opendomo/vr/espeak.sh Menu0
 		echo "menu0" > /usr/local/opendomo/vr/MENU
@@ -30,6 +30,11 @@ then
 		#20 ==> Volver
 		/usr/local/opendomo/vr/espeak.sh Menu1e
 		echo "menu1" > /usr/local/opendomo/vr/MENU
+		;;
+	menu3x)
+		#20 ==> Volver
+		$ESPEAK < /etc/opendomo/speech/configmenu.txt
+		echo "menu3" > /usr/local/opendomo/vr/MENU
 		;;
 	menu111|menu112|menu113|menu114|menu115|menu116|menu117)
 		# This option, restarts MENU, to the previous level	
@@ -64,7 +69,7 @@ else
 			echo "menu2" > /usr/local/opendomo/vr/MENU
 			;; 
 			3)
-			/usr/local/opendomo/vr/espeak.sh Menu3e
+			$ESPEAK < /etc/opendomo/speech/configmenu.txt
 			echo "menu3" > /usr/local/opendomo/vr/MENU
 			;;
 			else)
@@ -94,6 +99,12 @@ else
 			;;   
 
 		esac
+		;;
+	menu3)
+		#get the script to be run:
+		line=`grep $p1 /etc/opendomo/speech/CONFIG`
+		script=`echo -n $line | cut -d":" -f2-`
+		echo "menu3x" > /usr/local/opendomo/vr/MENU
 		;;
 	menu11)
 		case "$p1" in
