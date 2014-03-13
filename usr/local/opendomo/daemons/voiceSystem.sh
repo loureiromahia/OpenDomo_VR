@@ -6,7 +6,7 @@
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: This script will manage the autostart of Opendomo Voice Recognition
+# Short-Description: Autostart of Opendomo Voice Recognition
 # Description:       This file should be used to construct scripts to be
 #                    placed in /etc/init.d.
 # 		     Automate start up by: update-rc.d opendomoVRd 99 
