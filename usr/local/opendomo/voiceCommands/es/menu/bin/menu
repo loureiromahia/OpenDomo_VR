@@ -105,6 +105,29 @@ else
 		line=`grep $p1 /etc/opendomo/speech/CONFIG`
 		script=`echo -n $line | cut -d":" -f2-`
 		echo "menu3x" > /usr/local/opendomo/vr/MENU
+		case "$script" in
+			about.sh)
+				/usr/local/opendomo/services/config/about.sh > tmp.txt
+				echo "Informacion de instalacion OpenDomo" > about.txt
+				version=`grep INF tmp.txt |  cut -d ":" -f2 -`
+				echo "version  de OpenDomo " $version >> about.txt
+				kernel=`grep kernel tmp.txt | awk '{ print $5}'`
+				echo -n "Version del kernel " >> about.txt
+				echo $kernel >> about.txt
+				echo " Paquetes instalados " >> about.txt
+				for plugin in `grep version tmp.txt | cut -f1 -d.`
+				do
+        				echo $plugin >> about.txt
+				done
+				$ESPEAK < about.txt
+				rm about.txt
+				rm tmp.txt
+				;;			
+			reboot.sh)
+				$ESPEAK " Rearrancando el sistema "
+				/usr/local/opendomo/services/config/reboot.sh > reboot.txt
+				;;
+		esac
 		;;
 	menu11)
 		case "$p1" in
