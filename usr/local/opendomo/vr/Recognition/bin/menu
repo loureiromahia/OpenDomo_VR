@@ -102,9 +102,9 @@ else
 		;;
 	menu3)
 		#get the script to be run:
-		line=`grep $p1 /etc/opendomo/speech/CONFIG`
-		script=`echo -n $line | cut -d":" -f2-`
-		echo "menu3x" > /usr/local/opendomo/vr/MENU
+		line=`grep -m 1 $p1 /etc/opendomo/speech/CONFIG`
+		script=`echo -n $line | cut -d":" -f2 `
+		
 		case "$script" in
 			about.sh)
 				/usr/local/opendomo/services/config/about.sh > tmp.txt
@@ -128,6 +128,7 @@ else
 				/usr/local/opendomo/services/config/reboot.sh > reboot.txt
 				;;
 			manageConfiguration.sh)
+				echo "menu3x" > /usr/local/opendomo/vr/MENU
 				/usr/local/opendomo/vr/espeak.sh Menuconfigsave
 				;;
 		esac
@@ -217,7 +218,7 @@ else
 		par2=`echo $1 |cut -d " " -f2 -`
 		case "$par1" in
 			salvar)
-			case "par2" in
+			case "$par2" in
 				1)
 				$ESPEAK " Salvando configuracion actual con plugins"
 				echo "on" > /var/opendomo/tmp/savestatus
