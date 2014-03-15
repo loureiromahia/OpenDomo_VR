@@ -43,3 +43,4 @@ Menucambestactiv: Modo activo activado. Si quiere volver al menu anterior, diga 
 Menucambestvig: Modo vigilancia activado. Si quiere volver al menu anterior, diga Volver. Si quiere salir del modo menu, diga Salir 
 Menucambestdesac: Modo desactivo activado. Si quiere volver al menu anterior, diga Volver. Si quiere salir del modo menu, diga Salir
 MenuONOFF: Opcion incorrecta. Para la zona que desee, diga activar numero, para encender o desactivar numero, para apagar. Para volver al menu anterior, diga Volver. Para salir del modo menu, diga Salir  
+Menuconfigsave: Salvar configuracion del sistema. Para salvar configuracion actual con plugins, diga 1. Para salvar configuracion actual sin plugins, diga 2. Para salvar configuracion de defecto con plugins , diga 3. Para salvar configuracion de defecto sin plugins, diga 4. Si quiere volver al menu anterior, diga Volver. Si quiere salir del modo menu, diga Salir

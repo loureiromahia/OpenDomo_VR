@@ -6,6 +6,8 @@ menú
   menu "$SPEECH$"
 valor (LINE Objeto)
   menu "$Objeto$"
+salvar <1,2,3,4>
+  menu "$SPEECH"
 volver
   menu 20
 salir
