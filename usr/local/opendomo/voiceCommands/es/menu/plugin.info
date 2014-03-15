@@ -12,3 +12,5 @@ actions = Implemented:
 	- Port Setting Menu's(improved):  Change ports : Light, Climate, Music, Video,Sensors, VarLights and VarClimate 
 	- First draft of Config Menu
 	- Implemented about.sh and reboot.sh
+	- Implemented manageConfiguration.sh
+
