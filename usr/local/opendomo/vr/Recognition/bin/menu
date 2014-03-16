@@ -131,6 +131,25 @@ else
 				echo "menu3x" > /usr/local/opendomo/vr/MENU
 				/usr/local/opendomo/vr/espeak.sh Menuconfigsave
 				;;
+			configureVoiceSystem.sh)
+				echo "menu3x" > /usr/local/opendomo/vr/MENU
+				read IDIOMA < /etc/opendomo/lang
+				cd /usr/local/opendomo/vr/characters/$IDIOMA
+				echo "Configuracion de reconocimiento de voz " > tmp.txt
+				echo "Seleccione a continuacion el personaje que desea" >> tmp.txt
+						
+				for voz in `ls -dx | cut -f1 -d. |uniq `  
+				do	
+					echo -n " Para configurar voz de " >> tmp.txt
+					echo -n $voz >> tmp.txt
+					echo -n " ,diga voz " >> tmp.txt
+					echo $voz >> tmp.txt
+				done
+				$ESPEAK < tmp.txt
+				rm tmp.txt
+				;;
+			else)
+				;;
 		esac
 		;;
 	menu11)
@@ -218,33 +237,58 @@ else
 		par2=`echo $1 |cut -d " " -f2 -`
 		case "$par1" in
 			salvar)
-			case "$par2" in
-				1)
-				$ESPEAK " Salvando configuracion actual con plugins"
-				echo "on" > /var/opendomo/tmp/savestatus
-				/usr/local/opendomo/saveSystemConfiguration.sh
+				case "$par2" in
+					1)
+					$ESPEAK " Salvando configuracion actual con plugins"
+					echo "on" > /var/opendomo/tmp/savestatus
+					/usr/local/opendomo/saveSystemConfiguration.sh
+					;;
+					2)
+					$ESPEAK " Salvando configuracion actual sin plugins"
+					echo "off" > /var/opendomo/tmp/savestatus
+					/usr/local/opendomo/saveSystemConfiguration.sh
+					;;	
+					3)
+					$ESPEAK " Salvando configuracion de defecto con plugins"
+					echo "on" > /var/opendomo/tmp/savestatus
+					/usr/local/opendomo/loadDefaultConfiguration.sh
+					;;	
+					4)
+					$ESPEAK " Salvando configuracion de defecto sin plugins"
+					echo "off" > /var/opendomo/tmp/savestatus
+					/usr/local/opendomo/loadDefaultConfiguration.sh
+					;;	
+					else)
+					;;
+						
+				esac
 				;;
-				2)
-				$ESPEAK " Salvando configuracion actual sin plugins"
-				echo "off" > /var/opendomo/tmp/savestatus
-				/usr/local/opendomo/saveSystemConfiguration.sh
-				;;	
-				3)
-				$ESPEAK " Salvando configuracion de defecto con plugins"
-				echo "on" > /var/opendomo/tmp/savestatus
-				/usr/local/opendomo/loadDefaultConfiguration.sh
-				;;	
-				4)
-				$ESPEAK " Salvando configuracion de defecto sin plugins"
-				echo "off" > /var/opendomo/tmp/savestatus
-				/usr/local/opendomo/loadDefaultConfiguration.sh
-				;;	
-				else)
-				;;		
-			esac
-			;;
+			voz)
+				par2=${par2,,}				
+				read IDIOMA < /etc/opendomo/lang
+				cd /usr/local/opendomo/vr/characters/$IDIOMA				
+				if [ `ls | grep -c $par2` -eq 1 ]
+				then				
+					/usr/local/opendomo/services/config/configureVoiceSystem.sh $par2
+					$ESPEAK "Cambiada la voz del personaje a " $par2
+				else
+
+					echo "No existe el personaje " $par2 > tmp.txt
+					echo "Seleccione a continuacion el personaje que desea" >> tmp.txt
+						
+					for voz in `ls | cut -f1 -d. |uniq `   
+					do	
+						echo -n " Para configurar voz de " >> tmp.txt
+						echo -n $voz >> tmp.txt
+						echo -n " ,diga voz " >> tmp.txt
+						echo $voz >> tmp.txt
+					done
+					$ESPEAK < tmp.txt
+					rm tmp.txt
+				fi		
+				;;
 			else)
-			;;
+				;;
 		esac	
 		;;
 	menu111)

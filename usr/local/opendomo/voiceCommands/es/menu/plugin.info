@@ -1,6 +1,6 @@
-#Plugin.info automatically generated
+<#Plugin.info automatically generated
 name = menu
-version = 1.7
+version = 1.8
 file = menu
 configs = settings.conf
 author = M.Loureiro  
@@ -13,4 +13,5 @@ actions = Implemented:
 	- First draft of Config Menu
 	- Implemented about.sh and reboot.sh
 	- Implemented manageConfiguration.sh
+	- Implemented configureVoiceSystem.sh
 
