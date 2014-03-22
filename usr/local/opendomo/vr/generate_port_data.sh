@@ -25,7 +25,7 @@ then
 	rm /etc/opendomo/speech/configmenu.txt
 fi
 touch /etc/opendomo/speech/configmenu.txt
-echo "Menu configuracion " >> configmenu.txt
+echo "Menu configuracion " > /etc/opendomo/speech/configmenu.txt
 while read line
 do	
 	echo -n " Para " >> /etc/opendomo/speech/configmenu.txt	

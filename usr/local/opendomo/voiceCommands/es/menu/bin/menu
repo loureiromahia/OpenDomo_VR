@@ -43,6 +43,56 @@ then
 		;;
 	esac
 
+elif [ "$1" = "22" ]
+then
+	#22 ==> Donde estoy?.
+	/usr/local/opendomo/vr/espeak.sh MenuDonde
+	# Por reagrupación de codige mejor tratarlo junto
+	case "$menu" in
+	menu0)
+		/usr/local/opendomo/vr/espeak.sh Menu0
+		;;
+	menu1)	
+		/usr/local/opendomo/vr/espeak.sh Menu1e
+		;;
+	menu11)	
+		/usr/local/opendomo/vr/espeak.sh Menu11e
+		;;
+	menu12)	
+		/usr/local/opendomo/vr/espeak.sh Menu12e
+		;;				
+	menu3)
+		$ESPEAK < /etc/opendomo/speech/configmenu.txt
+		;;
+	menu111)
+		$ESPEAK < /etc/opendomo/speech/lightmenu.txt		
+		;;
+
+	menu112)
+		$ESPEAK < /etc/opendomo/speech/climamenu.txt		
+		;;
+	menu113)
+		$ESPEAK < /etc/opendomo/speech/musicmenu.txt		
+		;;
+	menu114)
+		$ESPEAK < /etc/opendomo/speech/videomenu.txt		
+		;;
+	menu115)
+		$ESPEAK < /etc/opendomo/speech/sensorsmenu.txt		
+		;;
+	menu116)
+		$ESPEAK < /etc/opendomo/speech/varclimatemenu.txt		
+		;;
+
+	menu117)
+		$ESPEAK < /etc/opendomo/speech/varlightmenu.txt		
+		;;
+	menu2)
+		##To be filled in	
+		;;
+	
+	esac
+
 
 else
 	

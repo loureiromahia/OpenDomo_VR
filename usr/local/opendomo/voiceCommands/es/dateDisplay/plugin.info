@@ -3,6 +3,6 @@ name = dateDisplay
 version = 1.0
 file = dateDisplay
 configs = settings.conf
-author = Manuel Angel Loureiro
+author =  
 description = 
 actions =
