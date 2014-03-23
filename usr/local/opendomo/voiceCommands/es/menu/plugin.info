@@ -1,6 +1,6 @@
 <#Plugin.info automatically generated
 name = menu
-version = 1.9
+version = 2.0
 file = menu
 configs = settings.conf
 author = M.Loureiro  
@@ -15,4 +15,5 @@ actions = Implemented:
 	- Implemented manageConfiguration.sh
 	- Implemented configureVoiceSystem.sh
         - Implemented "where i am /donde estoy" functionality
+        . Implemented configLocalNetwork.sh
 

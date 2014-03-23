@@ -16,6 +16,21 @@ salir
   menu 21
 dónde estoy
   menu 22
+red modo <estático,DHCP>
+  menu redmode "$SPEECH$"
+red IP (LINE Objeto)
+  menu redIP "$Objeto$"
+red puerta (LINE Objeto)
+  menu redGW "$Objeto$"
+red máscara (LINE Objeto)
+  menu redmask "$Objeto$"
+red DNS (LINE Objeto)
+  menu redDNS "$Objeto$"
+red salvar
+  menu redsave "$Objeto$"
+
+
+
 
 
 

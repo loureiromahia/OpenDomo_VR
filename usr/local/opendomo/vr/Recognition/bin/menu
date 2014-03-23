@@ -49,6 +49,16 @@ then
 	/usr/local/opendomo/vr/espeak.sh MenuDonde
 	# Por reagrupación de codige mejor tratarlo junto
 	case "$menu" in
+	no)
+		read mode < /usr/local/opendomo/vr/MODE
+		if [ "$mode" = "main" ]
+		then
+			/usr/local/opendomo/vr/espeak.sh DondeestoyNormal
+		else
+			
+			/usr/local/opendomo/vr/espeak.sh DondeestoyIdentificacion
+		fi
+		;;	
 	menu0)
 		/usr/local/opendomo/vr/espeak.sh Menu0
 		;;
@@ -90,7 +100,13 @@ then
 	menu2)
 		##To be filled in	
 		;;
-	
+	menu3xx)
+		$ESPEAK < /etc/opendomo/speech/configmenu.txt	
+		;;
+	menu3xnet)
+		$ESPEAK < /etc/opendomo/speech/netmenu.txt
+		/usr/local/opendomo/vr/espeak.sh MenuNetConfig	
+		;;
 	esac
 
 
@@ -197,6 +213,11 @@ else
 				done
 				$ESPEAK < tmp.txt
 				rm tmp.txt
+				;;
+			configLocalNetwork.sh)
+				echo "menu3xnet" > /usr/local/opendomo/vr/MENU
+				$ESPEAK < /etc/opendomo/speech/netmenu.txt
+				/usr/local/opendomo/vr/espeak.sh MenuNetConfig
 				;;
 			else)
 				;;
@@ -340,6 +361,70 @@ else
 			else)
 				;;
 		esac	
+		;;
+	menu3xnet)
+		#First check actual configuration saved in /etc/opendomo/speech/netmenu.txt
+		MODE=`cat /etc/opendomo/speech/netmenu.txt |grep modo | awk '{ print $2}'`
+		IP=`cat /etc/opendomo/speech/netmenu.txt |grep IP | awk '{ print $2}'`
+		MASK=`cat /etc/opendomo/speech/netmenu.txt |grep mascara | awk '{ print $2}'`
+		GW=`cat /etc/opendomo/speech/netmenu.txt |grep puerta | awk '{ print $4}'`
+		DNS=`cat /etc/opendomo/speech/netmenu.txt |grep DNS | awk '{ print $2}'`
+		echo $MODE $IP $MASK $GW $DNS
+		par1=`echo $2 |cut -d " " -f1 -`
+		par2=`echo $2 |cut -d " " -f2 -`
+		par3=`echo $2 |cut -d " " -f3 -`
+		par4=`echo $2 |cut -d " " -f4 -`
+		case "$1" in
+			redmode)
+				case "$par3" in
+					estático)
+					MODE="static"
+					;;
+					DHCP)
+					MODE="dhcp"
+					;;	
+					else)
+					/usr/local/opendomo/vr/espeak.sh Menunoval
+					;;
+						
+				esac
+				;;
+			redIP)
+				IP=$par1"."$par2"."$par3"."$par4
+				;;
+			redmask)
+				MASK=$par1"."$par2"."$par3"."$par4
+				;;
+			redGW)
+				GW=$par1"."$par2"."$par3"."$par4
+				;;
+			redDNS)
+				DNS=$par1"."$par2"."$par3"."$par4
+				;;
+			redsave)
+				/usr/local/opendomo/services/config/configLocalNetwork.sh $MODE $IP $MASK $GW $DNS > tmp.txt
+			
+				if [ `cat tmp.txt | grep -c "#ERR"` -gt 0 ]
+				then
+					/usr/local/opendomo/vr/espeak.sh MenuNetSalvarErr
+				else
+					/usr/local/opendomo/vr/espeak.sh MenuNetsalvarOk
+					echo "menu3" > /usr/local/opendomo/vr/MENU
+					exit 0
+				fi		
+				rm tmp.txt
+				;;
+			else)
+				;;
+		esac
+		echo "Configuracion de red " > /etc/opendomo/speech/netmenu.txt
+		echo "Valores actuales " > /etc/opendomo/speech/netmenu.txt
+		echo " modo " $MODE >> /etc/opendomo/speech/netmenu.txt
+		echo " IP " $IP >> /etc/opendomo/speech/netmenu.txt
+		echo " mascara " $MASK >> /etc/opendomo/speech/netmenu.txt
+		echo " puerta de enlace " $GW >> /etc/opendomo/speech/netmenu.txt
+		echo " DNS " $DNS >> /etc/opendomo/speech/netmenu.txt
+		$ESPEAK < /etc/opendomo/speech/netmenu.txt	
 		;;
 	menu111)
 		#Here, use original string($1).No "opcion" prefix in this case prefix is "activar/desactivar"

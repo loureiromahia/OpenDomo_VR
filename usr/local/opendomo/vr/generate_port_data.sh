@@ -34,6 +34,26 @@ do
 	echo -n " , diga " >> /etc/opendomo/speech/configmenu.txt
 	echo $line | cut -d ":" -f1 - >> /etc/opendomo/speech/configmenu.txt
 done < /etc/opendomo/speech/CONFIG
+#generate actual network configuration data
+if  [ -f /etc/opendomo/speech/netmenu.txt ]
+then	
+	rm /etc/opendomo/speech/netmenu.txt
+fi
+touch /etc/opendomo/speech/netmenu.txt
+echo "Configuracion de red " > /etc/opendomo/speech/netmenu.txt
+echo "Valores actuales " > /etc/opendomo/speech/netmenu.txt
+/usr/local/opendomo/services/config/configLocalNetwork.sh > tmp.txt
+MODE=`cat tmp.txt |grep mode | awk '{ print $5}'`
+IP=`cat tmp.txt |grep ip | awk '{ print $4}'`
+MASK=`cat tmp.txt |grep mask | awk '{ print $4}'`
+GW=`cat tmp.txt |grep gw | awk '{ print $4}'`
+DNS=`cat tmp.txt |grep dns | awk '{ print $5}'`
+echo " modo " $MODE >> /etc/opendomo/speech/netmenu.txt
+echo " IP " $IP >> /etc/opendomo/speech/netmenu.txt
+echo " mascara " $MASK >> /etc/opendomo/speech/netmenu.txt
+echo " puerta de enlace " $GW >> /etc/opendomo/speech/netmenu.txt
+echo " DNS " $DNS >> /etc/opendomo/speech/netmenu.txt
+rm tmp.txt
 
 # Lights:
 grep -ir "light" /etc/opendomo/control/* | cut -d ":" -f1 - > tmp.txt
