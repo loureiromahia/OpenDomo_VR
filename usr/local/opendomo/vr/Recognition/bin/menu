@@ -1,4 +1,43 @@
 #!/bin/bash
+function Retrieve_actual_interface_data()
+{
+	/usr/local/opendomo/services/config/configureInterface.sh > tmp.txt
+	theme=`cat tmp.txt | grep Theme | awk '{ print $4}'`
+	skin=`cat tmp.txt | grep Skin | awk '{ print $4}'`
+	langshort=`cat tmp.txt | grep Language | awk '{ print $6}'`
+	case $langshort in
+		es)
+		language="Castellano"
+		;;
+		ca)
+		language="Catalá"
+		;;
+		en)
+		language= "English"
+		;;
+		eu)
+		language="Euskera"
+		;;
+		fr)
+		language="Francais"
+		;;
+		ga)
+		language="Galego"
+		;;
+		else)
+		;;
+	esac
+}
+function Inform_about_interface_actual_data ()
+{
+				echo "Configuracion de interface actual" > tmp.txt
+				echo "Tema: " $theme >> tmp.txt
+				echo "Piel: " $skin >> tmp.txt
+				echo "Idioma: " $language >> tmp.txt
+				$ESPEAK < tmp.txt
+				rm tmp.txt
+}
+#main
 read ESPEAK < /etc/opendomo/speech/espeak.dat
 read menu < /usr/local/opendomo/vr/MENU
 if [ "$1" = "0" ]
@@ -31,7 +70,7 @@ then
 		/usr/local/opendomo/vr/espeak.sh Menu1e
 		echo "menu1" > /usr/local/opendomo/vr/MENU
 		;;
-	menu3x)
+	menu3x|menu3xnet|menu3xitf)
 		#20 ==> Volver
 		$ESPEAK < /etc/opendomo/speech/configmenu.txt
 		echo "menu3" > /usr/local/opendomo/vr/MENU
@@ -100,12 +139,15 @@ then
 	menu2)
 		##To be filled in	
 		;;
-	menu3xx)
+	menu3x)
 		$ESPEAK < /etc/opendomo/speech/configmenu.txt	
 		;;
 	menu3xnet)
 		$ESPEAK < /etc/opendomo/speech/netmenu.txt
 		/usr/local/opendomo/vr/espeak.sh MenuNetConfig	
+		;;
+	menu3xitf)
+		$ESPEAK < /etc/opendomo/speech/INTERFACE	
 		;;
 	esac
 
@@ -218,6 +260,12 @@ else
 				echo "menu3xnet" > /usr/local/opendomo/vr/MENU
 				$ESPEAK < /etc/opendomo/speech/netmenu.txt
 				/usr/local/opendomo/vr/espeak.sh MenuNetConfig
+				;;
+			configureInterface.sh)
+				echo "menu3xitf" > /usr/local/opendomo/vr/MENU
+				Retrieve_actual_interface_data
+				Inform_about_interface_actual_data
+				$ESPEAK < /etc/opendomo/speech/INTERFACE
 				;;
 			else)
 				;;
@@ -425,6 +473,42 @@ else
 		echo " puerta de enlace " $GW >> /etc/opendomo/speech/netmenu.txt
 		echo " DNS " $DNS >> /etc/opendomo/speech/netmenu.txt
 		$ESPEAK < /etc/opendomo/speech/netmenu.txt	
+		;;
+	menu3xitf)
+		Retrieve_actual_interface_data		
+		par1=`echo $2 |cut -d " " -f1 -`
+		par2=`echo $2 |cut -d " " -f2 -`
+		par3=`echo $2 |cut -d " " -f3 -`
+		par4=`echo $2 |cut -d " " -f4 -`
+		case "$1" in
+			tema)
+				theme=`grep "tema" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $3}'`
+				;;
+			piel)
+				skin=`grep "piel" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $3}'`
+				;;
+			idioma)
+				language=`grep "idioma" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $6}'`
+				;;
+			interfazayuda)
+				$ESPEAK < /etc/opendomo/speech/INTERFACE
+				;;
+			interfazsalvar)
+				#Don't do anything here, first, tell user which is the final interface look to save
+				;;
+			else)
+				$ESPEAK < /etc/opendomo/speech/INTERFACE
+				;;
+		esac
+		Inform_about_interface_actual_data
+				
+		if [ "$1" = "interfazsalvar" ]
+		then
+			/usr/local/opendomo/services/config/configureInterface.shell $theme $skin $language
+			$ESPEAK "Los datos de configuracion de interfaz anteriores han sido salvados"
+		else
+			$ESPEAK "Si necesita ayuda para configurar el interfaz diga interfaz ayuda"
+		fi
 		;;
 	menu111)
 		#Here, use original string($1).No "opcion" prefix in this case prefix is "activar/desactivar"

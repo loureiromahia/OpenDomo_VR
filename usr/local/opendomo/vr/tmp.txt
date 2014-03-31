@@ -1,10 +1,4 @@
-#INFO Configuration saved
-#INFO Please, save configuration and restart
-#> Network interface configuration
-form:configLocalNetwork.sh
-	mode	Mode	list[static:static,dhcp:DHCP client]	dhcp
-	ip	IP	text	
-	mask	netmask	text	
-	gw	Gateway	text	
-	dns	DNS server	text	
-
+/etc/opendomo/control/cocina/ai01.info
+/etc/opendomo/control/comedor/ai02.info
+/etc/opendomo/control/comedor/do04.info
+/etc/opendomo/control/comedor/do02.info

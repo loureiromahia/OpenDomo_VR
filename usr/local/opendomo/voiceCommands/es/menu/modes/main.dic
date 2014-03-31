@@ -28,7 +28,16 @@ red DNS (LINE Objeto)
   menu redDNS "$Objeto$"
 red salvar
   menu redsave "$Objeto$"
-
+interfaz tema <1,2,3,4,5,6,7,8,9 >
+  menu tema "$SPEECH$"
+interfaz piel <1,2,3,4,5,6,7,8,9 >
+  menu piel "$SPEECH$"
+interfaz idioma <1,2,3,4,5,6,7 >
+  menu idioma "$SPEECH$"
+interfaz ayuda
+  menu interfazayuda
+interfaz salvar
+  menu interfazsalvar
 
 
 

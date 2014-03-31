@@ -18,6 +18,48 @@ fi
 touch /etc/opendomo/speech/CONFIG
 cd /usr/local/opendomo/services/config/
 grep '#desc' * | grep -n "#desc" | sed 's/#desc://' >> /etc/opendomo/speech/CONFIG
+#generate menu view options: themes available, skins available and lanfiles availables
+if  [ -f /etc/opendomo/speech/INTERFACE ]
+then	
+	rm /etc/opendomo/speech/INTERFACE
+fi
+touch /etc/opendomo/speech/INTERFACE
+echo "Configuracion visual de interface." > /etc/opendomo/speech/INTERFACE
+cd /var/www/themes
+ls -l| grep drwxr |awk '{ print $9}' > tmp.txt
+i=0
+echo  "Configuracion de tema " >> /etc/opendomo/speech/INTERFACE
+while read line
+do	
+	((i++))		
+	echo -n "Para tema " >> /etc/opendomo/speech/INTERFACE	
+	stri=`echo $line`
+	echo -n $stri >>  /etc/opendomo/speech/INTERFACE
+	echo -n " , diga interfaz tema " >> /etc/opendomo/speech/INTERFACE
+	echo  $i "." >> /etc/opendomo/speech/INTERFACE
+done < tmp.txt
+
+cd /var/www/skins
+ls -l| grep drwxr |awk '{ print $9}' > tmp.txt
+i=0
+echo  "Configuracion de piel " >> /etc/opendomo/speech/INTERFACE
+while read line
+do	
+	((i++))		
+	echo -n "Para piel " >> /etc/opendomo/speech/INTERFACE	
+	stri=`echo $line`
+	echo -n $stri >>  /etc/opendomo/speech/INTERFACE
+	echo -n " , diga interfaz piel " >> /etc/opendomo/speech/INTERFACE
+	echo  $i "." >> /etc/opendomo/speech/INTERFACE
+done < tmp.txt
+rm tmp.txt
+
+cd /etc/opendomo/langfiles
+cat available | sed 's/,/./g' | sed 's/..:/Configuracion de idioma. Diga interfaz idioma 1, para /' |sed 's/..:/ Diga interfaz idioma 2, para /' |sed 's/..:/ Diga interfaz idioma 3, para /' |sed 's/..:/ Diga interfaz idioma 4, para /' |sed 's/..:/ Diga interfaz idioma 5, para /' |sed 's/..:/ Diga interfaz idioma 6, para /'|sed 's/..:/ Diga interfaz idioma 7: para /' |sed 's/ Diga/\n&/g'    >> /etc/opendomo/speech/INTERFACE
+echo >> /etc/opendomo/speech/INTERFACE
+echo "Para salvar configuracion interfaz, diga interfaz salvar" >> /etc/opendomo/speech/INTERFACE
+
+grep '#desc' * | grep -n "#desc" | sed 's/#desc://' >> /etc/opendomo/speech/CONFIG
 cd /usr/local/opendomo/vr
 #generate configmenu.txt file, containing the voice stream, with the options
 if  [ -f /etc/opendomo/speech/configmenu.txt ]
