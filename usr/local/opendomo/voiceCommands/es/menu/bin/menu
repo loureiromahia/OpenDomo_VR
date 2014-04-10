@@ -1,10 +1,10 @@
 #!/bin/bash
 function Retrieve_actual_interface_data()
 {
-	/usr/local/opendomo/services/config/configureInterface.sh > tmp.txt
-	theme=`cat tmp.txt | grep Theme | awk '{ print $4}'`
-	skin=`cat tmp.txt | grep Skin | awk '{ print $4}'`
-	langshort=`cat tmp.txt | grep Language | awk '{ print $6}'`
+	/usr/local/opendomo/services/config/configureInterface.sh > /tmp/tmp.txt
+	theme=`cat /tmp/tmp.txt | grep Theme | awk '{ print $4}'`
+	skin=`cat /tmp/tmp.txt | grep Skin | awk '{ print $4}'`
+	langshort=`cat /tmp/tmp.txt | grep Language | awk '{ print $6}'`
 	case $langshort in
 		es)
 		language="Castellano"
@@ -30,12 +30,12 @@ function Retrieve_actual_interface_data()
 }
 function Inform_about_interface_actual_data ()
 {
-				echo "Configuracion de interface actual" > tmp.txt
-				echo "Tema: " $theme >> tmp.txt
-				echo "Piel: " $skin >> tmp.txt
-				echo "Idioma: " $language >> tmp.txt
-				$ESPEAK < tmp.txt
-				rm tmp.txt
+				echo "Configuracion de interface actual" > /tmp/tmp.txt
+				echo "Tema: " $theme >> /tmp/tmp.txt
+				echo "Piel: " $skin >> /tmp/tmp.txt
+				echo "Idioma: " $language >> /tmp/tmp.txt
+				$ESPEAK < /tmp/tmp.txt
+				rm /tmp/tmp.txt
 }
 #main
 read ESPEAK < /etc/opendomo/speech/espeak.dat
@@ -70,7 +70,7 @@ then
 		/usr/local/opendomo/vr/espeak.sh Menu1e
 		echo "menu1" > /usr/local/opendomo/vr/MENU
 		;;
-	menu3x|menu3xnet|menu3xitf)
+	menu3x|menu3xnet|menu3xitf|menu3xuser)
 		#20 ==> Volver
 		$ESPEAK < /etc/opendomo/speech/configmenu.txt
 		echo "menu3" > /usr/local/opendomo/vr/MENU
@@ -86,7 +86,7 @@ elif [ "$1" = "22" ]
 then
 	#22 ==> Donde estoy?.
 	/usr/local/opendomo/vr/espeak.sh MenuDonde
-	# Por reagrupación de codige mejor tratarlo junto
+	# Por reagrupación de código mejor tratarlo junto
 	case "$menu" in
 	no)
 		read mode < /usr/local/opendomo/vr/MODE
@@ -148,6 +148,11 @@ then
 		;;
 	menu3xitf)
 		$ESPEAK < /etc/opendomo/speech/INTERFACE	
+		;;
+	menu3xusr)
+		$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
+		$ESPEAK < /tmp/usr.txt
+		/usr/local/opendomo/vr/espeak.sh MenuUserConfig		
 		;;
 	esac
 
@@ -215,21 +220,21 @@ else
 		
 		case "$script" in
 			about.sh)
-				/usr/local/opendomo/services/config/about.sh > tmp.txt
+				/usr/local/opendomo/services/config/about.sh > /tmp/tmp.txt
 				echo "Informacion de instalacion OpenDomo" > about.txt
-				version=`grep INF tmp.txt |  cut -d ":" -f2 -`
+				version=`grep INF /tmp/tmp.txt |  cut -d ":" -f2 -`
 				echo "version  de OpenDomo " $version >> about.txt
-				kernel=`grep kernel tmp.txt | awk '{ print $5}'`
+				kernel=`grep kernel /tmp/tmp.txt | awk '{ print $5}'`
 				echo -n "Version del kernel " >> about.txt
 				echo $kernel >> about.txt
 				echo " Paquetes instalados " >> about.txt
-				for plugin in `grep version tmp.txt | cut -f1 -d.`
+				for plugin in `grep version /tmp/tmp.txt | cut -f1 -d.`
 				do
         				echo $plugin >> about.txt
 				done
 				$ESPEAK < about.txt
 				rm about.txt
-				rm tmp.txt
+				rm /tmp/tmp.txt
 				;;			
 			reboot.sh)
 				$ESPEAK " Rearrancando el sistema "
@@ -243,18 +248,18 @@ else
 				echo "menu3x" > /usr/local/opendomo/vr/MENU
 				read IDIOMA < /etc/opendomo/lang
 				cd /usr/local/opendomo/vr/characters/$IDIOMA
-				echo "Configuracion de reconocimiento de voz " > tmp.txt
-				echo "Seleccione a continuacion el personaje que desea" >> tmp.txt
+				echo "Configuracion de reconocimiento de voz " > /tmp/tmp.txt
+				echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
 						
 				for voz in `ls | cut -f1 -d. |uniq `  
 				do	
-					echo -n " Para configurar voz de " >> tmp.txt
-					echo -n $voz >> tmp.txt
-					echo -n " ,diga voz " >> tmp.txt
-					echo $voz >> tmp.txt
+					echo -n " Para configurar voz de " >> /tmp/tmp.txt
+					echo -n $voz >> /tmp/tmp.txt
+					echo -n " ,diga voz " >> /tmp/tmp.txt
+					echo $voz >> /tmp/tmp.txt
 				done
-				$ESPEAK < tmp.txt
-				rm tmp.txt
+				$ESPEAK < /tmp/tmp.txt
+				rm /tmp/tmp.txt
 				;;
 			configLocalNetwork.sh)
 				echo "menu3xnet" > /usr/local/opendomo/vr/MENU
@@ -266,6 +271,15 @@ else
 				Retrieve_actual_interface_data
 				Inform_about_interface_actual_data
 				$ESPEAK < /etc/opendomo/speech/INTERFACE
+				;;
+			manageUsers.sh)
+				echo "menu3xusr" > /usr/local/opendomo/vr/MENU
+				#List actual users
+				$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
+				#create temporary file for keeping provisional user data, until user data is saved 
+				ls -l /etc/opendomo/udata |grep .info |cut -d"." -f1 | awk '{ print $9}' > /tmp/usr.txt
+				$ESPEAK < /tmp/usr.txt
+				/usr/local/opendomo/vr/espeak.sh MenuUserConfig
 				;;
 			else)
 				;;
@@ -392,18 +406,18 @@ else
 					$ESPEAK "Cambiada la voz del personaje a " $par2
 				else
 
-					echo "No existe el personaje " $par2 > tmp.txt
-					echo "Seleccione a continuacion el personaje que desea" >> tmp.txt
+					echo "No existe el personaje " $par2 > /tmp/tmp.txt
+					echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
 						
 					for voz in `ls | cut -f1 -d. |uniq `   
 					do	
-						echo -n " Para configurar voz de " >> tmp.txt
-						echo -n $voz >> tmp.txt
-						echo -n " ,diga voz " >> tmp.txt
-						echo $voz >> tmp.txt
+						echo -n " Para configurar voz de " >> /tmp/tmp.txt
+						echo -n $voz >> /tmp/tmp.txt
+						echo -n " ,diga voz " >> /tmp/tmp.txt
+						echo $voz >> /tmp/tmp.txt
 					done
-					$ESPEAK < tmp.txt
-					rm tmp.txt
+					$ESPEAK < /tmp/tmp.txt
+					rm /tmp/tmp.txt
 				fi		
 				;;
 			else)
@@ -450,9 +464,9 @@ else
 				DNS=$par1"."$par2"."$par3"."$par4
 				;;
 			redsave)
-				/usr/local/opendomo/services/config/configLocalNetwork.sh $MODE $IP $MASK $GW $DNS > tmp.txt
+				/usr/local/opendomo/services/config/configLocalNetwork.sh $MODE $IP $MASK $GW $DNS > /tmp/tmp.txt
 			
-				if [ `cat tmp.txt | grep -c "#ERR"` -gt 0 ]
+				if [ `cat /tmp/tmp.txt | grep -c "#ERR"` -gt 0 ]
 				then
 					/usr/local/opendomo/vr/espeak.sh MenuNetSalvarErr
 				else
@@ -460,7 +474,7 @@ else
 					echo "menu3" > /usr/local/opendomo/vr/MENU
 					exit 0
 				fi		
-				rm tmp.txt
+				rm /tmp/tmp.txt
 				;;
 			else)
 				;;
@@ -508,6 +522,158 @@ else
 			$ESPEAK "Los datos de configuracion de interfaz anteriores han sido salvados"
 		else
 			$ESPEAK "Si necesita ayuda para configurar el interfaz diga interfaz ayuda"
+		fi
+		;;
+	menu3xusr)
+		#data for new user is in /tmp/usr.txt. Data is structured in : user:fullname:mail:password
+		par1=`echo $2 |cut -d " " -f1`
+		# To avoid problems with capitals, let'sfix all user to caps off
+		par1=${par1,,} 
+		par2=`echo $2 |cut -d " " -f2-`
+		case "$1" in
+			usuariocrear)
+				if [ `grep -c $par1 /tmp/usr.txt` -eq 0 ]
+				then
+					echo $par1 "::::nuevo " >> /tmp/usr.txt
+					echo "usuario " $par1 "va a ser creado ""Debe de completar los datos de nombre completo, email y clave. Para confirmar la creacion diga usuario ejecutar" $par1 > /tmp/tmp.txt 	
+				else
+					echo "El usuario " $par1 " ya existe" >> /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt	
+				;;
+			usuarioborrar)
+				if [ `grep -c $par1 /tmp/usr.txt` -gt 0 ]
+				then
+					# leer linea de usr.txt y cambiar la que tiene $2 por $2:usuario a borrar
+					i=0
+					echo "" > /tmp/usr2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							echo $par1 "::::borrar" >> /tmp/usr2.txt
+						else
+							echo $line >> /tmp/usr2.txt
+						fi
+					done < /tmp/usr.txt
+					cp /tmp/usr2.txt /tmp/usr.txt
+					rm /tmp/usr2.txt
+					echo "Usuario " $par1 " marcado para ser borrado "" Para confirmar el borrado diga usuario ejecutar" $par1  > /tmp/tmp.txt
+				else
+					echo "El usuario " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt					
+				;;
+			usuariomodnombre)
+				if [ `grep -c $par1 /tmp/usr.txt` -gt 0 ]
+				then
+					# leer linea de usr.txt y cambiar la que tiene $2 por $2:usuario a borrar
+					i=0
+					echo "" > /tmp/usr2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							# cambiar el campo 2 por el parametro $par2
+							string=`cat tmp.txt | cut -d":" -f2`
+							line=`cat tmp.txt | sed  -e "s/\$string/\$par2/"`	
+						fi
+						echo $line >> /tmp/usr2.txt
+					done < /tmp/usr.txt
+					cp /tmp/usr2.txt /tmp/usr.txt
+					rm /tmp/usr2.txt					
+						
+					echo "Usuario " $par1 " Nombre completo " $par2 " Para confirmar el cambio diga usuario ejecutar" $par1  > /tmp/tmp.txt
+				else
+					echo "El usuario " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt					
+				;;
+			usuariomodcorreo)
+				if [ `grep -c $par1 /tmp/usr.txt` -gt 0 ]
+				then
+					# leer linea de usr.txt y cambiar la que tiene $2 por $2:usuario a borrar
+					i=0
+					echo "" > /tmp/usr2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							# cambiar el campo 2 por el parametro $par2
+							string=`cat tmp.txt | cut -d":" -f3`
+							line=`cat tmp.txt | sed  -e "s/\$string/\$par2/"`	
+						fi
+						echo $line >> /tmp/usr2.txt
+					done < /tmp/usr.txt
+					cp /tmp/usr2.txt /tmp/usr.txt
+					rm /tmp/usr2.txt					
+						
+					echo "Usuario " $par1 " Correo " $par2 " Para confirmar el cambio diga usuario ejecutar" $par1  > /tmp/tmp.txt
+				else
+					echo "El usuario " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt				
+				;;
+			usuariomodclave)
+				if [ `grep -c $par1 /tmp/usr.txt` -gt 0 ]
+				then
+					# leer linea de usr.txt y cambiar la que tiene $2 por $2:usuario a borrar
+					i=0
+					echo "" > /tmp/usr2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							# cambiar el campo 2 por el parametro $par2
+							string=`cat tmp.txt | cut -d":" -f3`
+							line=`cat tmp.txt | sed  -e "s/\$string/\$par2/"`	
+						fi
+						echo $line >> /tmp/usr2.txt
+					done < /tmp/usr.txt
+					cp /tmp/usr2.txt /tmp/usr.txt
+					rm /tmp/usr2.txt					
+						
+					echo "Usuario " $par1 " Clave de usuario " $par2 " Para confirmar el cambio diga usuario ejecutar" $par1  > /tmp/tmp.txt
+				else
+					echo "El usuario " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt						
+				;;
+			usuarioejecutar)
+				#Don't do anything here, do it after, helping in other case, with option usuario ayuda 
+				;;
+			usuarioayuda|else)
+				$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
+				$ESPEAK < /tmp/usr.txt
+				/usr/local/opendomo/vr/espeak.sh MenuUserConfig		
+				;;
+		esac
+				
+		if [ "$1" = "usuarioejecutar" ]
+		then
+			grep $par1 /tmp/usr.txt > /tmp/tmp.txt
+			if [ `grep -c "borrar" /tmp/tmp.txt` -gt 0 ]
+			then
+				/usr/local/opendomo/deleteUser.sh $par1
+				echo "Usuario " $par1 " ha sido borrado " > /tmp/tmp.txt
+			else
+				nombre=`cat /tmp/tmp.txt | cut -d":" -f2`
+				email=`cat /tmp/tmp.txt | cut -d":" -f3`
+				clave=`cat /tmp/tmp.txt | cut -d":" -f4`
+				/usr/local/opendomo/modifyUser $par1 $nombre $email $clave
+				echo "Usuario " $par1 " ha sido modificado " > /tmp/tmp.txt 
+			fi 			
+			$ESPEAK < /tmp/tmp.txt
+		else
+			$ESPEAK "Si necesita ayuda para modificar datos de usuario, diga usuario ayuda"
 		fi
 		;;
 	menu111)

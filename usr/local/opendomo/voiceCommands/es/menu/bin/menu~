@@ -648,7 +648,7 @@ else
 				$ESPEAK < /tmp/tmp.txt						
 				;;
 			usuarioejecutar)
-				#Don't do anything here, do it after, helping in other case, with option usuario ayuda 
+				#Don't do anything here, first, tell user which is the final interface look to save
 				;;
 			usuarioayuda|else)
 				$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
@@ -657,7 +657,7 @@ else
 				;;
 		esac
 				
-		if [ "$1" = "usuarioejecutar" ]
+		if [ "$1" = "usuarioejeccutar" ]
 		then
 			grep $par1 /tmp/usr.txt > /tmp/tmp.txt
 			if [ `grep -c "borrar" /tmp/tmp.txt` -gt 0 ]

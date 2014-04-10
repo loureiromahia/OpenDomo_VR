@@ -38,8 +38,20 @@ interfaz ayuda
   menu interfazayuda
 interfaz salvar
   menu interfazsalvar
-
-
+usuario crear (LINE Objeto)
+  menu usuariocrear "$Objeto$"
+usuario borrar (LINE Objeto)
+  menu usuarioborrar "$Objeto$"
+usuario nombre (LINE Objeto)
+  menu usuariomodnombre "$Objeto$"
+usuario correo (LINE Objeto)
+  menu usuariomodcorreo "$Objeto$"
+usuario clave (LINE Objeto)
+  menu usuariomodclave "$Objeto$"
+usuario ejecutar (LINE Objeto)
+  menu usuarioejecutar "$Objeto$"
+usuario ayuda
+  menu usuarioayuda
 
 
 
