@@ -70,7 +70,7 @@ then
 		/usr/local/opendomo/vr/espeak.sh Menu1e
 		echo "menu1" > /usr/local/opendomo/vr/MENU
 		;;
-	menu3x|menu3xnet|menu3xitf|menu3xuser)
+	menu3xconf|menu3xvoice|menu3xnet|menu3xitf|menu3xuser|menu3xctl)
 		#20 ==> Volver
 		$ESPEAK < /etc/opendomo/speech/configmenu.txt
 		echo "menu3" > /usr/local/opendomo/vr/MENU
@@ -139,8 +139,24 @@ then
 	menu2)
 		##To be filled in	
 		;;
-	menu3x)
-		$ESPEAK < /etc/opendomo/speech/configmenu.txt	
+	menu3xconf)
+		/usr/local/opendomo/vr/espeak.sh Menuconfigsave		
+		;;
+	menu3xvoice)
+		read IDIOMA < /etc/opendomo/lang
+		cd /usr/local/opendomo/vr/characters/$IDIOMA
+		echo "Configuracion de reconocimiento de voz " > /tmp/tmp.txt
+		echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
+						
+		for voz in `ls | cut -f1 -d. |uniq `  
+		do	
+			echo -n " Para configurar voz de " >> /tmp/tmp.txt
+			echo -n $voz >> /tmp/tmp.txt
+			echo -n " ,diga voz " >> /tmp/tmp.txt
+			echo $voz >> /tmp/tmp.txt
+		done
+		$ESPEAK < /tmp/tmp.txt
+		rm /tmp/tmp.txt	
 		;;
 	menu3xnet)
 		$ESPEAK < /etc/opendomo/speech/netmenu.txt
@@ -153,6 +169,16 @@ then
 		$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
 		$ESPEAK < /tmp/usr.txt
 		/usr/local/opendomo/vr/espeak.sh MenuUserConfig		
+		;;
+	menu3xctl)
+		$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
+		$ESPEAK < /tmp/ctrl.txt
+		echo " Placas disponibles: " > /tmp/tmp.txt
+		grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
+		echo " Puertos disponibles: " >> /tmp/tmp.txt
+		grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
+		$ESPEAK > /tmp/tmp.txt
+		/usr/local/opendomo/vr/espeak.sh MenuControlConfig
 		;;
 	esac
 
@@ -241,11 +267,11 @@ else
 				/usr/local/opendomo/services/config/reboot.sh > reboot.txt
 				;;
 			manageConfiguration.sh)
-				echo "menu3x" > /usr/local/opendomo/vr/MENU
+				echo "menu3xconf" > /usr/local/opendomo/vr/MENU
 				/usr/local/opendomo/vr/espeak.sh Menuconfigsave
 				;;
 			configureVoiceSystem.sh)
-				echo "menu3x" > /usr/local/opendomo/vr/MENU
+				echo "menu3xvoice" > /usr/local/opendomo/vr/MENU
 				read IDIOMA < /etc/opendomo/lang
 				cd /usr/local/opendomo/vr/characters/$IDIOMA
 				echo "Configuracion de reconocimiento de voz " > /tmp/tmp.txt
@@ -280,6 +306,29 @@ else
 				ls -l /etc/opendomo/udata |grep .info |cut -d"." -f1 | awk '{ print $9}' > /tmp/usr.txt
 				$ESPEAK < /tmp/usr.txt
 				/usr/local/opendomo/vr/espeak.sh MenuUserConfig
+				;;
+			manageControlDevices.sh)
+				echo "menu3xctl" > /usr/local/opendomo/vr/MENU
+				#List actual control data
+				$ESPEAK "Menu de configuracion de dispositivos de control. Dispositivos actuales "
+				#create temporary file for keeping provisional control data, until control data is saved 
+			  	/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/ctrl.txt
+				$ESPEAK < /tmp/ctrl.txt
+				echo " Placas disponibles: " > /tmp/tmp.txt
+				grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
+				echo " Puertos disponibles: " >> /tmp/tmp.txt
+				grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
+				$ESPEAK > /tmp/tmp.txt
+				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
+				;;
+			manageSystemStates.sh)
+				echo "menu3xsta" > /usr/local/opendomo/vr/MENU
+				#List actual control data
+				$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
+				#create temporary file for keeping provisional states data, until new states data data is saved 
+			  	ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
+				$ESPEAK < /tmp/stat.txt
+				/usr/local/opendomo/vr/espeak.sh MenuStatConfig
 				;;
 			else)
 				;;
@@ -365,64 +414,61 @@ else
 
 		esac
 		;;
-	menu3x)
+	menu3xconf)
 		par1=`echo $1 |cut -d " " -f1 -`
 		par2=`echo $1 |cut -d " " -f2 -`
-		case "$par1" in
-			salvar)
-				case "$par2" in
-					1)
-					$ESPEAK " Salvando configuracion actual con plugins"
-					echo "on" > /var/opendomo/tmp/savestatus
-					/usr/local/opendomo/saveSystemConfiguration.sh
-					;;
-					2)
-					$ESPEAK " Salvando configuracion actual sin plugins"
-					echo "off" > /var/opendomo/tmp/savestatus
-					/usr/local/opendomo/saveSystemConfiguration.sh
-					;;	
-					3)
-					$ESPEAK " Salvando configuracion de defecto con plugins"
-					echo "on" > /var/opendomo/tmp/savestatus
-					/usr/local/opendomo/loadDefaultConfiguration.sh
-					;;	
-					4)
-					$ESPEAK " Salvando configuracion de defecto sin plugins"
-					echo "off" > /var/opendomo/tmp/savestatus
-					/usr/local/opendomo/loadDefaultConfiguration.sh
-					;;	
-					else)
-					;;
-						
-				esac
-				;;
-			voz)
-				par2=${par2,,}				
-				read IDIOMA < /etc/opendomo/lang
-				cd /usr/local/opendomo/vr/characters/$IDIOMA				
-				if [ `ls | grep -c $par2` -eq 1 ]
-				then				
-					/usr/local/opendomo/services/config/configureVoiceSystem.sh $par2
-					$ESPEAK "Cambiada la voz del personaje a " $par2
-				else
-
-					echo "No existe el personaje " $par2 > /tmp/tmp.txt
-					echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
-						
-					for voz in `ls | cut -f1 -d. |uniq `   
-					do	
-						echo -n " Para configurar voz de " >> /tmp/tmp.txt
-						echo -n $voz >> /tmp/tmp.txt
-						echo -n " ,diga voz " >> /tmp/tmp.txt
-						echo $voz >> /tmp/tmp.txt
-					done
-					$ESPEAK < /tmp/tmp.txt
-					rm /tmp/tmp.txt
-				fi		
-				;;
+		par3=`echo $1 |cut -d " " -f3 -`
+		
+		case "$par2" in
+			1)
+			$ESPEAK " Salvando configuracion actual con plugins"
+			echo "on" > /var/opendomo/tmp/savestatus
+			/usr/local/opendomo/saveSystemConfiguration.sh
+			;;
+			2)
+			$ESPEAK " Salvando configuracion actual sin plugins"
+			echo "off" > /var/opendomo/tmp/savestatus
+			/usr/local/opendomo/saveSystemConfiguration.sh
+			;;	
+			3)
+			$ESPEAK " Salvando configuracion de defecto con plugins"
+			echo "on" > /var/opendomo/tmp/savestatus
+			/usr/local/opendomo/loadDefaultConfiguration.sh
+			;;	
+			4)
+			$ESPEAK " Salvando configuracion de defecto sin plugins"
+			echo "off" > /var/opendomo/tmp/savestatus
+			/usr/local/opendomo/loadDefaultConfiguration.sh
+			;;	
 			else)
-				;;
-		esac	
+			;;				
+		esac
+		;;
+	menu3xvoice)
+		par1=`echo $1 |cut -d " " -f1 -`
+		par2=`echo $1 |cut -d " " -f2 -`
+		par3=`echo $1 |cut -d " " -f3 -`				
+		par3=${par3,,}				
+		read IDIOMA < /etc/opendomo/lang
+		cd /usr/local/opendomo/vr/characters/$IDIOMA				
+		if [ `ls | grep -c $par3` -eq 1 ]
+		then				
+			/usr/local/opendomo/services/config/configureVoiceSystem.sh $par3
+			$ESPEAK "Cambiada la voz del personaje a " $par3
+		else
+			echo "No existe el personaje " $par3 > /tmp/tmp.txt
+			echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
+						
+			for voz in `ls | cut -f1 -d. |uniq `   
+			do	
+				echo -n " Para configurar voz de " >> /tmp/tmp.txt
+				echo -n $voz >> /tmp/tmp.txt
+				echo -n " ,diga voz de " >> /tmp/tmp.txt
+				echo $voz >> /tmp/tmp.txt
+			done
+			$ESPEAK < /tmp/tmp.txt
+			rm /tmp/tmp.txt
+		fi		
 		;;
 	menu3xnet)
 		#First check actual configuration saved in /etc/opendomo/speech/netmenu.txt
@@ -551,7 +597,7 @@ else
 					do	
 						((i++))		
 						echo $line > /tmp/tmp.txt
-						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 						then
 							echo $par1 "::::borrar" >> /tmp/usr2.txt
 						else
@@ -576,7 +622,7 @@ else
 					do	
 						((i++))		
 						echo $line > /tmp/tmp.txt
-						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 						then
 							# cambiar el campo 2 por el parametro $par2
 							string=`cat tmp.txt | cut -d":" -f2`
@@ -603,7 +649,7 @@ else
 					do	
 						((i++))		
 						echo $line > /tmp/tmp.txt
-						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 						then
 							# cambiar el campo 2 por el parametro $par2
 							string=`cat tmp.txt | cut -d":" -f3`
@@ -630,7 +676,7 @@ else
 					do	
 						((i++))		
 						echo $line > /tmp/tmp.txt
-						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 						then
 							# cambiar el campo 2 por el parametro $par2
 							string=`cat tmp.txt | cut -d":" -f3`
@@ -648,7 +694,7 @@ else
 				$ESPEAK < /tmp/tmp.txt						
 				;;
 			usuarioejecutar)
-				#Don't do anything here, first, tell user which is the final interface look to save
+				#Don't do anything here, do it after, helping in other case, with option usuario ayuda 
 				;;
 			usuarioayuda|else)
 				$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
@@ -657,12 +703,28 @@ else
 				;;
 		esac
 				
-		if [ "$1" = "usuarioejeccutar" ]
+		if [ "$1" = "usuarioejecutar" ]
 		then
 			grep $par1 /tmp/usr.txt > /tmp/tmp.txt
 			if [ `grep -c "borrar" /tmp/tmp.txt` -gt 0 ]
 			then
 				/usr/local/opendomo/deleteUser.sh $par1
+				# leer linea de usr.txt y cambiar la que tiene $2 por linea vacia
+					i=0
+					echo "" > /tmp/usr2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
+						then
+							echo "" >> /tmp/usr2.txt
+						else
+							echo $line >> /tmp/usr2.txt
+						fi
+					done < /tmp/usr.txt
+					cp /tmp/usr2.txt /tmp/usr.txt
+					rm /tmp/usr2.txt
 				echo "Usuario " $par1 " ha sido borrado " > /tmp/tmp.txt
 			else
 				nombre=`cat /tmp/tmp.txt | cut -d":" -f2`
@@ -674,6 +736,270 @@ else
 			$ESPEAK < /tmp/tmp.txt
 		else
 			$ESPEAK "Si necesita ayuda para modificar datos de usuario, diga usuario ayuda"
+		fi
+		;;
+#Control devices
+	menu3xctl)
+		#data for new user is in /tmp/ctrl.txt. Data is structured in : 					   			# devicename:cardtype:port:refresh:IP:user:password:borrar/crear
+		par1=`echo $2 |cut -d " " -f1`
+		# To avoid problems with capitals, let'sfix all data to caps off
+		par1=${par1,,} 
+		par2=`echo $2 |cut -d " " -f2-`
+		case "$1" in
+			controlcrear)
+				if [ `grep -c $par1 /tmp/ctrl.txt` -eq 0 ]
+				then
+					echo $par1 ":::::::nuevo " >> /tmp/ctrl.txt
+					echo "dispositivo " $par1 "va a ser creado. ""Debe de completar los datos de placa ,puerto, tiempo de refresco, direccion IP, usuario y clave. Para confirmar los cambios diga control ejecutar" $par1 > /tmp/tmp.txt 
+				else
+					echo "El dispositivo " $par1 " ya existe" >> /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt	
+				;;
+			controlborrar)
+				if [ `grep -c $par1 /tmp/ctrl.txt` -gt 0 ]
+				then
+					# leer linea de ctrl.txt y cambiar la que tiene $2 por $2:dispositivo a borrar
+					i=0
+					echo "" > /tmp/ctrl2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							echo $par1 ":::::::borrar" >> /tmp/ctrl2.txt
+						else
+							echo $line >> /tmp/ctrl2.txt
+						fi
+					done < /tmp/ctrl.txt
+					cp /tmp/ctrl2.txt /tmp/ctrl.txt
+					rm /tmp/ctrl2.txt
+					echo "Dispositivo " $par1 " marcado para ser borrado "" Para confirmar el borrado diga control ejecutar" $par1  > /tmp/tmp.txt
+				else
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt					
+				;;
+			controlplaca)
+				if [ `grep -c $par1 /tmp/ctrl.txt` -gt 0 ]
+				then
+					# Check the card 
+					i=0
+					if [ `grep -c Card /etc/opendomo/speech/portmenu.txt` -eq $par2 ]
+					then
+						card=`grep Card /etc/opendomo/speech/portmenu.txt | grep $par2 | cut -d":" -f2`
+						echo "" > /tmp/ctrl2.txt
+						while read line
+						do	
+							((i++))		
+							echo $line > /tmp/tmp.txt
+							if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+							then
+								# cambiar el campo 2 por el parametro $par2
+								string=`cat tmp.txt | cut -d":" -f2`
+								line=`cat tmp.txt | sed  -e "s/\$string/\$card/"`	
+							fi
+							echo $line >> /tmp/ctrl2.txt
+						done < /tmp/ctrl.txt
+						cp /tmp/ctrl2.txt /tmp/ctrl.txt
+						rm /tmp/ctrl2.txt
+						echo "Configurado " $card " en dispositivo " $par1  > /tmp/tmp.txt		
+					else
+						echo " Numero de placa incorrecto. Valores posibles " > /tmp/tmp.txt
+						grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
+					fi						
+				else
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt					
+				;;
+			controlpuerto)
+				if [ `grep -c $par1 /tmp/ctrl.txt` -gt 0 ]
+				then
+					# Check the port 
+					i=0
+					if [ `grep -c Port /etc/opendomo/speech/portmenu.txt` -ge $par2 ]
+					then
+						port=`grep Port /etc/opendomo/speech/portmenu.txt | grep $par2 | cut -d":" -f2`
+						echo "" > /tmp/ctrl2.txt
+						while read line
+						do	
+							((i++))		
+							echo $line > /tmp/tmp.txt
+							if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+							then
+								# cambiar el campo 2 por el parametro $par2
+								string=`cat tmp.txt | cut -d":" -f3`
+								line=`cat tmp.txt | sed  -e "s/\$string/\$port/"`	
+							fi
+							echo $line >> /tmp/ctrl2.txt
+						done < /tmp/ctrl.txt
+						cp /tmp/ctrl2.txt /tmp/ctrl.txt
+						rm /tmp/ctrl2.txt
+						echo "Configurado " $port " en dispositivo " $par1  > /tmp/tmp.txt		
+					else
+						echo " Numero de puerto incorrecto. Valores posibles " > /tmp/tmp.txt
+						grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
+					fi	
+				else
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt					
+				;;
+			controlrefresco)
+				if [ `grep -c $par1 /tmp/ctrl.txt` -gt 0 ]
+				then
+					# In this case, it is necessary to list the available card id, so that user can 					#choose. This will imply a new state 
+					i=0
+					echo "" > /tmp/ctrl2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							# cambiar el campo 2 por el parametro $par2
+							string=`cat tmp.txt | cut -d":" -f4`
+							line=`cat tmp.txt | sed  -e "s/\$string/\$par2/"`	
+						fi
+						echo $line >> /tmp/ctrl2.txt
+					done < /tmp/ctrl.txt
+					cp /tmp/ctrl2.txt /tmp/ctrl.txt
+					rm /tmp/ctrl2.txt					
+						
+					echo "Dispositivo " $par1 "tiempo de refresco " $par2 " Para confirmar el cambio diga control ejecutar" $par1  > /tmp/tmp.txt
+				else
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt					
+				;;
+			controlIP)
+				if [ `grep -c $par1 /tmp/ctrl.txt` -gt 0 ]
+				then
+					# leer linea de usr.txt y cambiar la que tiene $2 por $2:usuario a borrar
+					i=0
+					echo "" > /tmp/ctrl2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							# cambiar el campo 2 por el parametro $par2
+							string=`cat tmp.txt | cut -d":" -f5`
+							line=`cat tmp.txt | sed  -e "s/\$string/\$par2/"`	
+						fi
+						echo $line >> /tmp/ctrl2.txt
+					done < /tmp/ctrl.txt
+					cp /tmp/ctrl2.txt /tmp/ctrl.txt
+					rm /tmp/ctrl2.txt					
+						
+					echo "Dispositivo " $par1 " IP " $par2 " Para confirmar el cambio diga control guardar" $par1  > /tmp/tmp.txt
+				else
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt				
+				;;
+			controlusuario)
+				if [ `grep -c $par1 /tmp/ctrl.txt` -gt 0 ]
+				then
+					# leer linea de ctrl.txt y cambiar la que tiene $2 por $2:datos de clave
+					i=0
+					echo "" > /tmp/ctrl2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							# cambiar el campo 2 por el parametro $par2
+							string=`cat tmp.txt | cut -d":" -f6`
+							line=`cat tmp.txt | sed  -e "s/\$string/\$par2/"`	
+						fi
+						echo $line >> /tmp/ctrl2.txt
+					done < /tmp/ctrl.txt
+					cp /tmp/ctrl2.txt /tmp/ctrl.txt
+					rm /tmp/ctrl2.txt					
+						
+					echo "Dispositivo " $par1 "  usuario " $par2 " Para confirmar el cambio diga control guardar" $par1  > /tmp/tmp.txt
+				else
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt						
+				;;
+			controlclave)
+				if [ `grep -c $par1 /tmp/ctrl.txt` -gt 0 ]
+				then
+					# leer linea de ctrl.txt y cambiar la que tiene $2 por $2:datos de clave
+					i=0
+					echo "" > /tmp/ctrl2.txt
+					while read line
+					do	
+						((i++))		
+						echo $line > /tmp/tmp.txt
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						then
+							# cambiar el campo 2 por el parametro $par2
+							string=`cat tmp.txt | cut -d":" -f7`
+							line=`cat tmp.txt | sed  -e "s/\$string/\$par2/"`	
+						fi
+						echo $line >> /tmp/ctrl2.txt
+					done < /tmp/ctrl.txt
+					cp /tmp/ctrl2.txt /tmp/ctrl.txt
+					rm /tmp/ctrl2.txt					
+						
+					echo "Dispositivo " $par1 " Clave de usuario " $par2 " Para confirmar el cambio diga control guardar" $par1  > /tmp/tmp.txt
+				else
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
+				fi
+				$ESPEAK < /tmp/tmp.txt						
+				;;
+			controlejecutar)
+				#Don't do anything here, do it after, helping in other case, with option usuario ayuda 
+				;;
+			controlayuda|else)
+				$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
+				$ESPEAK < /tmp/ctrl.txt
+				echo " Placas disponibles: " > /tmp/tmp.txt
+				grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
+				echo " Puertos disponibles: " >> /tmp/tmp.txt
+				grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
+				$ESPEAK > /tmp/tmp.txt
+				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
+				;;
+		esac
+				
+		if [ "$1" = "controlejecutar" ]
+		then
+			grep $par1 /tmp/usr.txt > /tmp/tmp.txt
+			if [ `grep -c "borrar" /tmp/tmp.txt` -gt 0 ]
+			then
+				/usr/local/opendomo/delControlDevice.sh $par1
+				echo "Dispositivo " $par1 " ha sido borrado " > /tmp/tmp.txt
+			elif [ `grep -c "nuevo" /tmp/tmp.txt` -gt 0 ]
+			then
+				card=`cat /tmp/tmp.txt | cut -d":" -f2`
+				port=`cat /tmp/tmp.txt | cut -d":" -f3`
+				time=`cat /tmp/tmp.txt | cut -d":" -f4`
+				IP=`cat /tmp/tmp.txt | cut -d":" -f5`
+				user=`cat /tmp/tmp.txt | cut -d":" -f6`
+				passwd=`cat /tmp/tmp.txt | cut -d":" -f7`
+				/usr/local/opendomo/addControlDevice.sh $par1 $card $port $time $ip $user $passwd
+				echo "Dispositivo " $par1 " ha sido creado " > /tmp/tmp.txt
+			else
+				card=`cat /tmp/tmp.txt | cut -d":" -f2`
+				port=`cat /tmp/tmp.txt | cut -d":" -f3`
+				time=`cat /tmp/tmp.txt | cut -d":" -f4`
+				IP=`cat /tmp/tmp.txt | cut -d":" -f5`
+				user=`cat /tmp/tmp.txt | cut -d":" -f6`
+				passwd=`cat /tmp/tmp.txt | cut -d":" -f7`
+				/usr/local/opendomo/configureControlPorts.sh $par1 $card $port $time $ip $user $passwd
+				echo "Dispositivo " $par1 " ha sido modificado " > /tmp/tmp.txt 
+			fi 			
+			$ESPEAK < /tmp/tmp.txt
+		else
+			$ESPEAK "Si necesita ayuda para modificar datos de dispositivo de control, diga control ayuda"
 		fi
 		;;
 	menu111)
