@@ -97,6 +97,51 @@ echo " puerta de enlace " $GW >> /etc/opendomo/speech/netmenu.txt
 echo " DNS " $DNS >> /etc/opendomo/speech/netmenu.txt
 rm tmp.txt
 
+#generate actual control device data
+# -available control cards
+# -available ports
+if  [ -f /etc/opendomo/speech/portmenu.txt ]
+then	
+	rm /etc/opendomo/speech/portmenu.txt
+fi
+touch /etc/opendomo/speech/portmenu.txt
+PS=""
+PORTS="/dev/dummy"
+#Cards available
+echo "Card:dummy:1" > /etc/opendomo/speech/portmenu.txt
+i=1
+
+if test -e /usr/bin/micropik
+then
+	((i++))
+	echo "Card:micropik:"$i >> /etc/opendomo/speech/portmenu.txt 
+	PS="`ls /dev/ttyS* 2>/dev/null | cut -c1-15` "      	
+fi
+if test -e /usr/bin/arduino
+then
+	((i++))
+	echo "Card:arduino:"$i >> /etc/opendomo/speech/portmenu.txt
+	PS="$PS `ls /dev/ttyU* 2>/dev/null | cut -c1-15`"        	
+fi
+if test -e /usr/bin/x10
+then
+	((i++))
+	echo "Card:x10:"$i >> /etc/opendomo/speech/portmenu.txt 
+	PS="$PS `/usr/bin/x10 -l 2>/dev/null`"       	
+fi
+if test -e /usr/bin/domino
+then
+	((i++))
+	echo "Card:domino:"$i >> /etc/opendomo/speech/portmenu.txt       	
+fi
+#Ports...if no new port, at least /dev/dummy
+i=1
+echo "Port:/dev/dummy:"$i >> /etc/opendomo/speech/portmenu.txt  
+for p in $PS; do
+        ((i++))
+	echo "Port:"$p":"$i >> /etc/opendomo/speech/portmenu.txt  
+done
+
 # Lights:
 grep -ir "light" /etc/opendomo/control/* | cut -d ":" -f1 - > tmp.txt
 if  [ -f /etc/opendomo/speech/light.conf ]

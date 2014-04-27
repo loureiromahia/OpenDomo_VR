@@ -8,7 +8,7 @@ valor (LINE Objeto)
   menu "$Objeto$"
 salvar <1,2,3,4>
   menu "$SPEECH$"
-voz (WORD Objeto)
+voz de (WORD Objeto)
   menu "$SPEECH$"
 volver
   menu 20
@@ -52,6 +52,39 @@ usuario ejecutar (LINE Objeto)
   menu usuarioejecutar "$Objeto$"
 usuario ayuda
   menu usuarioayuda
+control crear (LINE Objeto)
+  menu controlcrear "$Objeto$"
+control borrar (LINE Objeto)
+  menu controlborrar "$Objeto$"
+control placa (LINE Objeto)
+  menu controlplaca "$Objeto$"
+control puerto (LINE Objeto)
+  menu controlpuerto "$Objeto$"
+control refresco (LINE Objeto)
+  menu controlrefresco "$Objeto$"
+control IP (LINE Objeto)
+  menu controlIP "$Objeto$"
+control usuario (LINE Objeto)
+  menu controlusuario "$Objeto$"
+control clave (LINE Objeto)
+  menu controlclave "$Objeto$"
+control ejecutar (LINE Objeto)
+  menu controlejecutar "$Objeto$"
+control ayuda
+  menu controlayuda
+estado crear (LINE Objeto)
+  menu estadocrear "$Objeto$"
+estado borrar (LINE Objeto)
+  menu estadoborrar "$Objeto$"
+estado controladores (LINE Objeto)
+  menu estadocontrol "$Objeto$"
+estado servidor (LINE Objeto)
+  menu estadoservidor "$Objeto$"
+estado ejecutar (LINE Objeto)
+  menu estadoejecutar "$Objeto$"
+estado ayuda
+  menu estadoayuda
+
 
 
 

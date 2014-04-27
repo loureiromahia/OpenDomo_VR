@@ -1,6 +1,6 @@
 <#Plugin.info automatically generated
 name = menu
-version = 2.2
+version = 2.3
 file = menu
 configs = settings.conf
 author = M.Loureiro  
@@ -18,5 +18,6 @@ actions = Implemented:
         - Implemented configLocalNetwork.sh
 	- Implemented configureInterface.sh
         - Implemented manageUsers.sh
+	- Impelmented manageControlDevices.sh
 
 
