@@ -423,22 +423,22 @@ else
 			1)
 			$ESPEAK " Salvando configuracion actual con plugins"
 			echo "on" > /var/opendomo/tmp/savestatus
-			/usr/local/opendomo/saveSystemConfiguration.sh
+			/usr/local/opendomo/saveSystemConfig.sh
 			;;
 			2)
 			$ESPEAK " Salvando configuracion actual sin plugins"
 			echo "off" > /var/opendomo/tmp/savestatus
-			/usr/local/opendomo/saveSystemConfiguration.sh
+			/usr/local/opendomo/saveSystemConfig.sh
 			;;	
 			3)
 			$ESPEAK " Salvando configuracion de defecto con plugins"
 			echo "on" > /var/opendomo/tmp/savestatus
-			/usr/local/opendomo/loadDefaultConfiguration.sh
+			/usr/local/opendomo/loadDefaultConfig.sh
 			;;	
 			4)
 			$ESPEAK " Salvando configuracion de defecto sin plugins"
 			echo "off" > /var/opendomo/tmp/savestatus
-			/usr/local/opendomo/loadDefaultConfiguration.sh
+			/usr/local/opendomo/loadDefaultConfig.sh
 			;;	
 			else)
 			;;				
@@ -454,7 +454,8 @@ else
 		if [ `ls | grep -c $par3` -eq 1 ]
 		then				
 			/usr/local/opendomo/services/config/configureVoiceSystem.sh $par3
-			$ESPEAK "Cambiada la voz del personaje a " $par3
+			echo -n "Cambiada la voz del personaje a " > /tmp/tmp.txt
+			echo $par3 >> /tmp/tmp.txt
 		else
 			echo "No existe el personaje " $par3 > /tmp/tmp.txt
 			echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
@@ -466,9 +467,9 @@ else
 				echo -n " ,diga voz de " >> /tmp/tmp.txt
 				echo $voz >> /tmp/tmp.txt
 			done
-			$ESPEAK < /tmp/tmp.txt
-			rm /tmp/tmp.txt
-		fi		
+		fi
+		$ESPEAK < /tmp/tmp.txt		
+		rm /tmp/tmp.txt
 		;;
 	menu3xnet)
 		#First check actual configuration saved in /etc/opendomo/speech/netmenu.txt
