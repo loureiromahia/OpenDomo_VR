@@ -10,7 +10,7 @@ function Retrieve_initial_interface_data()
 		language="Castellano"
 		;;
 		ca)
-		language="Català"
+		language="Catalan"
 		;;
 		en)
 		language="English"
@@ -578,22 +578,22 @@ else
 		if [ "$1" = "interfazsalvar" ]
 		then
 			case "$language" in
-				Castellano|Castellano.|Spanish|Spanish.)
+				Castellano|Spanish)
 				langshort="es"
 				;;
-				Català|Català.)
+				Catalan)
 				langshort="ca"
 				;;
-				English|English.)
+				English)
 				langshort="en"
 				;;
-				Euskera|Euskera.)
+				Euskera)
 				langshort="eu"
 				;;
-				Francais|Francais.)
+				Francais)
 				langshort="fr"
 				;;
-				Galego|Galego.)
+				Galego)
 				langshort="ga"
 				;;
 				else)
