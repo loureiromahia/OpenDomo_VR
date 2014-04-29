@@ -565,7 +565,7 @@ else
 				
 		if [ "$1" = "interfazsalvar" ]
 		then
-			/usr/local/opendomo/services/config/configureInterface.shell $theme $skin $language
+			/usr/local/opendomo/services/config/configureInterface.sh $theme $skin $language
 			$ESPEAK "Los datos de configuracion de interfaz anteriores han sido salvados"
 		else
 			$ESPEAK "Si necesita ayuda para configurar el interfaz diga interfaz ayuda"

@@ -1,10 +1,10 @@
 #!/bin/bash
 function Retrieve_actual_interface_data()
 {
-	/usr/local/opendomo/services/config/configureInterface.sh > /tmp/tmp.txt
-	theme=`cat /tmp/tmp.txt | grep Theme | awk '{ print $4}'`
-	skin=`cat /tmp/tmp.txt | grep Skin | awk '{ print $4}'`
-	langshort=`cat /tmp/tmp.txt | grep Language | awk '{ print $6}'`
+	
+	theme=`cat /tmp/itf.txt | grep Theme | awk '{ print $4}'`
+	skin=`cat /tmp/itf.txt | grep Skin | awk '{ print $4}'`
+	langshort=`cat /tmp/itf.txt | grep Language | awk '{ print $6}'`
 	case $langshort in
 		es)
 		language="Castellano"
@@ -28,16 +28,19 @@ function Retrieve_actual_interface_data()
 		;;
 	esac
 }
+#**************************************************************************************
 function Inform_about_interface_actual_data ()
 {
-				echo "Configuracion de interface actual" > /tmp/tmp.txt
-				echo "Tema: " $theme >> /tmp/tmp.txt
-				echo "Piel: " $skin >> /tmp/tmp.txt
-				echo "Idioma: " $language >> /tmp/tmp.txt
-				$ESPEAK < /tmp/tmp.txt
-				rm /tmp/tmp.txt
+				echo "Configuracion de interface actual" > /tmp/itf.txt
+				echo "Tema: " $theme >> /tmp/itf.txt
+				echo "Piel: " $skin >> /tmp/itf.txt
+				echo "Idioma: " $language >> /tmp/itf.txt
+				$ESPEAK < /tmp/itf.txt
+				
 }
+#**************************************************************************************
 #main
+#**************************************************************************************
 read ESPEAK < /etc/opendomo/speech/espeak.dat
 read menu < /usr/local/opendomo/vr/MENU
 if [ "$1" = "0" ]
@@ -294,6 +297,7 @@ else
 				;;
 			configureInterface.sh)
 				echo "menu3xitf" > /usr/local/opendomo/vr/MENU
+				/usr/local/opendomo/services/config/configureInterface.sh > /tmp/itf.txt
 				Retrieve_actual_interface_data
 				Inform_about_interface_actual_data
 				$ESPEAK < /etc/opendomo/speech/INTERFACE
@@ -565,7 +569,7 @@ else
 				
 		if [ "$1" = "interfazsalvar" ]
 		then
-			/usr/local/opendomo/services/config/configureInterface.shell $theme $skin $language
+			/usr/local/opendomo/services/config/configureInterface.sh $theme $skin $language
 			$ESPEAK "Los datos de configuracion de interfaz anteriores han sido salvados"
 		else
 			$ESPEAK "Si necesita ayuda para configurar el interfaz diga interfaz ayuda"
