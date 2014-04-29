@@ -574,26 +574,26 @@ else
 				;;
 		esac
 		Inform_about_interface_actual_data
-				
+		#Nota: Si venimos de configuración inicial , el idioma está almacenado con . al fina: Eukera. Si se configura por 			#el usuario viene sin . ....Cosas que hay que hacer...fine tunning		
 		if [ "$1" = "interfazsalvar" ]
 		then
 			case $language in
-				Castellano)
+				Castellano|Castellano.)
 				langshort="es"
 				;;
-				Catalá)
+				Catalá|Catalá.)
 				langshort="ca"
 				;;
-				English)
+				English|English.)
 				langshort= "en"
 				;;
-				Euskera)
+				Euskera|Euskera.)
 				langshort="eu"
 				;;
-				Francais)
+				Francais|Francais.)
 				langshort="fr"
 				;;
-				Galego)
+				Galego|Galego.)
 				langshort="ga"
 				;;
 				else)
