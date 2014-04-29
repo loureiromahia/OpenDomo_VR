@@ -55,7 +55,7 @@ done < tmp.txt
 rm tmp.txt
 
 cd /etc/opendomo/langfiles
-cat available | sed 's/,/./g' | sed 's/..:/Configuracion de idioma. Diga interfaz idioma 1, para /' |sed 's/..:/ Diga interfaz idioma 2, para /' |sed 's/..:/ Diga interfaz idioma 3, para /' |sed 's/..:/ Diga interfaz idioma 4, para /' |sed 's/..:/ Diga interfaz idioma 5, para /' |sed 's/..:/ Diga interfaz idioma 6, para /'|sed 's/..:/ Diga interfaz idioma 7: para /' |sed 's/ Diga/\n&/g'    >> /etc/opendomo/speech/INTERFACE
+cat available | sed 's/Català/Catalan/g' | sed 's/,/ ./g' | sed 's/..:/Configuracion de idioma. Diga interfaz idioma 1, para /' |sed 's/..:/ Diga interfaz idioma 2, para /' |sed 's/..:/ Diga interfaz idioma 3, para /' |sed 's/..:/ Diga interfaz idioma 4, para /' |sed 's/..:/ Diga interfaz idioma 5, para /' |sed 's/..:/ Diga interfaz idioma 6, para /'|sed 's/..:/ Diga interfaz idioma 7: para /' |sed 's/ Diga/\n&/g'    >> /etc/opendomo/speech/INTERFACE
 echo >> /etc/opendomo/speech/INTERFACE
 echo "Para salvar configuracion interfaz, diga interfaz salvar" >> /etc/opendomo/speech/INTERFACE
 
