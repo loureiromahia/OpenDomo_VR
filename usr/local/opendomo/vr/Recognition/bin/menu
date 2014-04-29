@@ -1,5 +1,5 @@
 #!/bin/bash
-function Retrieve_actual_interface_data()
+function Retrieve_initial_interface_data()
 {
 	
 	theme=`cat /tmp/itf.txt | grep Theme | awk '{ print $4}'`
@@ -13,7 +13,7 @@ function Retrieve_actual_interface_data()
 		language="Catalá"
 		;;
 		en)
-		language= "English"
+		language="English"
 		;;
 		eu)
 		language="Euskera"
@@ -27,6 +27,14 @@ function Retrieve_actual_interface_data()
 		else)
 		;;
 	esac
+}
+#**************************************************************************************
+function Retrieve_actual_interface_data()
+{
+	
+	theme=`cat /tmp/itf.txt | grep Tema | awk '{ print $2}'`
+	skin=`cat /tmp/itf.txt | grep Piel | awk '{ print $2}'`
+	language=`cat /tmp/itf.txt | grep Idioma | awk '{ print $2}'`
 }
 #**************************************************************************************
 function Inform_about_interface_actual_data ()
@@ -569,7 +577,29 @@ else
 				
 		if [ "$1" = "interfazsalvar" ]
 		then
-			/usr/local/opendomo/services/config/configureInterface.sh $theme $skin $language
+			case $language in
+				Castellano)
+				langshort="es"
+				;;
+				Catalá)
+				langshort="ca"
+				;;
+				English)
+				langshort= "en"
+				;;
+				Euskera)
+				langshort="eu"
+				;;
+				Francais)
+				langshort="fr"
+				;;
+				Galego)
+				langshort="ga"
+				;;
+				else)
+				;;
+			esac			
+			/usr/local/opendomo/services/config/configureInterface.sh $theme $skin $langshort
 			$ESPEAK "Los datos de configuracion de interfaz anteriores han sido salvados"
 		else
 			$ESPEAK "Si necesita ayuda para configurar el interfaz diga interfaz ayuda"

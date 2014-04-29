@@ -1,10 +1,10 @@
 #!/bin/bash
-function Retrieve_actual_interface_data()
+function Retrieve_initial_interface_data()
 {
-	/usr/local/opendomo/services/config/configureInterface.sh > /tmp/tmp.txt
-	theme=`cat /tmp/tmp.txt | grep Theme | awk '{ print $4}'`
-	skin=`cat /tmp/tmp.txt | grep Skin | awk '{ print $4}'`
-	langshort=`cat /tmp/tmp.txt | grep Language | awk '{ print $6}'`
+	
+	theme=`cat /tmp/itf.txt | grep Theme | awk '{ print $4}'`
+	skin=`cat /tmp/itf.txt | grep Skin | awk '{ print $4}'`
+	langshort=`cat /tmp/itf.txt | grep Language | awk '{ print $6}'`
 	case $langshort in
 		es)
 		language="Castellano"
@@ -13,7 +13,7 @@ function Retrieve_actual_interface_data()
 		language="Catalá"
 		;;
 		en)
-		language= "English"
+		language="English"
 		;;
 		eu)
 		language="Euskera"
@@ -28,16 +28,27 @@ function Retrieve_actual_interface_data()
 		;;
 	esac
 }
+#**************************************************************************************
+function Retrieve_actual_interface_data()
+{
+	
+	theme=`cat /tmp/itf.txt | grep Tema | awk '{ print $2}'`
+	skin=`cat /tmp/itf.txt | grep Piel | awk '{ print $2}'`
+	language=`cat /tmp/itf.txt | grep Idioma | awk '{ print $2}'`
+}
+#**************************************************************************************
 function Inform_about_interface_actual_data ()
 {
-				echo "Configuracion de interface actual" > /tmp/tmp.txt
-				echo "Tema: " $theme >> /tmp/tmp.txt
-				echo "Piel: " $skin >> /tmp/tmp.txt
-				echo "Idioma: " $language >> /tmp/tmp.txt
-				$ESPEAK < /tmp/tmp.txt
-				rm /tmp/tmp.txt
+				echo "Configuracion de interface actual" > /tmp/itf.txt
+				echo "Tema: " $theme >> /tmp/itf.txt
+				echo "Piel: " $skin >> /tmp/itf.txt
+				echo "Idioma: " $language >> /tmp/itf.txt
+				$ESPEAK < /tmp/itf.txt
+				
 }
+#**************************************************************************************
 #main
+#**************************************************************************************
 read ESPEAK < /etc/opendomo/speech/espeak.dat
 read menu < /usr/local/opendomo/vr/MENU
 if [ "$1" = "0" ]
@@ -294,6 +305,7 @@ else
 				;;
 			configureInterface.sh)
 				echo "menu3xitf" > /usr/local/opendomo/vr/MENU
+				/usr/local/opendomo/services/config/configureInterface.sh > /tmp/itf.txt
 				Retrieve_actual_interface_data
 				Inform_about_interface_actual_data
 				$ESPEAK < /etc/opendomo/speech/INTERFACE
@@ -565,7 +577,29 @@ else
 				
 		if [ "$1" = "interfazsalvar" ]
 		then
-			/usr/local/opendomo/services/config/configureInterface.sh $theme $skin $language
+			case $language in
+				Castellano)
+				langshort="es"
+				;;
+				Catalá)
+				langshort="ca"
+				;;
+				English)
+				langshort= "en"
+				;;
+				Euskera)
+				langshort="eu"
+				;;
+				Francais)
+				langshort="fr"
+				;;
+				Galego)
+				langshort="ga"
+				;;
+				else)
+				;;
+			esac			
+			/usr/local/opendomo/services/config/configureInterface.sh $theme $skin $langshort
 			$ESPEAK "Los datos de configuracion de interfaz anteriores han sido salvados"
 		else
 			$ESPEAK "Si necesita ayuda para configurar el interfaz diga interfaz ayuda"
