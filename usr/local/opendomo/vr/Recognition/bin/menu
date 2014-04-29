@@ -306,7 +306,7 @@ else
 			configureInterface.sh)
 				echo "menu3xitf" > /usr/local/opendomo/vr/MENU
 				/usr/local/opendomo/services/config/configureInterface.sh > /tmp/itf.txt
-				Retrieve_actual_interface_data
+				Retrieve_initial_interface_data
 				Inform_about_interface_actual_data
 				$ESPEAK < /etc/opendomo/speech/INTERFACE
 				;;
