@@ -86,6 +86,16 @@ then
 		$ESPEAK < /etc/opendomo/speech/configmenu.txt
 		echo "menu3" > /usr/local/opendomo/vr/MENU
 		;;
+	menu3xstatmod)
+		#20 ==> Volver
+		$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
+		#create temporary file for keeping provisional states data, until new states data data is saved 
+		ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
+		$ESPEAK < /tmp/stat.txt
+		/usr/local/opendomo/vr/espeak.sh MenuStatConfig
+		$ESPEAK < /etc/opendomo/speech/configmenu.txt
+		echo "menu3xstat" > /usr/local/opendomo/vr/MENU
+		;;
 	menu111|menu112|menu113|menu114|menu115|menu116|menu117)
 		# This option, restarts MENU, to the previous level	
 		/usr/local/opendomo/vr/espeak.sh Menu11e
@@ -181,13 +191,6 @@ then
 		$ESPEAK < /tmp/usr.txt
 		/usr/local/opendomo/vr/espeak.sh MenuUserConfig		
 		;;
-	menu3xstat)
-		$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
-		#create temporary file for keeping provisional states data, until new states data data is saved 
-		ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
-		$ESPEAK < /tmp/stat.txt
-		/usr/local/opendomo/vr/espeak.sh MenuStatConfig
-		;;
 	menu3xctl)
 		$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
 		$ESPEAK < /tmp/ctrl.txt
@@ -204,6 +207,15 @@ then
 		ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 		$ESPEAK < /tmp/stat.txt
 		/usr/local/opendomo/vr/espeak.sh MenuStatConfig
+		;;
+	menu3xstatmod)
+		$ESPEAK "Menu de configuracion de un estado del sistema "
+		estado=`cat /var/opendomo/tmp/state.tmp` 
+		echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
+		cat /tmp/stat2.txt >> /tmp/tmp.txt
+		echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demminio " >> /tmp/tmp.txt
+		echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
+		$ESPEAK < /tmp/tmp.txt
 		;;
 	esac
 
@@ -348,7 +360,7 @@ else
 				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
 				;;
 			manageSystemStates.sh)
-				echo "menu3xsta" > /usr/local/opendomo/vr/MENU
+				echo "menu3xstat" > /usr/local/opendomo/vr/MENU
 				#List actual control data
 				$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
 				#create temporary file for keeping provisional states data, until new states data data is saved 
@@ -588,7 +600,8 @@ else
 				;;
 		esac
 		Inform_about_interface_actual_data
-		#Nota: Si venimos de configuración inicial , el idioma está almacenado con . al fina: Eukera. Si se configura por 			# el usuario viene sin . ....Cosas que hay que hacer...fine tunning		
+		#Nota: Si venimos de configuración inicial , el idioma está almacenado con . al final: Eukera. Si se configura por 			
+		# el usuario viene sin . ....Cosas que hay que hacer...fine tunning		
 		if [ "$1" = "interfazsalvar" ]
 		then
 			case "$language" in
@@ -787,9 +800,10 @@ else
 			$ESPEAK "Si necesita ayuda para modificar datos de usuario, diga usuario ayuda"
 		fi
 		;;
-#Control devices
+	#Control devices
 	menu3xctl)
-		#data for new user is in /tmp/ctrl.txt. Data is structured in : 					   			# devicename:cardtype:port:refresh:IP:user:password:borrar/crear
+	#data for new user is in /tmp/ctrl.txt. Data is structured in : 					   			
+	#devicename:cardtype:port:refresh:IP:user:password:borrar/crear
 		par1=`echo $2 |cut -d " " -f1`
 		# To avoid problems with capitals, let'sfix all data to caps off
 		par1=${par1,,} 
@@ -1077,7 +1091,7 @@ else
 					/usr/local/opendomo/delSystemState.sh $par1
 					ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 					#Si sigue estando, porque hubo un error en delSystemState.sh no ha sido borrado.
-					.if [ `grep -c $par1 /tmp/stat.txt` -gt 0 ]
+					if [ `grep -c $par1 /tmp/stat.txt` -gt 0 ]
 					then
 						echo "Estado " $par1 " No ha sido borrado " > /tmp/tmp.txt
 					else
@@ -1142,7 +1156,7 @@ else
 					
 						/usr/local/opendomo/editSystemState.sh $daemon "off"
 					fi
-				done /tmp/stat2.txt
+				done < /tmp/stat2.txt
 				echo "Estado " $par1 " con los siguientes datos "  > /tmp/tmp.txt
 				cat /tmp/stat2.txt >> /tmp/tmp.txt 
 				echo " Ha sido modificado" >> /tmp/tmp.txt
@@ -1150,7 +1164,7 @@ else
 				;;
 		esac
 		;;
-#Menu de configuracion de un estado particular del sistema
+	#Menu de configuracion de un estado particular del sistema
 	menu3statmod)	
 		par1=`echo $2 |cut -d " " -f1 -`
 		par2=`echo $2 |cut -d " " -f2 -`
@@ -1175,7 +1189,7 @@ else
 					else
 						echo $line >> /tmp/tmp2.txt
 					fi
-				done /tmp/stat2.txt
+				done < /tmp/stat2.txt
 				cp /tmp/tmp2.txt /tmp/stat2.txt
 				rm /tmp/tmp2.txt
 				echo " El estado " $estado " ha sido marcado para modificacion. Valores actuales: " > /tmp/tmp.txt
@@ -1187,7 +1201,7 @@ else
 				cat /tmp/stat2.txt >> /tmp/tmp.txt
 				echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demminio " >> /tmp/tmp.txt
 				echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
-				::
+				;;
 			esac
 		echo " Para volver al menu anterior, diga , volver. Para salir del modo menu, diga , salir " >> /tmp/tmp.txt
 		$ESPEAK < /tmp/tmp.txt	
