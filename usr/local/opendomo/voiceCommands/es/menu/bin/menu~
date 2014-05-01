@@ -88,12 +88,10 @@ then
 		;;
 	menu3xstatmod)
 		#20 ==> Volver
-		$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
+		$ESPEAK "Menu de configuracion de estados del sistema. Estados actuales "
 		#create temporary file for keeping provisional states data, until new states data data is saved 
 		ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 		$ESPEAK < /tmp/stat.txt
-		/usr/local/opendomo/vr/espeak.sh MenuStatConfig
-		$ESPEAK < /etc/opendomo/speech/configmenu.txt
 		echo "menu3xstat" > /usr/local/opendomo/vr/MENU
 		;;
 	menu111|menu112|menu113|menu114|menu115|menu116|menu117)
@@ -213,7 +211,7 @@ then
 		estado=`cat /var/opendomo/tmp/state.tmp` 
 		echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
 		cat /tmp/stat2.txt >> /tmp/tmp.txt
-		echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demminio " >> /tmp/tmp.txt
+		echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demonio " >> /tmp/tmp.txt
 		echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 		$ESPEAK < /tmp/tmp.txt
 		;;
@@ -1108,12 +1106,9 @@ else
 				if [ `grep -c $par1 /tmp/stat.txt` -gt 0 ]
 				then
 					#preparamos la modificacion. Se acualiza /var/opendomo/tmp/state.tmp
-					/usr/local/opendomo/editSystemState.sh $par1
-					/usr/local/opendomo/manageSystemStates.sh $par1 > /tmp/tmp.txt
-					grep subcommand /tmp/stat2.txt | awk '{print $1} ' > /tmp/tmp.txt
-					# leer linea de tmp.txt y ver si está activo (creado el subdirectorio en /etc/opendomo/states/$par1)
+					/usr/local/opendomo/editSystemState.sh $par1 |grep subcommand  | awk '{print $1} ' > /tmp/tmp.txt
 					i=0
-					echo "" > /tmp/stat2.txt
+					echo -n "" > /tmp/stat2.txt
 					while read line
 					do	
 						((i++))		
@@ -1157,9 +1152,8 @@ else
 						/usr/local/opendomo/editSystemState.sh $daemon "off"
 					fi
 				done < /tmp/stat2.txt
-				echo "Estado " $par1 " con los siguientes datos "  > /tmp/tmp.txt
+				echo "Estado " $par1 " ha sido guardado, con los siguientes datos "  > /tmp/tmp.txt
 				cat /tmp/stat2.txt >> /tmp/tmp.txt 
-				echo " Ha sido modificado" >> /tmp/tmp.txt
 				$ESPEAK < /tmp/tmp.txt	
 				;;
 		esac
@@ -1174,17 +1168,19 @@ else
 		case "$1" in
 			estadoactivar|estadodesactivar)				
 				i=0
-				echo "" > /tmp/tmp2.txt
+				echo -n "" > /tmp/tmp2.txt
 				while read line
 				do	
 					((i++))		
 					if [ "$i" == "$par3" ]
 					then
+						daemon=`echo $line | cut -d" " -f1`
+						echo -n $daemon >> /tmp/tmp2.txt
 						if [ "$1" == "estadoactivar" ]
 						then
 							echo " valor " $i " estado activo : si " >> /tmp/tmp2.txt
 						else 
-							echo " valor " $i " estado activo : si " >> /tmp/tmp2.txt
+							echo " valor " $i " estado activo : no " >> /tmp/tmp2.txt
 						fi					
 					else
 						echo $line >> /tmp/tmp2.txt
@@ -1197,24 +1193,27 @@ else
 				echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 				;;
 			estadoejecutar)
-				i=0
-				while read line
-				do	
-					((i++))		
-					daemon=`echo $line | awk ' {print $1}'`
-					valor=`echo $line | awk ' {print $7}'`
-					if [ "$valor" = "si" ]
-					then
-						/usr/local/opendomo/editSystemState.sh $daemon "on"
-					else
-					
-						/usr/local/opendomo/editSystemState.sh $daemon "off"
-					fi
-				done < /tmp/stat2.txt
-				echo "Estado " $estado " con los siguientes datos "  > /tmp/tmp.txt
-				cat /tmp/stat2.txt >> /tmp/tmp.txt 
-				echo " Ha sido modificado" >> /tmp/tmp.txt
-				$ESPEAK < /tmp/tmp.txt	
+				if [ "$estado" == "$par1" ]
+				then				
+					i=0
+					while read line
+					do	
+						((i++))		
+						daemon=`echo $line | awk ' {print $1}'`
+						valor=`echo $line | awk ' {print $7}'`
+						if [ "$valor" = "si" ]
+						then
+							/usr/local/opendomo/editSystemState.sh $daemon "on"
+						else
+							/usr/local/opendomo/editSystemState.sh $daemon "off"
+						fi
+					done < /tmp/stat2.txt
+					echo "Estado " $estado " ha sido guardado, con los siguientes datos "  > /tmp/tmp.txt
+					cat /tmp/stat2.txt >> /tmp/tmp.txt
+				else
+					echo "Estado " $par1 " no esta preparado para modificar " > /tmp/tmp.txt
+					echo "Solo puede modificar el estado " $estado >> /tmp/tmp.txt					 
+				fi
 				;;
 			else)
 				echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
