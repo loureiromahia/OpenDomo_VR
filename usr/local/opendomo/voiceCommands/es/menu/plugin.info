@@ -18,6 +18,7 @@ actions = Implemented:
         - Implemented configLocalNetwork.sh
 	- Implemented configureInterface.sh
         - Implemented manageUsers.sh
-	- Impelmented manageControlDevices.sh
+	- Implemented manageControlDevices.sh
+        - Implemented manageSystemStaets.sh
 
 
