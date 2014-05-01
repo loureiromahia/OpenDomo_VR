@@ -209,15 +209,13 @@ then
 		/usr/local/opendomo/vr/espeak.sh MenuStatConfig
 		;;
 	menu3xstatmod)
-		$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
+		$ESPEAK "Menu de configuracion de un estado del sistema "
+		estado=`cat /var/opendomo/tmp/state.tmp` 
 		echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
 		cat /tmp/stat2.txt >> /tmp/tmp.txt
 		echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demminio " >> /tmp/tmp.txt
 		echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
-		#create temporary file for keeping provisional states data, until new states data data is saved 
-		ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
-		$ESPEAK < /tmp/stat.txt
-		/usr/local/opendomo/vr/espeak.sh MenuStatConfig
+		$ESPEAK < /tmp/tmp.txt
 		;;
 	esac
 
@@ -1068,7 +1066,7 @@ else
 		fi
 		;;
 #Menu de configuracion general de estados del sistema
-	menu3stat)	
+	menu3xstat)	
 		par1=`echo $2 |cut -d " " -f1 -`
 		par2=`echo $2 |cut -d " " -f2 -`
 		par3=`echo $2 |cut -d " " -f3 -`
@@ -1119,7 +1117,7 @@ else
 					while read line
 					do	
 						((i++))		
-						echo $line > /tmp/tmp2.txt
+						echo -n $line > /tmp/tmp2.txt
 						if test -f /etc/opendomo/states/$par1/$line ;
 						then
 							echo " valor " $i " estado activo : si " >> /tmp/tmp2.txt
@@ -1138,7 +1136,7 @@ else
 				$ESPEAK < /tmp/tmp.txt	
 				;;
 			estadoayuda|else)
-				$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
+				$ESPEAK "Menu de configuracion de estados del sistema. Estados actuales "
 				#create temporary file for keeping provisional states data, until new states data data is saved 
 			  	ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 				$ESPEAK < /tmp/stat.txt
@@ -1150,8 +1148,8 @@ else
 				do	
 					((i++))		
 					daemon=`echo $line | awk ' {print $1}'`
-					estado=`echo $line | awk ' {print $7}'`
-					if [ "$estado" = "si" ]
+					valor=`echo $line | awk ' {print $7}'`
+					if [ "$valor" = "si" ]
 					then
 						/usr/local/opendomo/editSystemState.sh $daemon "on"
 					else
@@ -1167,7 +1165,7 @@ else
 		esac
 		;;
 	#Menu de configuracion de un estado particular del sistema
-	menu3statmod)	
+	menu3xstatmod)	
 		par1=`echo $2 |cut -d " " -f1 -`
 		par2=`echo $2 |cut -d " " -f2 -`
 		par3=`echo $2 |cut -d " " -f3 -`
@@ -1198,10 +1196,30 @@ else
 				cat /tmp/stat2.txt >> /tmp/tmp.txt
 				echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 				;;
+			estadoejecutar)
+				i=0
+				while read line
+				do	
+					((i++))		
+					daemon=`echo $line | awk ' {print $1}'`
+					valor=`echo $line | awk ' {print $7}'`
+					if [ "$valor" = "si" ]
+					then
+						/usr/local/opendomo/editSystemState.sh $daemon "on"
+					else
+					
+						/usr/local/opendomo/editSystemState.sh $daemon "off"
+					fi
+				done < /tmp/stat2.txt
+				echo "Estado " $estado " con los siguientes datos "  > /tmp/tmp.txt
+				cat /tmp/stat2.txt >> /tmp/tmp.txt 
+				echo " Ha sido modificado" >> /tmp/tmp.txt
+				$ESPEAK < /tmp/tmp.txt	
+				;;
 			else)
 				echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
 				cat /tmp/stat2.txt >> /tmp/tmp.txt
-				echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demminio " >> /tmp/tmp.txt
+				echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demonio " >> /tmp/tmp.txt
 				echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 				;;
 			esac
