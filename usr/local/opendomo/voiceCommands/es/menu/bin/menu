@@ -81,7 +81,7 @@ then
 		/usr/local/opendomo/vr/espeak.sh Menu1e
 		echo "menu1" > /usr/local/opendomo/vr/MENU
 		;;
-	menu3xconf|menu3xvoice|menu3xnet|menu3xitf|menu3xuser|menu3xctl|menu3xstat)
+	menu3xconf|menu3xvoice|menu3xnet|menu3xitf|menu3xuser|menu3xctl|menu3xstat|menu3xplug)
 		#20 ==> Volver
 		$ESPEAK < /etc/opendomo/speech/configmenu.txt
 		echo "menu3" > /usr/local/opendomo/vr/MENU
@@ -211,9 +211,15 @@ then
 		estado=`cat /var/opendomo/tmp/state.tmp` 
 		echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
 		cat /tmp/stat2.txt >> /tmp/tmp.txt
-		echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demonio " >> /tmp/tmp.txt
+		echo " Diga , estado activar numero para activar un demonio, o , estado desactivar numero para desactivar un demonio " >> /tmp/tmp.txt
 		echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 		$ESPEAK < /tmp/tmp.txt
+		;;
+	menu3xplug)
+		$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
+		#create temporary file for keeping provisional states data, until new states data data is saved 
+		$ESPEAK < /tmp/plugin.txt
+		/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
 		;;
 	esac
 
@@ -360,13 +366,37 @@ else
 			manageSystemStates.sh)
 				echo "menu3xstat" > /usr/local/opendomo/vr/MENU
 				#List actual control data
-				$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
+				$ESPEAK "Menu de configuracion de estados del sistema. Estados actuales "
 				#create temporary file for keeping provisional states data, until new states data data is saved 
 			  	ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 				$ESPEAK < /tmp/stat.txt
 				/usr/local/opendomo/vr/espeak.sh MenuStatConfig
 				;;
+			managePlugins.sh)
+				echo "menu3xplug" > /usr/local/opendomo/vr/MENU
+				#List actual plugin data
+				$ESPEAK "Menu de configuracion de complementos o plugins del sistema. Complementos actuales "
+				#create temporary file for keeping provisional states data, until new states data data is saved 
+			  	/usr/local/opendomo/managePlugins.sh | grep "image plugin" > /tmp/tmp.txt
+				i=0
+				echo -n "" > /tmp/plugin.txt				
+				while read line 
+				do
+					plugin=`echo $line | awk '{print $1}'`
+					echo -n $plugin >> /tmp/plugin.txt
+					if [ `echo $line | grep -c "new"` -gt 0 ]
+					then
+						echo " numero:" $i " estado no instalado" >> /tmp/plugin.txt
+					else	
+						echo " numero:" $i " estado instalado" >> /tmp/plugin.txt
+					fi
+				done < /tmp/tmp.txt
+				rm /tmp/tmp.txt
+				$ESPEAK < /tmp/plugin.txt
+				/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
+				;;
 			else)
+				$ESPEAK " Opcion no implementada "
 				;;
 		esac
 		;;
@@ -1093,7 +1123,7 @@ else
 					then
 						echo "Estado " $par1 " No ha sido borrado " > /tmp/tmp.txt
 					else
-							echo "Estado " $par1 " Ha sido borrado"  > /tmp/tmp.txt
+						echo "Estado " $par1 " Ha sido borrado"  > /tmp/tmp.txt
 					fi
 				else
 					echo "El estado " $par1 " no existe" > /tmp/tmp.txt
@@ -1115,15 +1145,16 @@ else
 						echo -n $line > /tmp/tmp2.txt
 						if test -f /etc/opendomo/states/$par1/$line ;
 						then
-							echo " valor " $i " estado activo : si " >> /tmp/tmp2.txt
+							echo " numero " $i " estado activo : si " >> /tmp/tmp2.txt
 						else
-							echo " valor " $i " estado activo : no" >> /tmp/tmp2.txt
+							echo " numero " $i " estado activo : no" >> /tmp/tmp2.txt
 						fi
 						cat /tmp/tmp2.txt >> /tmp/stat2.txt
 						rm /tmp/tmp2.txt
 					done < /tmp/tmp.txt				
 					echo "Estado " $par1 " estado actual de demonios "  > /tmp/tmp.txt
 					cat /tmp/stat2.txt >> /tmp/tmp.txt 
+					echo " Diga , estado activar numero para activar un demonio, o , estado desactivar numero para desactivar un demonio " >> /tmp/tmp.txt
 					echo "menu3xstatmod" > /usr/local/opendomo/vr/MENU
 				else
 					echo "El estado " $par1 " no existe" >> /tmp/tmp.txt
@@ -1178,9 +1209,9 @@ else
 						echo -n $daemon >> /tmp/tmp2.txt
 						if [ "$1" == "estadoactivar" ]
 						then
-							echo " valor " $i " estado activo : si " >> /tmp/tmp2.txt
+							echo " numero " $i " estado activo : si " >> /tmp/tmp2.txt
 						else 
-							echo " valor " $i " estado activo : no " >> /tmp/tmp2.txt
+							echo " numero " $i " estado activo : no " >> /tmp/tmp2.txt
 						fi					
 					else
 						echo $line >> /tmp/tmp2.txt
@@ -1218,13 +1249,60 @@ else
 			else)
 				echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
 				cat /tmp/stat2.txt >> /tmp/tmp.txt
-				echo " Diga , estado activar valor para activar un demonio, o , estado desactivar valor para desactivar un demonio " >> /tmp/tmp.txt
+				echo " Diga , estado activar numero para activar un demonio, o , estado desactivar numero para desactivar un demonio " >> /tmp/tmp.txt
 				echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 				;;
 			esac
 		echo " Para volver al menu anterior, diga , volver. Para salir del modo menu, diga , salir " >> /tmp/tmp.txt
 		$ESPEAK < /tmp/tmp.txt	
 		;;
+	#Menu de configuracion general de plugins del sistema
+	menu3xplug)	
+			case "$1" in
+				pluginact)
+					par1=`echo $2 |cut -d " " -f1 -`
+					if [ `grep -c ":"$par1 /tmp/plugin.txt` -gt 0 ]
+					then		
+						plugin=`grep ":"$par1 /tmp/plugin.txt | awk '{print $1}'`	
+						if [`grep ":"$par1 /tmp/plugin.txt | grep "new"` -gt 0 ]
+						then
+							/usr/local/opendomo/installPlugin.sh $par1
+							echo "El complemento " $par1 " ha sido instalado " > /tmp/tmp.txt 
+						else
+							echo "El complemento " $par1 " ya esta instalado" >> /tmp/tmp.txt
+						fi
+					else
+						echo " No existe el numero de complemento " $par1 > /tmp/tmp.txt
+					fi	
+					$ESPEAK < /tmp/tmp.txt	
+					;;
+				plugindeact)
+					par1=`echo $2 |cut -d " " -f1 -`
+					if [ `grep -c ":"$par1 /tmp/plugin.txt` -gt 0 ]
+					then	
+						if [`grep ":"$par1 /tmp/plugin.txt | grep "installed"` -gt 0 ]
+						then
+							/usr/local/opendomo/removePlugin.sh $par1
+							echo "El complemento " $par1 " ha sido eliminado " > /tmp/tmp.txt 
+						else
+							echo "El complemento " $par1 " no esta instalado" >> /tmp/tmp.txt
+						fi
+					else
+						echo " No existe el numero de complemento " $par1 > /tmp/tmp.txt
+					fi	
+					$ESPEAK < /tmp/tmp.txt		
+					;;
+				pluginupd)
+					usr/local/opendomo/updatePlugins.sh
+					$ESPEAK  " Los complementos han sido actualizados con las ultimas versiones oficiales"
+					;;
+				pluginayuda|else)
+					$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
+					$ESPEAK < /tmp/plugin.txt
+					/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
+					;;
+			esac
+			;;
 	menu111)
 		#Here, use original string($1).No "opcion" prefix in this case prefix is "activar/desactivar"
 		#Fields <activar/desactivar> nrzone  

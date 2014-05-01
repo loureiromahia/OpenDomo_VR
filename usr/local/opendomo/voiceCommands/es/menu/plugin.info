@@ -20,5 +20,6 @@ actions = Implemented:
         - Implemented manageUsers.sh
 	- Implemented manageControlDevices.sh
         - Implemented manageSystemStaets.sh
+	- Implemented managePlugins.sh
 
 

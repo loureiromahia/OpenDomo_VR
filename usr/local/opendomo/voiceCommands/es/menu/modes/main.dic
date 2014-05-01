@@ -86,6 +86,14 @@ estado activar <1,2,3,4,5,6,7,8,9>
    menu estadoactivar "$SPEECH$"  
 estado desactivar <1,2,3,4,5,6,7,8,9>
    menu estadodesactivar "$SPEECH$"  
+complemento activar (LINE Objeto)
+  menu pluginact "$Objeto$"
+complemento desactivar (LINE Objeto)
+  menu plugindeact "$Objeto$"
+complemento actualizar 
+  menu pluginupd 
+complemento ayuda
+  menu pluginayuda
 
 
 
