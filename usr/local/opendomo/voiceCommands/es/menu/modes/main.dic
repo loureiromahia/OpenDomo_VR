@@ -92,6 +92,8 @@ complemento desactivar (LINE Objeto)
   menu plugindeact "$Objeto$"
 complemento actualizar 
   menu pluginupd 
+sistema actualizar 
+  menu systemupd 
 complemento ayuda
   menu pluginayuda
 

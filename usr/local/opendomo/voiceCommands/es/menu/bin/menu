@@ -382,13 +382,14 @@ else
 				echo -n "" > /tmp/plugin.txt				
 				while read line 
 				do
+					((i++))	
 					plugin=`echo $line | awk '{print $1}'`
 					echo -n $plugin >> /tmp/plugin.txt
 					if [ `echo $line | grep -c "new"` -gt 0 ]
 					then
-						echo " numero:" $i " estado no instalado" >> /tmp/plugin.txt
+						echo " numero " $i " estado no instalado" >> /tmp/plugin.txt
 					else	
-						echo " numero:" $i " estado instalado" >> /tmp/plugin.txt
+						echo " numero " $i " estado instalado" >> /tmp/plugin.txt
 					fi
 				done < /tmp/tmp.txt
 				rm /tmp/tmp.txt
@@ -1261,15 +1262,15 @@ else
 			case "$1" in
 				pluginact)
 					par1=`echo $2 |cut -d " " -f1 -`
-					if [ `grep -c ":"$par1 /tmp/plugin.txt` -gt 0 ]
+					if [ `grep -c $par1 /tmp/plugin.txt` -gt 0 ]
 					then		
-						plugin=`grep ":"$par1 /tmp/plugin.txt | awk '{print $1}'`	
-						if [`grep ":"$par1 /tmp/plugin.txt | grep "new"` -gt 0 ]
+						plugin=`grep $par1 /tmp/plugin.txt | awk '{print $1}'`	
+						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -eq 0 ]
 						then
-							/usr/local/opendomo/installPlugin.sh $par1
-							echo "El complemento " $par1 " ha sido instalado " > /tmp/tmp.txt 
+							/usr/local/opendomo/installPlugin.sh $plugin
+							echo "El complemento " $plugin " ha sido instalado " > /tmp/tmp.txt 
 						else
-							echo "El complemento " $par1 " ya esta instalado" >> /tmp/tmp.txt
+							echo "El complemento " $plugin " ya esta instalado" >> /tmp/tmp.txt
 						fi
 					else
 						echo " No existe el numero de complemento " $par1 > /tmp/tmp.txt
@@ -1278,14 +1279,15 @@ else
 					;;
 				plugindeact)
 					par1=`echo $2 |cut -d " " -f1 -`
-					if [ `grep -c ":"$par1 /tmp/plugin.txt` -gt 0 ]
+					if [ `grep -c $par1 /tmp/plugin.txt` -gt 0 ]
 					then	
-						if [`grep ":"$par1 /tmp/plugin.txt | grep "installed"` -gt 0 ]
+						plugin=`grep $par1 /tmp/plugin.txt | awk '{print $1}'`
+						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -gt 0 ]
 						then
-							/usr/local/opendomo/removePlugin.sh $par1
-							echo "El complemento " $par1 " ha sido eliminado " > /tmp/tmp.txt 
+							/usr/local/opendomo/removePlugin.sh $plugin
+							echo "El complemento " $plugin " ha sido eliminado " > /tmp/tmp.txt 
 						else
-							echo "El complemento " $par1 " no esta instalado" >> /tmp/tmp.txt
+							echo "El complemento " $plugin " no esta instalado" >> /tmp/tmp.txt
 						fi
 					else
 						echo " No existe el numero de complemento " $par1 > /tmp/tmp.txt
@@ -1294,6 +1296,10 @@ else
 					;;
 				pluginupd)
 					usr/local/opendomo/updatePlugins.sh
+					$ESPEAK  " Los complementos han sido actualizados con las ultimas versiones oficiales"
+					;;
+				systemupd)
+					usr/local/opendomo/updateSystem.sh
 					$ESPEAK  " Los complementos han sido actualizados con las ultimas versiones oficiales"
 					;;
 				pluginayuda|else)
