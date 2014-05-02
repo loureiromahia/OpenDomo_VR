@@ -7,16 +7,28 @@ function Prepare_actual_zone_data()
 			zona=`echo $line | cut -d":" -f1 -`
 			descr=`echo $line | cut -d":" -f2 -`
 			coord=`echo $line | cut -d":" -f4 -`
+			if [ "$coord" == ""]
+			then
+				coordenadas=""
+			else
+				coordenadas=" coordenadas " $coord 
+			fi
+			if [ "$descr" == ""]
+			then
+				descripcion=""
+			else
+				descripction=" descripcion " $descr 
+			fi
 			if [ `echo $line | grep -c "nueva"` -gt 0 ]
 			then
-				estado=" marcada para ser creada"
+				estado=" marcada para ser creada "
 			elif [ `echo $line | grep -c "borrar"` -gt 0 ]
 			then
-				estado=" marcada para ser creada"
+				estado=" marcada para ser borrada "
 			else
 				estado=""
 			fi
-			echo "zona " $zona " descripcion " $desc " coordenadas " $coord $estado >> /tmp/tmp.txt
+			echo $zona $descripcion $coordenadas $estado >> /tmp/tmp.txt
 		done < /tmp/zone.txt
 }
 #******************************************************************************************************************
@@ -432,7 +444,7 @@ else
 				echo "menu3xzon" > /usr/local/opendomo/vr/MENU
 				#List actual zone data
 				$ESPEAK "Menu de configuracion de zonas  del sistema. Zonas actuales "
-				usr/local/opendomo/manageZones.sh | grep - | sed 's/-//g' | awk '{print $1":" $2":" $3":"}' > /tmp/zone.txt
+				/usr/local/opendomo/manageZones.sh | grep - | sed 's/-//g' | awk '{print $1":" $2":" $3":"}' > /tmp/zone.txt
 				Prepare_actual_zone_data
 				$ESPEAK < /tmp/tmp.txt
 				/usr/local/opendomo/vr/espeak.sh MenuZoneConfig
