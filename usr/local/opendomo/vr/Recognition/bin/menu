@@ -1,4 +1,25 @@
 #!/bin/bash
+funtion Generate_plugin_data()
+{
+#create temporary file for keeping provisional states data, until new states data data is saved 
+			  	/usr/local/opendomo/managePlugins.sh | grep "image plugin" > /tmp/tmp.txt
+				i=0
+				echo -n "" > /tmp/plugin.txt				
+				while read line 
+				do
+					((i++))	
+					plugin=`echo $line | awk '{print $1}'`
+					echo -n $plugin >> /tmp/plugin.txt
+					if [ `echo $line | grep -c "new"` -gt 0 ]
+					then
+						echo " numero " $i " estado no instalado" >> /tmp/plugin.txt
+					else	
+						echo " numero " $i " estado instalado" >> /tmp/plugin.txt
+					fi
+				done < /tmp/tmp.txt
+				rm /tmp/tmp.txt
+}
+#****************************************************************************************************************
 function Retrieve_initial_interface_data()
 {
 	
@@ -217,7 +238,7 @@ then
 		;;
 	menu3xplug)
 		$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
-		#create temporary file for keeping provisional states data, until new states data data is saved 
+		Generate_plugin_data
 		$ESPEAK < /tmp/plugin.txt
 		/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
 		;;
@@ -376,23 +397,7 @@ else
 				echo "menu3xplug" > /usr/local/opendomo/vr/MENU
 				#List actual plugin data
 				$ESPEAK "Menu de configuracion de complementos o plugins del sistema. Complementos actuales "
-				#create temporary file for keeping provisional states data, until new states data data is saved 
-			  	/usr/local/opendomo/managePlugins.sh | grep "image plugin" > /tmp/tmp.txt
-				i=0
-				echo -n "" > /tmp/plugin.txt				
-				while read line 
-				do
-					((i++))	
-					plugin=`echo $line | awk '{print $1}'`
-					echo -n $plugin >> /tmp/plugin.txt
-					if [ `echo $line | grep -c "new"` -gt 0 ]
-					then
-						echo " numero " $i " estado no instalado" >> /tmp/plugin.txt
-					else	
-						echo " numero " $i " estado instalado" >> /tmp/plugin.txt
-					fi
-				done < /tmp/tmp.txt
-				rm /tmp/tmp.txt
+				
 				$ESPEAK < /tmp/plugin.txt
 				/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
 				;;
@@ -1275,7 +1280,8 @@ else
 					else
 						echo " No existe el numero de complemento " $par1 > /tmp/tmp.txt
 					fi	
-					$ESPEAK < /tmp/tmp.txt	
+					$ESPEAK < /tmp/tmp.txt
+					Generate_plugin_data	
 					;;
 				plugindeact)
 					par1=`echo $2 |cut -d " " -f1 -`
@@ -1292,7 +1298,8 @@ else
 					else
 						echo " No existe el numero de complemento " $par1 > /tmp/tmp.txt
 					fi	
-					$ESPEAK < /tmp/tmp.txt		
+					$ESPEAK < /tmp/tmp.txt
+					Generate_plugin_data		
 					;;
 				pluginupd)
 					usr/local/opendomo/updatePlugins.sh
@@ -1300,7 +1307,7 @@ else
 					;;
 				systemupd)
 					usr/local/opendomo/updateSystem.sh
-					$ESPEAK  " Los complementos han sido actualizados con las ultimas versiones oficiales"
+					$ESPEAK  " El sistema ha sido actualizado con las ultimas versiones oficiales"
 					;;
 				pluginayuda|else)
 					$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
