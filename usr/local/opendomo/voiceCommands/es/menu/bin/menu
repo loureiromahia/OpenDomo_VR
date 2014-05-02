@@ -1,5 +1,5 @@
 #!/bin/bash
-funtion Generate_plugin_data()
+function Generate_plugin_data()
 {
 #create temporary file for keeping provisional states data, until new states data data is saved 
 			  	/usr/local/opendomo/managePlugins.sh | grep "image plugin" > /tmp/tmp.txt
