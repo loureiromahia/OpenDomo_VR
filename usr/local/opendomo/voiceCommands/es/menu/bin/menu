@@ -1269,8 +1269,8 @@ else
 					par1=`echo $2 |cut -d " " -f1 -`
 					if [ `grep -c $par1 /tmp/plugin.txt` -gt 0 ]
 					then		
-						plugin=`grep $par1 /tmp/plugin.txt | awk '{print $1}'`	
-						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -eq 0 ]
+						plugin=`grep $par1 /tmp/plugin.txt | awk '{print $1}' | sed 's/-//g'`	
+						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -gt 0 ]
 						then
 							/usr/local/opendomo/installPlugin.sh $plugin
 							echo "El complemento " $plugin " ha sido instalado " > /tmp/tmp.txt 
@@ -1287,8 +1287,8 @@ else
 					par1=`echo $2 |cut -d " " -f1 -`
 					if [ `grep -c $par1 /tmp/plugin.txt` -gt 0 ]
 					then	
-						plugin=`grep $par1 /tmp/plugin.txt | awk '{print $1}'`
-						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -gt 0 ]
+						plugin=`grep $par1 /tmp/plugin.txt | awk '{print $1}' | sed 's/-//g'`
+						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -eq 0 ]
 						then
 							/usr/local/opendomo/removePlugin.sh $plugin
 							echo "El complemento " $plugin " ha sido eliminado " > /tmp/tmp.txt 

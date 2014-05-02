@@ -1,5 +1,5 @@
 #!/bin/bash
-funtion Generate_plugin_data()
+function Generate_plugin_data()
 {
 #create temporary file for keeping provisional states data, until new states data data is saved 
 			  	/usr/local/opendomo/managePlugins.sh | grep "image plugin" > /tmp/tmp.txt
@@ -1270,7 +1270,7 @@ else
 					if [ `grep -c $par1 /tmp/plugin.txt` -gt 0 ]
 					then		
 						plugin=`grep $par1 /tmp/plugin.txt | awk '{print $1}'`	
-						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -eq 0 ]
+						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -gt 0 ]
 						then
 							/usr/local/opendomo/installPlugin.sh $plugin
 							echo "El complemento " $plugin " ha sido instalado " > /tmp/tmp.txt 
@@ -1288,7 +1288,7 @@ else
 					if [ `grep -c $par1 /tmp/plugin.txt` -gt 0 ]
 					then	
 						plugin=`grep $par1 /tmp/plugin.txt | awk '{print $1}'`
-						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -gt 0 ]
+						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -eq 0 ]
 						then
 							/usr/local/opendomo/removePlugin.sh $plugin
 							echo "El complemento " $plugin " ha sido eliminado " > /tmp/tmp.txt 
