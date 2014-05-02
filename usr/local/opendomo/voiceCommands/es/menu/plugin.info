@@ -21,5 +21,6 @@ actions = Implemented:
 	- Implemented manageControlDevices.sh
         - Implemented manageSystemStaets.sh
 	- Implemented managePlugins.sh
+        - Implemented manageZones.sh
 
 

@@ -1,4 +1,25 @@
 #!/bin/bash
+function Prepare_actual_zone_data()
+{
+		echo -n "" > /tmp/tmp.txt				
+		while read line 
+		do	
+			zona=`echo $line | cut -d":" -f1 -`
+			descr=`echo $line | cut -d":" -f2 -`
+			coord=`echo $line | cut -d":" -f4 -`
+			if [ `echo $line | grep -c "nueva"` -gt 0 ]
+			then
+				estado=" marcada para ser creada"
+			elif [ `echo $line | grep -c "borrar"` -gt 0 ]
+			then
+				estado=" marcada para ser creada"
+			else
+				estado=""
+			fi
+			echo "zona " $zona " descripcion " $desc " coordenadas " $coord $estado >> /tmp/tmp.txt
+		done < /tmp/zone.txt
+}
+#******************************************************************************************************************
 function Generate_plugin_data()
 {
 #create temporary file for keeping provisional states data, until new states data data is saved 
@@ -102,7 +123,7 @@ then
 		/usr/local/opendomo/vr/espeak.sh Menu1e
 		echo "menu1" > /usr/local/opendomo/vr/MENU
 		;;
-	menu3xconf|menu3xvoice|menu3xnet|menu3xitf|menu3xuser|menu3xctl|menu3xstat|menu3xplug)
+	menu3xconf|menu3xvoice|menu3xnet|menu3xitf|menu3xuser|menu3xctl|menu3xstat|menu3xplug|menu3xzon)
 		#20 ==> Volver
 		$ESPEAK < /etc/opendomo/speech/configmenu.txt
 		echo "menu3" > /usr/local/opendomo/vr/MENU
@@ -241,6 +262,12 @@ then
 		Generate_plugin_data
 		$ESPEAK < /tmp/plugin.txt
 		/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
+		;;
+	menu3xzone)
+		$ESPEAK "Menu de configuracion de znas del sistema. Zonas actuales  "
+		Prepare_actual_zone_data
+		$ESPEAK < /tmp/tmp.txt
+		/usr/local/opendomo/vr/espeak.sh MenuZoneConfig
 		;;
 	esac
 
@@ -397,9 +424,18 @@ else
 				echo "menu3xplug" > /usr/local/opendomo/vr/MENU
 				#List actual plugin data
 				$ESPEAK "Menu de configuracion de complementos o plugins del sistema. Complementos actuales "
-				
+				Generate_plugin_data
 				$ESPEAK < /tmp/plugin.txt
 				/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
+				;;
+			manageZones.sh)
+				echo "menu3xzon" > /usr/local/opendomo/vr/MENU
+				#List actual zone data
+				$ESPEAK "Menu de configuracion de zonas  del sistema. Zonas actuales "
+				usr/local/opendomo/manageZones.sh | grep - | sed 's/-//g' | awk '{print $1":" $2":" $3":"}' > /tmp/zone.txt
+				Prepare_actual_zone_data
+				$ESPEAK < /tmp/tmp.txt
+				/usr/local/opendomo/vr/espeak.sh MenuZoneConfig
 				;;
 			else)
 				$ESPEAK " Opcion no implementada "
@@ -1312,6 +1348,124 @@ else
 				pluginayuda|else)
 					$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
 					$ESPEAK < /tmp/plugin.txt
+					/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
+					;;
+			esac
+			;;
+#Menu de configuracion de zonas del sistema
+	menu3xzon)	
+			case "$1" in
+				zonacrear)
+					zona=`echo $2 |cut -d ":" -f1 -`
+					if [ `grep -c $par1 /tmp/zona.txt` -eq 0 ]
+					then		
+						echo $zona "::nueva:" >> /tmp/zone.txt
+						echo " La zona " $zona " ha sido marcada para crear. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
+					else
+						echo " Ya existe la zona " $zona >> /tmp/tmp.txt
+					fi	
+					$ESPEAK < /tmp/tmp.txt	
+					;;
+				zonaborrar)
+					zona=`echo $2 |cut -d ":" -f1 -`
+					if [ `grep -c $par1 /tmp/zona.txt` -gt 0 ]
+					then	
+						echo -n "" > /tmp/tmp.txt	
+						while read line
+						do		
+							if [ `echo $line | grep -c $zona` -gt 0 ]
+							then
+								echo $line | sed 's/zona/borrar/' | sed 's/nueva/borrar/' >> /tmp/tmp.txt
+							else
+								echo $line >> /tmp/tmp.txt
+							fi
+						done < /tmp/zone.txt
+						cp /tmp/tmp.txt /tmp/zone.txt
+						echo " La zona " $zona " ha sido marcada para borrar. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
+					else
+						echo " No existe la zona " $zona >> /tmp/tmp.txt
+					fi	
+					$ESPEAK < /tmp/tmp.txt	
+					;;
+				zonadesc)
+					zona=`echo $2 |cut -d ":" -f1 -`
+					descr=`echo $2 |cut -d ":" -f2 -`
+					if [ `grep -c $par1 /tmp/zona.txt` -gt 0 ]
+					then	
+						echo -n "" > /tmp/tmp.txt	
+						while read line
+						do		
+							if [ `echo $line | grep -c $zona` -gt 0 ]
+							then
+								par1=`echo $line | cut -d":" -f1 -`
+								par3=`echo $line | cut -d":" -f3 -`
+								par4=`echo $line | cut -d":" -f4 -`
+								echo $par1 ":" $desc ":" $par3 ":" $par4 >> /tmp/tmp.txt
+							else
+								echo $line >> /tmp/tmp.txt
+							fi
+						done < /tmp/zone.txt
+						cp /tmp/tmp.txt /tmp/zone.txt
+						echo " En la zona" $zona " se ha marcado la descripcion para ser modificada. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
+					else
+						echo " No existe la zona " $zona >> /tmp/tmp.txt
+					fi	
+					$ESPEAK < /tmp/tmp.txt	
+					;;
+				zonacoord)
+					zona=`echo $2 |cut -d ":" -f1 -`
+					coord1=`echo $2 |cut -d ":" -f2 -`
+					coord2=`echo $2 |cut -d ":" -f3 -`
+					coord3=`echo $2 |cut -d ":" -f4 -`
+					coord4=`echo $2 |cut -d ":" -f5 -`
+					if [ `grep -c $par1 /tmp/zona.txt` -gt 0 ]
+					then	
+						echo -n "" > /tmp/tmp.txt	
+						while read line
+						do		
+							if [ `echo $line | grep -c $zona` -gt 0 ]
+							then
+								par1=`echo $line | cut -d":" -f1 -`
+								par2=`echo $line | cut -d":" -f2 -`
+								par3=`echo $line | cut -d":" -f3 -`
+								echo $par1 ":" $par2 ":" $par3 ":" $coord1 "," $coord2 "," $coord3 "," $coord4 >> /tmp/tmp.txt
+							else
+								echo $line >> /tmp/tmp.txt
+							fi
+						done < /tmp/zone.txt
+						cp /tmp/tmp.txt /tmp/zone.txt
+						echo " En la zona" $zona " se ha marcado la descripcion para ser modificada. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
+					else
+						echo " No existe la zona " $zona >> /tmp/tmp.txt
+					fi	
+					$ESPEAK < /tmp/tmp.txt	
+					;;
+				zonaejecutar)
+					zona=`echo $2 |cut -d ":" -f1 -`
+					if [ `grep -c $par1 /tmp/zona.txt` -gt 0 ]
+					then	
+						line=`grep $zona /tmp/zone.txt`
+						descr=`echo $line | cut -d":" -f2 -`
+						coord=`echo $line | cut -d":" -f4 -`
+						if [ `echo $line | grep -c borrar` -gt 0 ]
+						then
+							/usr/local/opendomo/manageZones.sh "delete" $zona
+						elif [ `echo $line | grep -c nueva` -gt 0 ]
+						then
+							/usr/local/opendomo/manageZones.sh "add" $zona $descr $coord
+						else
+							/usr/local/opendomo/manageZones.sh "update" $zona $descr $coord
+						fi	
+						echo " Los cambios en la zona " $zona " han sido ejecutados."  > /tmp/tmp.txt
+					else
+						echo " No existe la zona " $zona >> /tmp/tmp.txt
+					fi	
+					$ESPEAK < /tmp/tmp.txt	
+					;;
+				zonaayuda|else)
+					$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
+					Prepare_actual_zone_data
+					$ESPEAK < /tmp/tmp.txt	
 					/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
 					;;
 			esac
