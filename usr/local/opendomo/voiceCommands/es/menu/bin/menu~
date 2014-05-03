@@ -7,16 +7,28 @@ function Prepare_actual_zone_data()
 			zona=`echo $line | cut -d":" -f1 -`
 			descr=`echo $line | cut -d":" -f2 -`
 			coord=`echo $line | cut -d":" -f4 -`
+			if [ "$coord" == "" ]
+			then
+				coordenadas=""
+			else
+				coordenadas=" coordenadas " $coord 
+			fi
+			if [ "$descr" == "" ]
+			then
+				descripcion=""
+			else
+				descripcion=" descripcion {$descr}" 
+			fi
 			if [ `echo $line | grep -c "nueva"` -gt 0 ]
 			then
-				estado=" marcada para ser creada"
+				estado=" marcada para ser creada "
 			elif [ `echo $line | grep -c "borrar"` -gt 0 ]
 			then
-				estado=" marcada para ser creada"
+				estado=" marcada para ser borrada "
 			else
 				estado=""
 			fi
-			echo "zona " $zona " descripcion " $desc " coordenadas " $coord $estado >> /tmp/tmp.txt
+			echo $zona $descripcion $coordenadas $estado >> /tmp/tmp.txt
 		done < /tmp/zone.txt
 }
 #******************************************************************************************************************
@@ -1357,7 +1369,7 @@ else
 			case "$1" in
 				zonacrear)
 					zona=`echo $2 |cut -d ":" -f1 -`
-					if [ `grep -c $par1 /tmp/zona.txt` -eq 0 ]
+					if [ `grep -c $zona /tmp/zone.txt` -eq 0 ]
 					then		
 						echo $zona "::nueva:" >> /tmp/zone.txt
 						echo " La zona " $zona " ha sido marcada para crear. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
@@ -1368,14 +1380,14 @@ else
 					;;
 				zonaborrar)
 					zona=`echo $2 |cut -d ":" -f1 -`
-					if [ `grep -c $par1 /tmp/zona.txt` -gt 0 ]
+					if [ `grep -c $zona /tmp/zone.txt` -gt 0 ]
 					then	
 						echo -n "" > /tmp/tmp.txt	
 						while read line
 						do		
 							if [ `echo $line | grep -c $zona` -gt 0 ]
 							then
-								echo $line | sed 's/zona/borrar/' | sed 's/nueva/borrar/' >> /tmp/tmp.txt
+								echo $line | sed 's/zone/borrar/' | sed 's/nueva/borrar/' >> /tmp/tmp.txt
 							else
 								echo $line >> /tmp/tmp.txt
 							fi
@@ -1390,7 +1402,7 @@ else
 				zonadesc)
 					zona=`echo $2 |cut -d ":" -f1 -`
 					descr=`echo $2 |cut -d ":" -f2 -`
-					if [ `grep -c $par1 /tmp/zona.txt` -gt 0 ]
+					if [ `grep -c $zona /tmp/zone.txt` -gt 0 ]
 					then	
 						echo -n "" > /tmp/tmp.txt	
 						while read line
@@ -1418,7 +1430,7 @@ else
 					coord2=`echo $2 |cut -d ":" -f3 -`
 					coord3=`echo $2 |cut -d ":" -f4 -`
 					coord4=`echo $2 |cut -d ":" -f5 -`
-					if [ `grep -c $par1 /tmp/zona.txt` -gt 0 ]
+					if [ `grep -c $zona /tmp/zone.txt` -gt 0 ]
 					then	
 						echo -n "" > /tmp/tmp.txt	
 						while read line
@@ -1442,7 +1454,7 @@ else
 					;;
 				zonaejecutar)
 					zona=`echo $2 |cut -d ":" -f1 -`
-					if [ `grep -c $par1 /tmp/zona.txt` -gt 0 ]
+					if [ `grep -c $zona /tmp/zone.txt` -gt 0 ]
 					then	
 						line=`grep $zona /tmp/zone.txt`
 						descr=`echo $line | cut -d":" -f2 -`
