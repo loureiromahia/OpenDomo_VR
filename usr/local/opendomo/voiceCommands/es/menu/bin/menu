@@ -225,13 +225,14 @@ then
 		do	
 			echo -n " Para configurar voz de " >> /tmp/tmp.txt
 			echo -n $voz >> /tmp/tmp.txt
-			echo -n " ,diga voz " >> /tmp/tmp.txt
+			echo -n " ,diga voz de " >> /tmp/tmp.txt
 			echo $voz >> /tmp/tmp.txt
 		done
 		$ESPEAK < /tmp/tmp.txt
 		rm /tmp/tmp.txt	
 		;;
 	menu3xnet)
+		$ESPEAK "Menu de configuracion de red "
 		$ESPEAK < /etc/opendomo/speech/netmenu.txt
 		/usr/local/opendomo/vr/espeak.sh MenuNetConfig	
 		;;
@@ -382,7 +383,7 @@ else
 				do	
 					echo -n " Para configurar voz de " >> /tmp/tmp.txt
 					echo -n $voz >> /tmp/tmp.txt
-					echo -n " ,diga voz " >> /tmp/tmp.txt
+					echo -n " ,diga voz de " >> /tmp/tmp.txt
 					echo $voz >> /tmp/tmp.txt
 				done
 				$ESPEAK < /tmp/tmp.txt
@@ -415,12 +416,17 @@ else
 				$ESPEAK "Menu de configuracion de dispositivos de control. Dispositivos actuales "
 				#create temporary file for keeping provisional control data, until control data is saved 
 			  	/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/ctrl.txt
-				$ESPEAK < /tmp/ctrl.txt
+				if [ -s /tmp/ctrl.txt ]
+				then
+					$ESPEAK " No hay dispositivos"
+				else
+					$ESPEAK < /tmp/ctrl.txt
+				fi
 				echo " Placas disponibles: " > /tmp/tmp.txt
 				grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
 				echo " Puertos disponibles: " >> /tmp/tmp.txt
 				grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
-				$ESPEAK > /tmp/tmp.txt
+				$ESPEAK < /tmp/tmp.txt
 				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
 				;;
 			manageSystemStates.sh)
@@ -541,22 +547,22 @@ else
 		
 		case "$par2" in
 			1)
-			$ESPEAK " Salvando configuracion actual con plugins"
+			$ESPEAK " Salvando configuracion actual con plugins. Espere a oir de nuevo el bip"
 			echo "on" > /var/opendomo/tmp/savestatus
 			/usr/local/opendomo/saveSystemConfig.sh
 			;;
 			2)
-			$ESPEAK " Salvando configuracion actual sin plugins"
+			$ESPEAK " Salvando configuracion actual sin plugins. Espere a oir de nuevo el bip"
 			echo "off" > /var/opendomo/tmp/savestatus
 			/usr/local/opendomo/saveSystemConfig.sh
 			;;	
 			3)
-			$ESPEAK " Salvando configuracion de defecto con plugins"
+			$ESPEAK " Salvando configuracion de defecto con plugins.Espere a oir de nuevo el bip"
 			echo "on" > /var/opendomo/tmp/savestatus
 			/usr/local/opendomo/loadDefaultConfig.sh
 			;;	
 			4)
-			$ESPEAK " Salvando configuracion de defecto sin plugins"
+			$ESPEAK " Salvando configuracion de defecto sin plugins. Espere a oir de nuevo el bip"
 			echo "off" > /var/opendomo/tmp/savestatus
 			/usr/local/opendomo/loadDefaultConfig.sh
 			;;	
