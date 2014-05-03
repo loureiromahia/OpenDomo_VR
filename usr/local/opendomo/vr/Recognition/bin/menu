@@ -1400,8 +1400,8 @@ else
 					$ESPEAK < /tmp/tmp.txt	
 					;;
 				zonadesc)
-					zona=`echo $2 |cut -d":" -f1 -`
-					descr=`echo $2 |cut -d":" -f2 -`
+					zona=`echo $2 |cut -d" " -f1 -`
+					descr=`echo $2 |cut -d" " -f2 -`
 					if [ `grep -c $zona /tmp/zone.txt` -gt 0 ]
 					then	
 						echo -n "" > /tmp/tmp.txt	
@@ -1412,7 +1412,7 @@ else
 								par1=`echo $line | cut -d":" -f1 -`
 								par3=`echo $line | cut -d":" -f3 -`
 								par4=`echo $line | cut -d":" -f4 -`
-								echo $par1 ":" $desc ":" $par3 ":" $par4 >> /tmp/tmp.txt
+								echo $par1 ":" $descr ":" $par3 ":" $par4 >> /tmp/tmp.txt
 							else
 								echo $line >> /tmp/tmp.txt
 							fi
@@ -1425,11 +1425,11 @@ else
 					$ESPEAK < /tmp/tmp.txt	
 					;;
 				zonacoord)
-					zona=`echo $2 |cut -d ":" -f1 -`
-					coord1=`echo $2 |cut -d ":" -f2 -`
-					coord2=`echo $2 |cut -d ":" -f3 -`
-					coord3=`echo $2 |cut -d ":" -f4 -`
-					coord4=`echo $2 |cut -d ":" -f5 -`
+					zona=`echo $2 |cut -d" " -f1 -`
+					coord1=`echo $2 |cut -d" " -f2 -`
+					coord2=`echo $2 |cut -d" " -f3 -`
+					coord3=`echo $2 |cut -d" " -f4 -`
+					coord4=`echo $2 |cut -d" " -f5 -`
 					if [ `grep -c $zona /tmp/zone.txt` -gt 0 ]
 					then	
 						echo -n "" > /tmp/tmp.txt	
@@ -1446,7 +1446,7 @@ else
 							fi
 						done < /tmp/zone.txt
 						cp /tmp/tmp.txt /tmp/zone.txt
-						echo " En la zona" $zona " se ha marcado la descripcion para ser modificada. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
+						echo " En la zona" $zona " se ha marcado las cooredenadas para ser modificadas. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
 					else
 						echo " No existe la zona " $zona >> /tmp/tmp.txt
 					fi	
@@ -1475,10 +1475,10 @@ else
 					$ESPEAK < /tmp/tmp.txt	
 					;;
 				zonaayuda|else)
-					$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
+					$ESPEAK "Menu de configuracion de zonas del sistema. Estado actual  "
 					Prepare_actual_zone_data
 					$ESPEAK < /tmp/tmp.txt	
-					/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
+					/usr/local/opendomo/vr/espeak.sh MenuZoneConfig
 					;;
 			esac
 			;;
