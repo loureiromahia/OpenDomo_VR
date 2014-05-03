@@ -101,7 +101,7 @@ zona crear (LINE Objeto)
   menu zonacrear "$Objeto$"
 zona borrar (LINE Objeto)
   menu zonaborrar "$Objeto$"
-zona descripcion (LINE Objeto)
+zona descripción (LINE Objeto)
   menu zonadesc "$Objeto$"
 zona coordenadas (LINE Objeto)
   menu zonacoord "$Objeto$"

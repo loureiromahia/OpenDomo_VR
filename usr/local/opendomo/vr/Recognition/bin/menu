@@ -1400,8 +1400,8 @@ else
 					$ESPEAK < /tmp/tmp.txt	
 					;;
 				zonadesc)
-					zona=`echo $2 |cut -d ":" -f1 -`
-					descr=`echo $2 |cut -d ":" -f2 -`
+					zona=`echo $2 |cut -d":" -f1 -`
+					descr=`echo $2 |cut -d":" -f2 -`
 					if [ `grep -c $zona /tmp/zone.txt` -gt 0 ]
 					then	
 						echo -n "" > /tmp/tmp.txt	
