@@ -416,12 +416,17 @@ else
 				$ESPEAK "Menu de configuracion de dispositivos de control. Dispositivos actuales "
 				#create temporary file for keeping provisional control data, until control data is saved 
 			  	/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/ctrl.txt
-				$ESPEAK < /tmp/ctrl.txt
+				if [ -s /tmp/ctrl.txt ]
+				then
+					$ESPEAK "No hay dispositivos"
+				else
+					$ESPEAK < /tmp/ctrl.txt
+				fi
 				echo " Placas disponibles: " > /tmp/tmp.txt
 				grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
 				echo " Puertos disponibles: " >> /tmp/tmp.txt
 				grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
-				$ESPEAK > /tmp/tmp.txt
+				$ESPEAK < /tmp/tmp.txt
 				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
 				;;
 			manageSystemStates.sh)
@@ -1106,7 +1111,12 @@ else
 				;;
 			controlayuda|else)
 				$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
-				$ESPEAK < /tmp/ctrl.txt
+				if [ -s /tmp/ctrl.txt ]
+				then
+					$ESPEAK "No hay dispositivos"
+				else
+					$ESPEAK < /tmp/ctrl.txt
+				fi
 				echo " Placas disponibles: " > /tmp/tmp.txt
 				grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
 				echo " Puertos disponibles: " >> /tmp/tmp.txt

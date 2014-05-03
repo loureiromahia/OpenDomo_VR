@@ -418,7 +418,7 @@ else
 			  	/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/ctrl.txt
 				if [ -s /tmp/ctrl.txt ]
 				then
-					$ESPEAK " No hay dispositivos"
+					$ESPEAK "No hay dispositivos"
 				else
 					$ESPEAK < /tmp/ctrl.txt
 				fi
@@ -1111,7 +1111,12 @@ else
 				;;
 			controlayuda|else)
 				$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
-				$ESPEAK < /tmp/ctrl.txt
+				if [ -s /tmp/ctrl.txt ]
+				then
+					$ESPEAK "No hay dispositivos"
+				else
+					$ESPEAK < /tmp/ctrl.txt
+				fi
 				echo " Placas disponibles: " > /tmp/tmp.txt
 				grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
 				echo " Puertos disponibles: " >> /tmp/tmp.txt
