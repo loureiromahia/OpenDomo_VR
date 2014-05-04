@@ -1,4 +1,13 @@
 #!/bin/bash
+function Generate_control_data()
+{
+		cat /tmp/ctrl.txt |cut -d":" -f1 > /tmp/tmp.txt 
+                echo " Placas disponibles: " >> /tmp/tmp.txt     
+		grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa {$par1} /" >> /tmp/tmp.txt
+		echo " Puertos disponibles: " >> /tmp/tmp.txt
+		grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto {$par1} /" >> /tmp/tmp.txt
+}
+#******************************************************************************************************************************************************
 function Prepare_actual_zone_data()
 {
 		echo -n "" > /tmp/tmp.txt				
@@ -246,12 +255,8 @@ then
 		;;
 	menu3xctl)
 		$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
-		$ESPEAK < /tmp/ctrl.txt
-		echo " Placas disponibles: " > /tmp/tmp.txt
-		grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
-		echo " Puertos disponibles: " >> /tmp/tmp.txt
-		grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
-		$ESPEAK > /tmp/tmp.txt
+		Generate_control_data
+		$ESPEAK < /tmp/tmp.txt
 		/usr/local/opendomo/vr/espeak.sh MenuControlConfig
 		;;
 	menu3xstat)
@@ -416,16 +421,7 @@ else
 				$ESPEAK "Menu de configuracion de dispositivos de control. Dispositivos actuales "
 				#create temporary file for keeping provisional control data, until control data is saved 
 			  	/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/ctrl.txt
-				if [ -s /tmp/ctrl.txt ]
-				then
-					$ESPEAK "No hay dispositivos"
-				else
-					$ESPEAK < /tmp/ctrl.txt
-				fi
-				echo " Placas disponibles: " > /tmp/tmp.txt
-				grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
-				echo " Puertos disponibles: " >> /tmp/tmp.txt
-				grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
+				Generate_control_data				
 				$ESPEAK < /tmp/tmp.txt
 				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
 				;;
@@ -891,7 +887,7 @@ else
 	#Control devices
 	menu3xctl)
 	#data for new user is in /tmp/ctrl.txt. Data is structured in : 					   			
-	#devicename:cardtype:port:refresh:IP:user:password:borrar/crear
+	#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
 		par1=`echo $2 |cut -d " " -f1`
 		# To avoid problems with capitals, let'sfix all data to caps off
 		par1=${par1,,} 
@@ -912,12 +908,12 @@ else
 				then
 					# leer linea de ctrl.txt y cambiar la que tiene $2 por $2:dispositivo a borrar
 					i=0
-					echo "" > /tmp/ctrl2.txt
+					echo -n "" > /tmp/ctrl2.txt
 					while read line
 					do	
 						((i++))		
 						echo $line > /tmp/tmp.txt
-						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 						then
 							echo $par1 ":::::::borrar" >> /tmp/ctrl2.txt
 						else
@@ -937,19 +933,26 @@ else
 				then
 					# Check the card 
 					i=0
-					if [ `grep -c Card /etc/opendomo/speech/portmenu.txt` -eq $par2 ]
+					if [ `grep -c Card /etc/opendomo/speech/portmenu.txt` -ge $par2 ]
 					then
 						card=`grep Card /etc/opendomo/speech/portmenu.txt | grep $par2 | cut -d":" -f2`
-						echo "" > /tmp/ctrl2.txt
+						echo -n "" > /tmp/ctrl2.txt
 						while read line
 						do	
 							((i++))		
 							echo $line > /tmp/tmp.txt
-							if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+							if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 							then
 								# cambiar el campo 2 por el parametro $par2
-								string=`cat tmp.txt | cut -d":" -f2`
-								line=`cat tmp.txt | sed  -e "s/\$string/\$card/"`	
+								# Sacar todos los campos y sustituir el 2 por $card
+								#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
+								port=`cat tmp.txt | cut -d":" -f3`
+								refresh=`cat tmp.txt | cut -d":" -f4`
+								ip=`cat tmp.txt | cut -d":" -f5`
+								user=`cat tmp.txt | cut -d":" -f6`
+								passw=`cat tmp.txt | cut -d":" -f7`
+								inf=`cat tmp.txt | cut -d":" -f8`
+								line=$par1":"$card":"$port":"$refresh":"$ip":"$user":"$passw":"$inf	
 							fi
 							echo $line >> /tmp/ctrl2.txt
 						done < /tmp/ctrl.txt
@@ -958,7 +961,7 @@ else
 						echo "Configurado " $card " en dispositivo " $par1  > /tmp/tmp.txt		
 					else
 						echo " Numero de placa incorrecto. Valores posibles " > /tmp/tmp.txt
-						grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
+						grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa {$par1} /" >> /tmp/tmp.txt
 					fi						
 				else
 					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
@@ -973,16 +976,23 @@ else
 					if [ `grep -c Port /etc/opendomo/speech/portmenu.txt` -ge $par2 ]
 					then
 						port=`grep Port /etc/opendomo/speech/portmenu.txt | grep $par2 | cut -d":" -f2`
-						echo "" > /tmp/ctrl2.txt
+						echo -n "" > /tmp/ctrl2.txt
 						while read line
 						do	
 							((i++))		
 							echo $line > /tmp/tmp.txt
-							if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+							if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 							then
 								# cambiar el campo 2 por el parametro $par2
-								string=`cat tmp.txt | cut -d":" -f3`
-								line=`cat tmp.txt | sed  -e "s/\$string/\$port/"`	
+								# Sacar todos los campos y sustituir el 2 por $card
+								#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
+								card=`cat tmp.txt | cut -d":" -f2`
+								refresh=`cat tmp.txt | cut -d":" -f4`
+								ip=`cat tmp.txt | cut -d":" -f5`
+								user=`cat tmp.txt | cut -d":" -f6`
+								passw=`cat tmp.txt | cut -d":" -f7`
+								inf=`cat tmp.txt | cut -d":" -f8`
+								line=$par1":"$card":"$port":"$refresh":"$ip":"$user":"$passw":"$inf	
 							fi
 							echo $line >> /tmp/ctrl2.txt
 						done < /tmp/ctrl.txt
@@ -991,7 +1001,7 @@ else
 						echo "Configurado " $port " en dispositivo " $par1  > /tmp/tmp.txt		
 					else
 						echo " Numero de puerto incorrecto. Valores posibles " > /tmp/tmp.txt
-						grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
+						grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto {$par1} /" >> /tmp/tmp.txt
 					fi	
 				else
 					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
@@ -1003,7 +1013,7 @@ else
 				then
 					# In this case, it is necessary to list the available card id, so that user can 					#choose. This will imply a new state 
 					i=0
-					echo "" > /tmp/ctrl2.txt
+					echo -n "" > /tmp/ctrl2.txt
 					while read line
 					do	
 						((i++))		
@@ -1011,8 +1021,16 @@ else
 						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
 						then
 							# cambiar el campo 2 por el parametro $par2
-							string=`cat tmp.txt | cut -d":" -f4`
-							line=`cat tmp.txt | sed  -e "s/\$string/\$par2/"`	
+							# Sacar todos los campos y sustituir el 2 por $card
+							#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
+							card=`cat tmp.txt | cut -d":" -f2`
+							port=`cat tmp.txt | cut -d":" -f3`
+							ip=`cat tmp.txt | cut -d":" -f5`
+							user=`cat tmp.txt | cut -d":" -f6`
+							passw=`cat tmp.txt | cut -d":" -f7`
+							inf=`cat tmp.txt | cut -d":" -f8`
+							line=$par1":"$card":"$port":"$par2":"$ip":"$user":"$passw":"$inf		
+							
 						fi
 						echo $line >> /tmp/ctrl2.txt
 					done < /tmp/ctrl.txt
@@ -1030,12 +1048,12 @@ else
 				then
 					# leer linea de usr.txt y cambiar la que tiene $2 por $2:usuario a borrar
 					i=0
-					echo "" > /tmp/ctrl2.txt
+					echo -n "" > /tmp/ctrl2.txt
 					while read line
 					do	
 						((i++))		
 						echo $line > /tmp/tmp.txt
-						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 						then
 							# cambiar el campo 2 por el parametro $par2
 							string=`cat tmp.txt | cut -d":" -f5`
@@ -1057,12 +1075,12 @@ else
 				then
 					# leer linea de ctrl.txt y cambiar la que tiene $2 por $2:datos de clave
 					i=0
-					echo "" > /tmp/ctrl2.txt
+					echo -n "" > /tmp/ctrl2.txt
 					while read line
 					do	
 						((i++))		
 						echo $line > /tmp/tmp.txt
-						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 						then
 							# cambiar el campo 2 por el parametro $par2
 							string=`cat tmp.txt | cut -d":" -f6`
@@ -1084,12 +1102,12 @@ else
 				then
 					# leer linea de ctrl.txt y cambiar la que tiene $2 por $2:datos de clave
 					i=0
-					echo "" > /tmp/ctrl2.txt
+					echo -n "" > /tmp/ctrl2.txt
 					while read line
 					do	
 						((i++))		
 						echo $line > /tmp/tmp.txt
-						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0]
+						if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
 						then
 							# cambiar el campo 2 por el parametro $par2
 							string=`cat tmp.txt | cut -d":" -f7`
@@ -1111,17 +1129,8 @@ else
 				;;
 			controlayuda|else)
 				$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
-				if [ -s /tmp/ctrl.txt ]
-				then
-					$ESPEAK "No hay dispositivos"
-				else
-					$ESPEAK < /tmp/ctrl.txt
-				fi
-				echo " Placas disponibles: " > /tmp/tmp.txt
-				grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa \$par1 /" >> /tmp/tmp.txt
-				echo " Puertos disponibles: " >> /tmp/tmp.txt
-				grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto \$par1 /" >> /tmp/tmp.txt
-				$ESPEAK > /tmp/tmp.txt
+				Generate_control_data				
+				$ESPEAK < /tmp/tmp.txt
 				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
 				;;
 		esac
