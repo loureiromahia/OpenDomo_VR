@@ -421,6 +421,7 @@ else
 				$ESPEAK "Menu de configuracion de dispositivos de control. Dispositivos actuales "
 				#create temporary file for keeping provisional control data, until control data is saved 
 			  	/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/tmp.txt
+				echo -n "" > /tmp/ctrl.txt
 				while read lined
 				do
 					echo $line ":::::::nuevo " >> /tmp/ctrl.txt
@@ -950,12 +951,12 @@ else
 								# cambiar el campo 2 por el parametro $par2
 								# Sacar todos los campos y sustituir el 2 por $card
 								#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
-								port=`cat tmp.txt | cut -d":" -f3`
-								refresh=`cat tmp.txt | cut -d":" -f4`
-								ip=`cat tmp.txt | cut -d":" -f5`
-								user=`cat tmp.txt | cut -d":" -f6`
-								passw=`cat tmp.txt | cut -d":" -f7`
-								inf=`cat tmp.txt | cut -d":" -f8`
+								port=`cat /tmp/tmp.txt | cut -d":" -f3`
+								refresh=`cat /tmp/tmp.txt | cut -d":" -f4`
+								ip=`cat /tmp/tmp.txt | cut -d":" -f5`
+								user=`cat /tmp/tmp.txt | cut -d":" -f6`
+								passw=`cat /tmp/tmp.txt | cut -d":" -f7`
+								inf=`cat /tmp/tmp.txt | cut -d":" -f8`
 								line=$par1":"$card":"$port":"$refresh":"$ip":"$user":"$passw":"$inf	
 							fi
 							echo $line >> /tmp/ctrl2.txt
@@ -990,13 +991,13 @@ else
 								# cambiar el campo 2 por el parametro $par2
 								# Sacar todos los campos y sustituir el 2 por $card
 								#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
-								card=`cat tmp.txt | cut -d":" -f2`
-								refresh=`cat tmp.txt | cut -d":" -f4`
+								card=`cat /tmp/tmp.txt | cut -d":" -f2`
+								refresh=`cat /tmp/tmp.txt | cut -d":" -f4`
 								ip=`cat tmp.txt | cut -d":" -f5`
-								user=`cat tmp.txt | cut -d":" -f6`
-								passw=`cat tmp.txt | cut -d":" -f7`
-								inf=`cat tmp.txt | cut -d":" -f8`
-								line=$par1":"$card":"$port":"$refresh":"$ip":"$user":"$passw":"$inf	
+								user=`cat /tmp/tmp.txt | cut -d":" -f6`
+								passw=`cat /tmp/tmp.txt | cut -d":" -f7`
+								inf=`cat /tmp/tmp.txt | cut -d":" -f8`
+								line="$par1":"$card":"$port":"$refresh":"$ip":"$user":"$passw":"$inf"	
 							fi
 							echo $line >> /tmp/ctrl2.txt
 						done < /tmp/ctrl.txt
@@ -1027,12 +1028,12 @@ else
 							# cambiar el campo 2 por el parametro $par2
 							# Sacar todos los campos y sustituir el 2 por $card
 							#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
-							card=`cat tmp.txt | cut -d":" -f2`
-							port=`cat tmp.txt | cut -d":" -f3`
-							ip=`cat tmp.txt | cut -d":" -f5`
-							user=`cat tmp.txt | cut -d":" -f6`
-							passw=`cat tmp.txt | cut -d":" -f7`
-							inf=`cat tmp.txt | cut -d":" -f8`
+							card=`cat /tmp/tmp.txt | cut -d":" -f2`
+							port=`cat /tmp/tmp.txt | cut -d":" -f3`
+							ip=`cat /tmp/tmp.txt | cut -d":" -f5`
+							user=`cat /tmp/tmp.txt | cut -d":" -f6`
+							passw=`cat /tmp/tmp.txt | cut -d":" -f7`
+							inf=`cat /tmp/tmp.txt | cut -d":" -f8`
 							line=$par1":"$card":"$port":"$par2":"$ip":"$user":"$passw":"$inf		
 							
 						fi
@@ -1062,13 +1063,13 @@ else
 							# cambiar el campo 2 por el parametro $par2
 							# Sacar todos los campos y sustituir el 2 por $card
 							#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
-							card=`cat tmp.txt | cut -d":" -f2`
-							port=`cat tmp.txt | cut -d":" -f3`
-							refresh=`cat tmp.txt | cut -d":" -f4`
-							ip=`cat tmp.txt | cut -d":" -f5`
-							user=`cat tmp.txt | cut -d":" -f6`
-							passw=`cat tmp.txt | cut -d":" -f7`
-							inf=`cat tmp.txt | cut -d":" -f8`
+							card=`cat /tmp/tmp.txt | cut -d":" -f2`
+							port=`cat /tmp/tmp.txt | cut -d":" -f3`
+							refresh=`cat /tmp/tmp.txt | cut -d":" -f4`
+							ip=`cat /tmp/tmp.txt | cut -d":" -f5`
+							user=`cat /tmp/tmp.txt | cut -d":" -f6`
+							passw=`cat /tmp/tmp.txt | cut -d":" -f7`
+							inf=`cat /tmp/tmp.txt | cut -d":" -f8`
 							line=$par1":"$card":"$port":"$refresh":"$par2":"$user":"$passw":"$inf	
 						fi
 						echo $line >> /tmp/ctrl2.txt
@@ -1097,13 +1098,13 @@ else
 							# cambiar el campo 2 por el parametro $par2
 							# Sacar todos los campos y sustituir el 2 por $card
 							#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
-							card=`cat tmp.txt | cut -d":" -f2`
-							port=`cat tmp.txt | cut -d":" -f3`
-							refresh=`cat tmp.txt | cut -d":" -f4`
-							ip=`cat tmp.txt | cut -d":" -f5`
-							user=`cat tmp.txt | cut -d":" -f6`
-							passw=`cat tmp.txt | cut -d":" -f7`
-							inf=`cat tmp.txt | cut -d":" -f8`
+							card=`cat /tmp/tmp.txt | cut -d":" -f2`
+							port=`cat /tmp/tmp.txt | cut -d":" -f3`
+							refresh=`cat /tmp/tmp.txt | cut -d":" -f4`
+							ip=`cat /tmp/tmp.txt | cut -d":" -f5`
+							user=`cat /tmp/tmp.txt | cut -d":" -f6`
+							passw=`cat /tmp/tmp.txt | cut -d":" -f7`
+							inf=`cat /tmp/tmp.txt | cut -d":" -f8`
 							line=$par1":"$card":"$port":"$refresh":"$ip":"$par2":"$passw":"$inf	
 						fi
 						echo $line >> /tmp/ctrl2.txt
@@ -1132,13 +1133,13 @@ else
 							# cambiar el campo 2 por el parametro $par2
 							# Sacar todos los campos y sustituir el 2 por $card
 							#devicename:cardtype:port:refresh:IP:user:password:borrar/nuevo
-							card=`cat tmp.txt | cut -d":" -f2`
-							port=`cat tmp.txt | cut -d":" -f3`
-							refresh=`cat tmp.txt | cut -d":" -f4`
-							ip=`cat tmp.txt | cut -d":" -f5`
-							user=`cat tmp.txt | cut -d":" -f6`
-							passw=`cat tmp.txt | cut -d":" -f7`
-							inf=`cat tmp.txt | cut -d":" -f8`
+							card=`cat /tmp/tmp.txt | cut -d":" -f2`
+							port=`cat /tmp/tmp.txt | cut -d":" -f3`
+							refresh=`cat /tmp/tmp.txt | cut -d":" -f4`
+							ip=`cat /tmp/tmp.txt | cut -d":" -f5`
+							user=`cat /tmp/tmp.txt | cut -d":" -f6`
+							passw=`cat /tmp/tmp.txt | cut -d":" -f7`
+							inf=`cat /tmp/tmp.txt | cut -d":" -f8`
 							line=$par1":"$card":"$port":"$refresh":"$ip":"$user":"$par2":"$inf	
 						fi
 						echo $line >> /tmp/ctrl2.txt
