@@ -1170,7 +1170,7 @@ else
 		esac
 				
 		if [ "$1" = "controlejecutar" ]
-		then
+		then			
 			grep $par1 /tmp/ctrl.txt > /tmp/tmp.txt
 			if [ `grep -c "borrar" /tmp/tmp.txt` -gt 0 ]
 			then
@@ -1178,39 +1178,46 @@ else
 				echo "Dispositivo " $par1 " ha sido borrado " > /tmp/tmp.txt
 			elif [ `grep -c "nuevo" /tmp/tmp.txt` -gt 0 ]
 			then
-				card=`cat /tmp/tmp.txt | cut -d":" -f2`
-				port=`cat /tmp/tmp.txt | cut -d":" -f3`
-				time=`cat /tmp/tmp.txt | cut -d":" -f4`
-				IP=`cat /tmp/tmp.txt | cut -d":" -f5`
-				user=`cat /tmp/tmp.txt | cut -d":" -f6`
-				passwd=`cat /tmp/tmp.txt | cut -d":" -f7`
-				/usr/local/opendomo/addControlDevice.sh $par1 $card $port $time $IP $user $passwd
+				mkdir /etc/opendomo/control/$par1
+			fi
+			dirname=$par1			
+			model=`cat /tmp/tmp.txt | cut -d":" -f2`
+			port=`cat /tmp/tmp.txt | cut -d":" -f3`
+			refresh=`cat /tmp/tmp.txt | cut -d":" -f4`
+			ip=`cat /tmp/tmp.txt | cut -d":" -f5`
+			username=`cat /tmp/tmp.txt | cut -d":" -f6`
+			password=`cat /tmp/tmp.txt | cut -d":" -f7`
+			if [ $port="" || $model="" ]
+			then
+				echo "Necesita configurar el puerto y la placa antes de poder ejecutar el cambio en " $par1 > /tmp/tmp.txt
+			else			
 				echo "Dispositivo " $par1 " ha sido creado " > /tmp/tmp.txt
-			else
-				card=`cat /tmp/tmp.txt | cut -d":" -f2`
-				port=`cat /tmp/tmp.txt | cut -d":" -f3`
-				time=`cat /tmp/tmp.txt | cut -d":" -f4`
-				IP=`cat /tmp/tmp.txt | cut -d":" -f5`
-				user=`cat /tmp/tmp.txt | cut -d":" -f6`
-				passwd=`cat /tmp/tmp.txt | cut -d":" -f7`
-				/usr/local/opendomo/configureControlPorts.sh $par1 $card $port $time $ip $user $passwd
-				echo "Dispositivo " $par1 " ha sido modificado " > /tmp/tmp.txt 
-			fi 
-			i=0
-			echo -n "" > /tmp/ctrl2.txt
-			while read line
-			do	
-				((i++))		
-				echo $line > /tmp/tmp.txt
-				if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
-				then
-					#skip line ,, already processed
-				else
-					echo $line >> /tmp/ctrl2.txt
-				fi
-			done < /tmp/ctrl.txt
-			cp /tmp/ctrl2.txt /tmp/ctrl.txt
-			rm /tmp/ctrl2.txt			
+				echo "
+device='$port'
+driver='$model'
+dirname='$dirname'
+refresh='$refresh'
+username='$username'
+password='$password'
+ip='$ip'
+" > /etc/opendomo/control/$dirname.conf
+
+				i=0
+				echo -n "" > /tmp/ctrl2.txt
+				while read line
+				do	
+					((i++))		
+					echo $line > /tmp/tmp.txt
+					if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
+					then
+						#skip line ,, already processed
+					else
+						echo $line >> /tmp/ctrl2.txt
+					fi
+				done < /tmp/ctrl.txt
+				cp /tmp/ctrl2.txt /tmp/ctrl.txt
+				rm /tmp/ctrl2.txt
+			fi			
 			$ESPEAK < /tmp/tmp.txt
 		else
 			$ESPEAK "Si necesita ayuda para modificar datos de dispositivo de control, diga control ayuda"

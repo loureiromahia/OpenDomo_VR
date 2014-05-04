@@ -1170,7 +1170,7 @@ else
 		esac
 				
 		if [ "$1" = "controlejecutar" ]
-		then
+		then			
 			grep $par1 /tmp/ctrl.txt > /tmp/tmp.txt
 			if [ `grep -c "borrar" /tmp/tmp.txt` -gt 0 ]
 			then
@@ -1187,8 +1187,12 @@ else
 			ip=`cat /tmp/tmp.txt | cut -d":" -f5`
 			username=`cat /tmp/tmp.txt | cut -d":" -f6`
 			password=`cat /tmp/tmp.txt | cut -d":" -f7`
-			echo "Dispositivo " $par1 " ha sido creado " > /tmp/tmp.txt
-			echo "
+			if [ $port="" || $model="" ]
+			then
+				echo "Necesita configurar el puerto y la placa antes de poder ejecutar el cambio en " $par1 > /tmp/tmp.txt
+			else			
+				echo "Dispositivo " $par1 " ha sido creado " > /tmp/tmp.txt
+				echo "
 device='$port'
 driver='$model'
 dirname='$dirname'
@@ -1198,21 +1202,22 @@ password='$password'
 ip='$ip'
 " > /etc/opendomo/control/$dirname.conf
 
-			i=0
-			echo -n "" > /tmp/ctrl2.txt
-			while read line
-			do	
-				((i++))		
-				echo $line > /tmp/tmp.txt
-				if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
-				then
-					#skip line ,, already processed
-				else
-					echo $line >> /tmp/ctrl2.txt
-				fi
-			done < /tmp/ctrl.txt
-			cp /tmp/ctrl2.txt /tmp/ctrl.txt
-			rm /tmp/ctrl2.txt			
+				i=0
+				echo -n "" > /tmp/ctrl2.txt
+				while read line
+				do	
+					((i++))		
+					echo $line > /tmp/tmp.txt
+					if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
+					then
+						#skip line ,, already processed
+					else
+						echo $line >> /tmp/ctrl2.txt
+					fi
+				done < /tmp/ctrl.txt
+				cp /tmp/ctrl2.txt /tmp/ctrl.txt
+				rm /tmp/ctrl2.txt
+			fi			
 			$ESPEAK < /tmp/tmp.txt
 		else
 			$ESPEAK "Si necesita ayuda para modificar datos de dispositivo de control, diga control ayuda"
