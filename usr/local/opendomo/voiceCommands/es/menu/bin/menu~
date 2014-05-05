@@ -1188,7 +1188,7 @@ else
 			ip=`cat /tmp/tmp.txt | cut -d":" -f5`
 			username=`cat /tmp/tmp.txt | cut -d":" -f6`
 			password=`cat /tmp/tmp.txt | cut -d":" -f7`
-			if [ $port="" || $model="" ]
+			if [ $port=="" || $model=="" ]
 			then
 				echo "Necesita configurar el puerto y la placa antes de poder ejecutar el cambio en " $par1 > /tmp/tmp.txt
 			else			
@@ -1202,20 +1202,14 @@ username='$username'
 password='$password'
 ip='$ip'
 " > /etc/opendomo/control/$dirname.conf
-
-				i=0
-				echo -n "" > /tmp/ctrl2.txt
+				#Generate the data already committed, as /tmp/ctrl.txt it is already processed
+				/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/ctrl2.txt
+				echo -n "" > /tmp/ctrl.txt
 				while read line
-				do	
-					((i++))		
-					echo $line > /tmp/tmp.txt
-					if [ `grep -c $par1 /tmp/tmp.txt` -gt 0 ]
-					then
-						#skip line ,, already processed
-					else
-						echo $line >> /tmp/ctrl2.txt
-					fi
-				done < /tmp/ctrl.txt
+				do
+					echo $line ":::::::existente " >> /tmp/ctrl.txt
+				done < /tmp/ctrl2.txt				
+				
 				cp /tmp/ctrl2.txt /tmp/ctrl.txt
 				rm /tmp/ctrl2.txt
 			fi			
