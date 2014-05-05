@@ -1,5 +1,6 @@
 #!/bin/bash
 function Generate_control_data()
+#Create temporary file to store control devices  data
 {
 		cat /tmp/ctrl.txt |cut -d":" -f1 > /tmp/tmp.txt 
                 echo " Placas disponibles: " >> /tmp/tmp.txt     

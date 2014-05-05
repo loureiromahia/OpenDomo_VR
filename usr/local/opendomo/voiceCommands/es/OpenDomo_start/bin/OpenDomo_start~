@@ -1,0 +1,10 @@
+#!/bin/bash
+read ESPEAK < /etc/opendomo/speech/espeak.dat
+echo $ESPEAK
+$ESPEAK "Bienvenido a OpenDomo. Comandos posibles"
+$ESPEAK "Encender o Apagar Luces o Climatización"
+$ESPEAK "Información de estado de sensores"
+echo "main" > MODE 
+flac -df /usr/local/opendomo/vr/recording.flac
+cp /usr/local/opendomo/vr/recording.wav /var/opendomo/tmp/recognition.wav
+logevent notice odvr "Voice handshake" /var/opendomo/tmp/recognition.wav
