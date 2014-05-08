@@ -1,4 +1,17 @@
 #!/bin/bash
+function Retrieve_control_data()
+#Retrieves control data from the system, isntead of using  temporary file /tmp/ctrl.txt
+{
+#Generate the data already committed, as /tmp/ctrl.txt it is already processed
+					/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/ctrl2.txt
+					echo -n "" > /tmp/ctrl.txt
+					while read line
+					do
+						echo $line ":::::::existente " >> /tmp/ctrl.txt
+					done < /tmp/ctrl2.txt				
+					rm /tmp/ctrl2.txt		
+}
+#******************************************************************************************************************************************************
 function Generate_control_data()
 #Create temporary file to store control devices  data
 {
@@ -420,13 +433,7 @@ else
 				echo "menu3xctl" > /usr/local/opendomo/vr/MENU
 				#List actual control data
 				$ESPEAK "Menu de configuracion de dispositivos de control. Dispositivos actuales "
-				#create temporary file for keeping provisional control data, until control data is saved 
-			  	/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/tmp.txt
-				echo -n "" > /tmp/ctrl.txt
-				while read line
-				do
-					echo $line ":::::::existente " >> /tmp/ctrl.txt
-				done < /tmp/tmp.txt
+				Retrieve_control_data				
 				Generate_control_data				
 				$ESPEAK < /tmp/tmp.txt
 				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
@@ -1203,18 +1210,12 @@ username='$username'
 password='$password'
 ip='$ip'
 " > /etc/opendomo/control/$dirname.conf
-					#Generate the data already committed, as /tmp/ctrl.txt it is already processed
-					/usr/local/opendomo/services/config/manageControlDevices.sh |grep -| awk '{ print $2}' > /tmp/ctrl2.txt
-					echo -n "" > /tmp/ctrl.txt
-					while read line
-					do
-						echo $line ":::::::existente " >> /tmp/ctrl.txt
-					done < /tmp/ctrl2.txt				
-					cp /tmp/ctrl2.txt /tmp/ctrl.txt
-					rm /tmp/ctrl2.txt
+					
+					
 				fi
 			fi			
 			$ESPEAK < /tmp/tmp.txt
+			Retrieve_control_data
 		else
 			$ESPEAK "Si necesita ayuda para modificar datos de dispositivo de control, diga control ayuda"
 		fi
