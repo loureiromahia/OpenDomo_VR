@@ -20,9 +20,7 @@ if [ -z "$1" ];then
     exit 1
 fi
 
-wget  --post-file "$1" --header 'Content-type: audio/x-flac; rate=16000' "$URL" > result.json
+wget -q --post-file "$1" --header 'Content-type: audio/x-flac; rate=16000' "$URL" 
 
-RESULT=`cat recognize* | cut -d":" -f4 |cut -d"," -f1 | sed 's/"//g'` 
-mv recognize* result.json
-
-echo "$RESULT"
+cat recognize?* > result.json
+rm recognize?*

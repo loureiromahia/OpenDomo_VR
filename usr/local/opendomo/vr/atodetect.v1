@@ -22,9 +22,7 @@ then
 	kill $p
 fi
 
-./send_speech recording.flac
-RESULT=`cat result.json | cut -d":" -f4 |cut -d"," -f1 | sed 's/"//g'`
-RESULT=`echo "${RESULT:1:${#RESULT}-1}"`
+RESULT="$(./send_speech recording.flac)"
 ./recognize "$RESULT"
 
 
