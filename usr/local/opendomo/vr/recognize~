@@ -48,54 +48,15 @@ fi
 rm Microphone/result 2>/dev/null
 
 
-if [ -e "$USER_DIR/personal.dic" ];then
-    COMMAND=$(./Recognition/dictionary "$speech"\
- "$USER_DIR/personal.dic")
-
-    EXIT=$?
-    if [ "$EXIT" == 0 ];then
-
-	run_command "$COMMAND"
-
-
-	exit 0
-    fi
-    if [ "$EXIT" != 2 ];then
-	echo "There is an error in $USER_DIR/personal.dic"
-    fi
-fi
-
-
 COMMAND=$(./Recognition/dictionary "$speech" "./Recognition/modes/${mode}.dic")
 
 EXIT=$?
 
 if [ "$EXIT" == 0 ];then
     	run_command "$COMMAND"
-#ML,06/11/2013
-#    espeak -ves "Entendido"
-#ML,29/11/2013
-#	read ESPEAK < $USER_DIR/espeak.dat
-#	grep SiEntendido $USER_DIR/frases |cut -d ":" -f2 > FRASE
-#	$ESPEAK < FRASE
-#$ESPEAK 'grep SiEntendido $USER_DIR/frases |cut -d ":" -f2'
-#ML, 19/02/2014:
-#	/usr/local/opendomo/vr/espeak.sh "SiEntendido"
     	echo  "OK" > RESULTADO
     	exit 0
-#elif [ "$EXIT" == 2 ];then
-#    ./Recognition/bin/result Error "'$speech'" "is not a recognized command" ""
-
 else 
-#    echo "There is an error in ${mode}.dic"
-#    ./Recognition/bin/result Error "There was an error while reading ${mode}.dic" \
-#	"$COMMAND" ""
-#    espeak -ves "No le he entendido, ¿puede repetir? "
-#ML,29/11/2013
-#	read ESPEAK < $USER_DIR/espeak.dat
-#	grep NoEntendido $USER_DIR/frases |cut -d ":" -f2 > FRASE
-#	$ESPEAK < FRASE
-#ML, 19/02/2014:
 	/usr/local/opendomo/vr/espeak.sh "NoEntendido"
      	echo "NOK" > RESULTADO
 fi

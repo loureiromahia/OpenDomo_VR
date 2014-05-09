@@ -31,7 +31,7 @@ function run_command() {
 	exit 1
     fi
 }
-
+function
 cd $(dirname $0)
 
 read mode < MODE
@@ -56,7 +56,4 @@ if [ "$EXIT" == 0 ];then
     	run_command "$COMMAND"
     	echo  "OK" > RESULTADO
     	exit 0
-else 
-	/usr/local/opendomo/vr/espeak.sh "NoEntendido"
-     	echo "NOK" > RESULTADO
 fi

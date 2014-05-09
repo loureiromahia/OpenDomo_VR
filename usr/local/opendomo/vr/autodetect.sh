@@ -25,7 +25,30 @@ fi
 ./send_speech recording.flac
 RESULT=`cat result.json | cut -d":" -f4 |cut -d"," -f1 | sed 's/"//g'`
 RESULT=`echo "${RESULT:1:${#RESULT}-1}"`
-./recognize "$RESULT"
-
+RETRY1=`cat result.json | cut -d":" -f6 |cut -d"," -f1 | sed 's/"//g' | sed 's/}//g'`
+RETRY1=`echo "${RETRY1:1:${#RETRY1}-1}"`
+RETRY2=`cat result.json | cut -d":" -f7 |cut -d"," -f1 | sed 's/"//g' | sed 's/}//g'`
+RETRY2=`echo "${RETRY2:1:${#RETRY2}-1}"`
+./recognize "$RESULT" 
+resultado=`cat RESULTADO`
+#if not OK, retry twice 
+if [ "$resultado" == "NOK" ]
+then
+	RETRY1=`cat result.json | cut -d":" -f6 |cut -d"," -f1 | sed 's/"//g' | sed 's/}//g'`
+	RETRY1=`echo "${RETRY1:1:${#RETRY1}-1}"`
+	./recognize "$RETRY1" 
+	resultado=`cat RESULTADO`
+	if [ "$resultado" == "NOK" ]
+	then
+		RETRY2=`cat result.json | cut -d":" -f7 |cut -d"," -f1 | sed 's/"//g' | sed 's/}//g'`
+		RETRY2=`echo "${RETRY2:1:${#RETRY2}-1}"
+		./recognize "$RETRY2" 
+		resultado=`cat RESULTADO`
+		if [ "$resultado" == "NOK" ]
+		then`
+			/usr/local/opendomo/vr/espeak.sh "NoEntendido"
+     		fi
+	fi
+fi
 
 
