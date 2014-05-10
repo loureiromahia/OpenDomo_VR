@@ -8,6 +8,138 @@ then
 	rm /etc/opendomo/speech/AYUDA
 fi
 touch /etc/opendomo/speech/AYUDA
+#generate CONFIG file, containing the options of config menu
+if  [ -f /etc/opendomo/speech/CONFIG ]
+then	
+	rm /etc/opendomo/speech/CONFIG
+fi
+touch /etc/opendomo/speech/CONFIG
+cd /usr/local/opendomo/services/config/
+grep '#desc' * | grep -n "#desc" | sed 's/#desc://' >> /etc/opendomo/speech/CONFIG
+#generate menu view options: themes available, skins available and lanfiles availables
+if  [ -f /etc/opendomo/speech/INTERFACE ]
+then	
+	rm /etc/opendomo/speech/INTERFACE
+fi
+touch /etc/opendomo/speech/INTERFACE
+echo "Visual interface configuration." > /etc/opendomo/speech/INTERFACE
+cd /var/www/themes
+ls -l| grep drwxr |awk '{ print $9}' > tmp.txt
+i=0
+echo  "Theme configuration " >> /etc/opendomo/speech/INTERFACE
+while read line
+do	
+	((i++))		
+	echo -n "For theme " >> /etc/opendomo/speech/INTERFACE	
+	stri=`echo $line`
+	echo -n $stri >>  /etc/opendomo/speech/INTERFACE
+	echo -n " ,say, interface the,e " >> /etc/opendomo/speech/INTERFACE
+	echo  $i "." >> /etc/opendomo/speech/INTERFACE
+done < tmp.txt
+
+cd /var/www/skins
+ls -l| grep drwxr |awk '{ print $9}' > tmp.txt
+i=0
+echo  "Skin configuration " >> /etc/opendomo/speech/INTERFACE
+while read line
+do	
+	((i++))		
+	echo -n "For skin  " >> /etc/opendomo/speech/INTERFACE	
+	stri=`echo $line`
+	echo -n $stri >>  /etc/opendomo/speech/INTERFACE
+	echo -n " ,say,  interface skin " >> /etc/opendomo/speech/INTERFACE
+	echo  $i "." >> /etc/opendomo/speech/INTERFACE
+done < tmp.txt
+rm tmp.txt
+
+cd /etc/opendomo/langfiles
+cat available | sed 's/Català/Catalan/g' | sed 's/,/ ./g' | sed 's/..:/Language configuration. Say, interface language 1, for /' |sed 's/..:/ Say interface language 2, for /' |sed 's/..:/ Say interface language 3, for /' |sed 's/..:/ Say interface language 4, for /' |sed 's/..:/ Say interface language 5, for /' |sed 's/..:/ Say interface language 6, for /'|sed 's/..:/ Say interface language 7, for /' |sed 's/ Say/\n&/g'    >> /etc/opendomo/speech/INTERFACE
+echo >> /etc/opendomo/speech/INTERFACE
+echo "To save interface configuration, say, interface save" >> /etc/opendomo/speech/INTERFACE
+
+grep '#desc' * | grep -n "#desc" | sed 's/#desc://' >> /etc/opendomo/speech/CONFIG
+cd /usr/local/opendomo/vr
+#generate configmenu.txt file, containing the voice stream, with the options
+if  [ -f /etc/opendomo/speech/configmenu.txt ]
+then	
+	rm /etc/opendomo/speech/configmenu.txt
+fi
+touch /etc/opendomo/speech/configmenu.txt
+echo "Configuration Menu " > /etc/opendomo/speech/configmenu.txt
+while read line
+do	
+	echo -n " For " >> /etc/opendomo/speech/configmenu.txt	
+	stri=`echo $line | cut -d ":" -f3 -`
+	echo -n $stri >>  /etc/opendomo/speech/configmenu.txt
+	echo -n " , say " >> /etc/opendomo/speech/configmenu.txt
+	echo $line | cut -d ":" -f1 - >> /etc/opendomo/speech/configmenu.txt
+done < /etc/opendomo/speech/CONFIG
+#generate actual network configuration data
+if  [ -f /etc/opendomo/speech/netmenu.txt ]
+then	
+	rm /etc/opendomo/speech/netmenu.txt
+fi
+touch /etc/opendomo/speech/netmenu.txt
+echo "Network configuration " > /etc/opendomo/speech/netmenu.txt
+echo "Actual values " > /etc/opendomo/speech/netmenu.txt
+/usr/local/opendomo/services/config/configLocalNetwork.sh > tmp.txt
+MODE=`cat tmp.txt |grep mode | awk '{ print $5}'`
+IP=`cat tmp.txt |grep ip | awk '{ print $4}'`
+MASK=`cat tmp.txt |grep mask | awk '{ print $4}'`
+GW=`cat tmp.txt |grep gw | awk '{ print $4}'`
+DNS=`cat tmp.txt |grep dns | awk '{ print $5}'`
+echo " mode " $MODE >> /etc/opendomo/speech/netmenu.txt
+echo " IP " $IP >> /etc/opendomo/speech/netmenu.txt
+echo " mask " $MASK >> /etc/opendomo/speech/netmenu.txt
+echo " gateway " $GW >> /etc/opendomo/speech/netmenu.txt
+echo " DNS " $DNS >> /etc/opendomo/speech/netmenu.txt
+rm tmp.txt
+
+#generate actual control device data
+# -available control cards
+# -available ports
+if  [ -f /etc/opendomo/speech/portmenu.txt ]
+then	
+	rm /etc/opendomo/speech/portmenu.txt
+fi
+touch /etc/opendomo/speech/portmenu.txt
+PS=""
+PORTS="/dev/dummy"
+#Cards available
+echo "Card:dummy:1" > /etc/opendomo/speech/portmenu.txt
+i=1
+
+if test -e /usr/bin/micropik
+then
+	((i++))
+	echo "Card:micropik:"$i >> /etc/opendomo/speech/portmenu.txt 
+	PS="`ls /dev/ttyS* 2>/dev/null | cut -c1-15` "      	
+fi
+if test -e /usr/bin/arduino
+then
+	((i++))
+	echo "Card:arduino:"$i >> /etc/opendomo/speech/portmenu.txt
+	PS="$PS `ls /dev/ttyU* 2>/dev/null | cut -c1-15`"        	
+fi
+if test -e /usr/bin/x10
+then
+	((i++))
+	echo "Card:x10:"$i >> /etc/opendomo/speech/portmenu.txt 
+	PS="$PS `/usr/bin/x10 -l 2>/dev/null`"       	
+fi
+if test -e /usr/bin/domino
+then
+	((i++))
+	echo "Card:domino:"$i >> /etc/opendomo/speech/portmenu.txt       	
+fi
+#Ports...if no new port, at least /dev/dummy
+i=1
+echo "Port:/dev/dummy:"$i >> /etc/opendomo/speech/portmenu.txt  
+for p in $PS; do
+        ((i++))
+	echo "Port:"$p":"$i >> /etc/opendomo/speech/portmenu.txt  
+done
+
 # Lights:
 grep -ir "light" /etc/opendomo/control/* | cut -d ":" -f1 - > tmp.txt
 if  [ -f /etc/opendomo/speech/light.conf ]
