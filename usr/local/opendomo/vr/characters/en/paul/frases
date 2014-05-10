@@ -31,5 +31,28 @@ VideoOFFswoff: Switching off Video in
 VideoOFFalready: It is already switched off video in
 VideoONswon: Switching on video in
 VideoONalready: It is already switched on video in
+Menu0: Man menu. To access control menu, say 1. To access tool memu, say 2. To access configuration menu, say 3. To exit menu mode, say  Exit. You can use option prefix to increase recognition performance. You can say option 2 ,instead of 2.
+Menu1e: Control menu .  To list controllers , say 1.  If you want to change state of the system , say 2.To return to previous menu, say return. To exit menu mode, say exit.
+Menu11e: List controllers. Light switches, say 1. Climate switches, say 2. Music switches, say 3. Video cameras, say 4. Sensors, say 5. Thermostates, say 6. Variable light regulators, say 7. To return to previous menu, say return. To exit menu mode, say exit.
+Menu12e: State change. For state activated, say 1. For surveillance, say 2. For deactivated, say 3.To return to previous menu, say return. To exit menu mode, say exit.
+Menusalir: You are going to leave menu mode. To reenter menu mode, say menu
+Menunoval: Option not valid
+MenuNo: Option not valid. You are not in menu mode. To reenter menu mode, say menu.
+Menucambestactiv: Active state activated.To return to previous menu, say return. To exit menu mode, say exit.
+Menucambestvig: Surveillance state activated. To return to previous menu, say return. To exit menu mode, say exit.
+Menucambestdesac: Deactivated state activated.To return to previous menu, say return. To exit menu mode, say exit.
+MenuONOFF: Option not valid. For the desired zone, say activate number, to switch on or deactivate number, to switch off. To return to previous menu, say return. To exit menu mode, say exit. 
+Menuconfigsave: System configuration save. To save actual configuration with plugins , say save 1. To save actual configuration without plugins, say save 2. To save default configuration with plugins , say save 3. To save default configuration without plugins, say save 4.To return to previous menu, say return. To exit menu mode, say exit.
+MenuDonde: You are in 
+MenuNetConfig: To configure mode, say network mode static or dhcp. To configure IP, say network IP address. To configure mask, say network mask mask. To configure gateway, say network gateway address. To configure DNS , say network DNS address. To save network configuration, say network save.
+MenuNetSalvarErr: Network configuration not saved due to errors. Please check the data before save
+MenuNetsalvarOk: Network configuration saved. Restart system to activate new configuration
+DondeestoyNormal: Normal mode. Available commands. Switch on or off Lights or Climate or Music or Video Information of sensors. If you need help, say, Help. If yu want to enter menu mode, say , Menu
+DondeestoyIdentificacion: Identification Mode. To reenter again, say Hello OpenDomo
+MenuUserConfig: Available options. If you want to remove a user, say, user remove identity. If you want to create a user, say, user create identity. If you want to modify full user name, say, user name identity newname.If you want to modify email, say, user mail identity newmail. If you want to modify password, say, user password identity newpassword. If you want to confirm changes in a user, say, user execute identity.To return to previous menu, say return. To exit menu mode, say exit.
+MenuControlConfig: Available options. To create control device, say, control create device. To remove control device, say, control remove device. To modify device card, say, control card device cardnumber. To modify device port, say, control port device portnumber. To modify refresh period, say, control refresh device newperiod. To modify IP address of device, say, control IP device newIP. To modify user to acces to a device, say, control user device newuser. To modify password to access a device, say, control password device newpassword. To confirm the pending changes in a device, say, control execute device.To return to previous menu, say return. To exit menu mode, say exit.
+MenuStatConfig: Available options. To create anew state, say, state create statename. To remove a state, say, state remove statename. To modify a state, say, state modify statename. To confirm the pending changes in an state, say, state execute statename. If you need help, say, state help.To return to previous menu, say return. To exit menu mode, say exit.
+MenuPlugConfig: Available options. To activate a plugin, say, plugin activate number. To deactivate plugin, say, plugin deactivate number. To update plugins, say, plugin update . To update system, say, system update. If you need help with plugins, say, plugin help.To return to previous menu, say return. To exit menu mode, say exit.
+MenuZoneConfig: Available options. To create a new zone, say, zone create zonename. To remove a zone, say, zone remove zonename. To modify the description of a zone , say, zone description zonename description. To modify the coordinates of a zone , say, zone location zonename coordinates. To confirm the pending changes in a zone, say, zone execute zonename. If you need help in zones, say,  zone help.To return to previous menu, say return. To exit menu mode, say exit.
 
 

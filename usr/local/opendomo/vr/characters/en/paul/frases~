@@ -1,0 +1,35 @@
+SiEntendido: Understood
+NoEntendido: I did not understand, may you repeat?
+NoDef: It is not defined the zone
+ClimaOFFswoff: Switching off Clima in
+ClimaOFFalready: It is already switched off clima in 
+ClimaONswon: switching On Clima in
+ClimaONalready: It is already switched on clima in
+LucesOFFswoff: Switching off lights in
+LucesOFFalready: It is already switched off light in
+LucesONswon: Switching on Lights in 
+LucesONalready: It is already switched on lights in  
+MusicOFFswoff: Switching off music in
+MusicOFFalready: It is already switched off music in 
+MusicONswon: Switching on music in
+MusicONalready: It is already switched on music in 
+StartBienvenido: Welcome to OpenDomo. Possible commands are:
+StartComandos: Switch ON or OFF Lights or Clima or Music or Video
+StartSensores: Information of sensors values
+StartAyuda: If you need help, say: Help
+Stop: Talk to you next time. To reconnect again, say: Hello OpenDomo
+Sensorsnotdefsens: It is not defined the sensor
+Sensorsvalor: Actual Value
+Sensorsnotdef: It is not defined
+VarClimatenoterm: There is no thermostat in zone
+VarClimatecambiando: Updating temperature to 
+VarClimatezona: in zone
+VarLightnoreg: There is no light regulator in zone
+VarLightcambiando: Changing light level to
+VarLightzona: in zone
+VideoOFFswoff: Switching off Video in
+VideoOFFalready: It is already switched off video in
+VideoONswon: Switching on video in
+VideoONalready: It is already switched on video in
+
+

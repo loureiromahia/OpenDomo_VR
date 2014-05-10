@@ -45,7 +45,7 @@ then
 		./recognize "$RETRY2" 
 		read resultado < RESULTADO
 		if [ "$resultado" == "NOK" ]
-		then`
+		then
 			/usr/local/opendomo/vr/espeak.sh "NoEntendido"
      		fi
 	fi
