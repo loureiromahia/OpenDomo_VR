@@ -33,7 +33,7 @@ do
 	echo -n "For theme " >> /etc/opendomo/speech/INTERFACE	
 	stri=`echo $line`
 	echo -n $stri >>  /etc/opendomo/speech/INTERFACE
-	echo -n " ,say, interface the,e " >> /etc/opendomo/speech/INTERFACE
+	echo -n " ,say, interface theme " >> /etc/opendomo/speech/INTERFACE
 	echo  $i "." >> /etc/opendomo/speech/INTERFACE
 done < tmp.txt
 

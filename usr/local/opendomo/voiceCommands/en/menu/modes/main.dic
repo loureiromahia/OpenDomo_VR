@@ -1,6 +1,6 @@
 menu
   menu 0 
-[opción] <1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19>
+[option ]<1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19>
   menu "$SPEECH$"
 <activate,deactivate> <1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19>
   menu "$SPEECH$"
@@ -14,7 +14,7 @@ return
   menu 20
 exit
   menu 21
-where am i
+where am I
   menu 22
 network mode <estático,DHCP>
   menu redmode "$SPEECH$"
