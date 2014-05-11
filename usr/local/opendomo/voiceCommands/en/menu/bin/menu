@@ -1380,7 +1380,7 @@ ip='$ip'
 				echo " Say, state execute " $estado " to save changes " >> /tmp/tmp.txt
 				;;
 			esac
-		echo " To return to previous menu, say, return. To exit menu mode say, exit " >> /tmp/tmp.txt
+		echo " To return to previous menu, say, go back. To exit menu mode say, menu end " >> /tmp/tmp.txt
 		$ESPEAK < /tmp/tmp.txt	
 		;;
 	#Menu de configuracion general de plugins del sistema

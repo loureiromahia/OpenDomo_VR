@@ -10,9 +10,9 @@ save <1,2,3,4>
   menu "$SPEECH$"
 voice of (WORD Objeto)
   menu "$SPEECH$"
-return
+go back
   menu 20
-exit
+menu end
   menu 21
 where am I
   menu 22
