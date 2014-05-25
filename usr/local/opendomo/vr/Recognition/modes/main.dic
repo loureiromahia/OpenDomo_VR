@@ -1,198 +1,201 @@
 #PLUGIN: menu
-menu
+menú
   menu 0 
-[option ]<1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19>
+[opción] <1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19>
   menu "$SPEECH$"
-<activate,deactivate> <1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19>
+<activar,desactivar> <1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19>
   menu "$SPEECH$"
-value (LINE Objeto)
+valor (LINE Objeto)
   menu "$Objeto$"
-save <1,2,3,4>
+salvar <1,2,3,4>
   menu "$SPEECH$"
-voice of (WORD Objeto)
+voz de (WORD Objeto)
   menu "$SPEECH$"
-go back
+volver
   menu 20
-menu end
+salir
   menu 21
-where am I
+dónde estoy
   menu 22
-network mode <estático,DHCP>
+red modo <estático,DHCP>
   menu redmode "$SPEECH$"
-network IP (LINE Objeto)
+red IP (LINE Objeto)
   menu redIP "$Objeto$"
-network gateway (LINE Objeto)
+red puerta (LINE Objeto)
   menu redGW "$Objeto$"
-network mask (LINE Objeto)
+red máscara (LINE Objeto)
   menu redmask "$Objeto$"
-network DNS (LINE Objeto)
+red DNS (LINE Objeto)
   menu redDNS "$Objeto$"
-network save
+red salvar
   menu redsave "$Objeto$"
-interface theme <1,2,3,4,5,6,7,8,9 >
+interfaz tema <1,2,3,4,5,6,7,8,9 >
   menu tema "$SPEECH$"
-interface skin <1,2,3,4,5,6,7,8,9 >
+interfaz piel <1,2,3,4,5,6,7,8,9 >
   menu piel "$SPEECH$"
-interface language <1,2,3,4,5,6,7 >
+interfaz idioma <1,2,3,4,5,6,7 >
   menu idioma "$SPEECH$"
-interface help
+interfaz ayuda
   menu interfazayuda
-interface save
+interfaz salvar
   menu interfazsalvar
-user create (LINE Objeto)
+usuario crear (LINE Objeto)
   menu usuariocrear "$Objeto$"
-user remove (LINE Objeto)
+usuario borrar (LINE Objeto)
   menu usuarioborrar "$Objeto$"
-user name (LINE Objeto)
+usuario nombre (LINE Objeto)
   menu usuariomodnombre "$Objeto$"
-user mail (LINE Objeto)
+usuario correo (LINE Objeto)
   menu usuariomodcorreo "$Objeto$"
-user password (LINE Objeto)
+usuario clave (LINE Objeto)
   menu usuariomodclave "$Objeto$"
-user execute (LINE Objeto)
+usuario ejecutar (LINE Objeto)
   menu usuarioejecutar "$Objeto$"
-user help
+usuario ayuda
   menu usuarioayuda
-control create (LINE Objeto)
+control crear (LINE Objeto)
   menu controlcrear "$Objeto$"
-control remove (LINE Objeto)
+control borrar (LINE Objeto)
   menu controlborrar "$Objeto$"
-control card (LINE Objeto)
+control placa (LINE Objeto)
   menu controlplaca "$Objeto$"
-control port (LINE Objeto)
+control puerto (LINE Objeto)
   menu controlpuerto "$Objeto$"
-control refresh (LINE Objeto)
+control refresco (LINE Objeto)
   menu controlrefresco "$Objeto$"
 control IP (LINE Objeto)
   menu controlIP "$Objeto$"
-control user (LINE Objeto)
+control usuario (LINE Objeto)
   menu controlusuario "$Objeto$"
-control password (LINE Objeto)
+control clave (LINE Objeto)
   menu controlclave "$Objeto$"
-control execute (LINE Objeto)
+control ejecutar (LINE Objeto)
   menu controlejecutar "$Objeto$"
-control help
+control ayuda
   menu controlayuda
-state create (LINE Objeto)
+estado crear (LINE Objeto)
   menu estadocrear "$Objeto$"
-state remove (LINE Objeto)
+estado borrar (LINE Objeto)
   menu estadoborrar "$Objeto$"
-state modify (LINE Objeto)
+estado modificar (LINE Objeto)
   menu estadomod "$Objeto$"
-state execute (LINE Objeto)
+estado ejecutar (LINE Objeto)
   menu estadoejecutar "$Objeto$"
-state help
+estado ayuda
   menu estadoayuda
-state activate <1,2,3,4,5,6,7,8,9>
+estado activar <1,2,3,4,5,6,7,8,9>
    menu estadoactivar "$SPEECH$"  
-state deactivate <1,2,3,4,5,6,7,8,9>
+estado desactivar <1,2,3,4,5,6,7,8,9>
    menu estadodesactivar "$SPEECH$"  
-plugin activate (LINE Objeto)
+complemento activar (LINE Objeto)
   menu pluginact "$Objeto$"
-plugin deactivate (LINE Objeto)
+complemento desactivar (LINE Objeto)
   menu plugindeact "$Objeto$"
-plugin update
+complemento actualizar
   menu pluginupd 
-system update
+sistema actualizar
   menu systemupd 
-plugin help
+complemento ayuda
   menu pluginayuda
-zone create (LINE Objeto)
+zona crear (LINE Objeto)
   menu zonacrear "$Objeto$"
-zone remove (LINE Objeto)
+zona borrar (LINE Objeto)
   menu zonaborrar "$Objeto$"
-zone description (LINE Objeto)
+zona descripción (LINE Objeto)
   menu zonadesc "$Objeto$"
-zone location (LINE Objeto)
+zona coordenadas (LINE Objeto)
   menu zonacoord "$Objeto$"
-zone execute (LINE Objeto)
+zona ejecutar (LINE Objeto)
   menu zonaejecutar "$Objeto$"
-zone help
+zona ayuda
   menu zonaayuda
 
 
 
 #END
 #PLUGIN: Ayuda
-help
+ayuda
  Ayuda 
 #END
 #PLUGIN: VarClimate
-<adjust,change> temperature (LINE Objeto)
+<ajustar,cambiar> termostato (LINE Objeto)
   VarClimate "$Objeto$"
-temperature (LINE Objeto)
+termostato (LINE Objeto)
   VarClimate "$Objeto$"
 
 #END
 #PLUGIN: VarLight
-<adjust,change> light (LINE Objeto)
+<ajustar,cambiar> luz (LINE Objeto)
   VarLight "$Objeto$"
-light (LINE Objeto)
+luz (LINE Objeto)
   VarLight "$Objeto$"
 
 #END
 #PLUGIN: MusicOFF
-deactivate music (LINE Objeto)
-  MusicON "$Objeto$"
-music off (LINE Objeto)
-  MusicON "$Objeto$"
+desactivar música (LINE Objeto)
+  MusicOFF "$Objeto$"
+apagar música (LINE Objeto)
+  MusicOFF "$Objeto$"
+
 #END
 #PLUGIN: MusicON
-activate music (LINE Objeto)
+activar música (LINE Objeto)
   MusicON "$Objeto$"
-music on (LINE Objeto)
+encender música (LINE Objeto)
   MusicON "$Objeto$"
 
 #END
 #PLUGIN: VideoOFF
-deactivate video (LINE Objeto)
+desactivar video (LINE Objeto)
   VideoOFF "$Objeto$"
-video off (LINE Objeto)
+apagar video (LINE Objeto)
   VideoOFF "$Objeto$"
+
 #END
 #PLUGIN: VideoON
-activate video (LINE Objeto)
+activar video (LINE Objeto)
   VideoON "$Objeto$"
-video on (LINE Objeto)
+encender video (LINE Objeto)
   VideoON "$Objeto$"
-
 
 #END
 #PLUGIN: Sensors
-inform about (LINE Objeto)
+informar de (LINE Objeto)
+  Sensors "$Objeto$"
+estado de (LINE Objeto)
   Sensors "$Objeto$"
 #END
 #PLUGIN: ClimaOFF
-switch off climate (LINE Objeto)
+apagar clima (LINE Objeto)
   ClimaOFF "$Objeto$"
-climate off (LINE Objeto)
+desactivar clima (LINE Objeto)
   ClimaOFF "$Objeto$"
 #END
 #PLUGIN: ClimaON
-switch on climate (LINE Objeto)
+encender clima (LINE Objeto)
   ClimaON "$Objeto$"
-climate on (LINE Objeto)
+activar clima (LINE Objeto)
   ClimaON "$Objeto$"
 #END
 #PLUGIN: LucesOFF
-switch OFF light (LINE Objeto)
+apagar luz (LINE Objeto)
   LucesOFF "$Objeto$"
-switch OFF lights (LINE Objeto)
+apagar luces (LINE Objeto)
   LucesOFF "$Objeto$"
 
 #END
 #PLUGIN: LucesON
-switch ON Light (LINE Objeto)
+encender luz (LINE Objeto)
   LucesON "$Objeto$"
-switch ON Lights (LINE Objeto)
+encender luces (LINE Objeto)
   LucesON "$Objeto$"
 #END
 #PLUGIN: OpenDomo_stop
-Bye OpenDomo
+<A,a>diós OpenDomo
   OpenDomo_stop
 #END
 #PLUGIN: OpenDomo_start
-hello[ open Domo]
+Hola OpenDomo
   OpenDomo_start
 #END
 <say,speak> (LINE words)

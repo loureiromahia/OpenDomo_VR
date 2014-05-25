@@ -16,10 +16,10 @@ function Generate_control_data()
 #Create temporary file to store control devices  data
 {
 		cat /tmp/ctrl.txt |cut -d":" -f1 > /tmp/tmp.txt 
-                echo " Cards available: " >> /tmp/tmp.txt     
-		grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ say, control card {$par1} /" >> /tmp/tmp.txt
-		echo " Ports available: " >> /tmp/tmp.txt
-		grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ say, control port {$par1} /" >> /tmp/tmp.txt
+                echo " Placas disponibles: " >> /tmp/tmp.txt     
+		grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa {$par1} /" >> /tmp/tmp.txt
+		echo " Puertos disponibles: " >> /tmp/tmp.txt
+		grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto {$par1} /" >> /tmp/tmp.txt
 }
 #******************************************************************************************************************************************************
 function Prepare_actual_zone_data()
@@ -34,20 +34,20 @@ function Prepare_actual_zone_data()
 			then
 				coordenadas=""
 			else
-				coordenadas=" coordinates  {$coord}" 
+				coordenadas=" coordenadas  {$coord}" 
 			fi
 			if [ "$descr" == "" ]
 			then
 				descripcion=""
 			else
-				descripcion=" description {$descr}" 
+				descripcion=" descripcion {$descr}" 
 			fi
-			if [ `echo $line | grep -c "new"` -gt 0 ]
+			if [ `echo $line | grep -c "nueva"` -gt 0 ]
 			then
-				estado=" marked to be created "
+				estado=" marcada para ser creada "
 			elif [ `echo $line | grep -c "borrar"` -gt 0 ]
 			then
-				estado=" marked to be removed "
+				estado=" marcada para ser borrada "
 			else
 				estado=""
 			fi
@@ -68,9 +68,9 @@ function Generate_plugin_data()
 					echo -n $plugin >> /tmp/plugin.txt
 					if [ `echo $line | grep -c "new"` -gt 0 ]
 					then
-						echo " number " $i " status, not installed" >> /tmp/plugin.txt
+						echo " numero " $i " estado no instalado" >> /tmp/plugin.txt
 					else	
-						echo " number " $i " status, installed" >> /tmp/plugin.txt
+						echo " numero " $i " estado instalado" >> /tmp/plugin.txt
 					fi
 				done < /tmp/tmp.txt
 				rm /tmp/tmp.txt
@@ -116,10 +116,10 @@ function Retrieve_actual_interface_data()
 #**************************************************************************************
 function Inform_about_interface_actual_data ()
 {
-				echo "Actual interface configuration" > /tmp/itf.txt
-				echo "Theme: " $theme >> /tmp/itf.txt
-				echo "Skin: " $skin >> /tmp/itf.txt
-				echo "Language: " $language >> /tmp/itf.txt
+				echo "Configuracion de interface actual" > /tmp/itf.txt
+				echo "Tema: " $theme >> /tmp/itf.txt
+				echo "Piel: " $skin >> /tmp/itf.txt
+				echo "Idioma: " $language >> /tmp/itf.txt
 				$ESPEAK < /tmp/itf.txt
 				
 }
@@ -165,7 +165,7 @@ then
 		;;
 	menu3xstatmod)
 		#20 ==> Volver
-		$ESPEAK "Menu of system states configuration. Actual States"
+		$ESPEAK "Menu de configuracion de estados del sistema. Estados actuales "
 		#create temporary file for keeping provisional states data, until new states data data is saved 
 		ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 		$ESPEAK < /tmp/stat.txt
@@ -241,21 +241,21 @@ then
 	menu3xvoice)
 		read IDIOMA < /etc/opendomo/lang
 		cd /usr/local/opendomo/vr/characters/$IDIOMA
-		echo "Voice recognition configuration " > /tmp/tmp.txt
-		echo "Please, select the character " >> /tmp/tmp.txt
+		echo "Configuracion de reconocimiento de voz " > /tmp/tmp.txt
+		echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
 						
 		for voz in `ls | cut -f1 -d. |uniq `  
 		do	
-			echo -n " To configurate the voice of " >> /tmp/tmp.txt
+			echo -n " Para configurar voz de " >> /tmp/tmp.txt
 			echo -n $voz >> /tmp/tmp.txt
-			echo -n " ,say voice of " >> /tmp/tmp.txt
+			echo -n " ,diga voz de " >> /tmp/tmp.txt
 			echo $voz >> /tmp/tmp.txt
 		done
 		$ESPEAK < /tmp/tmp.txt
 		rm /tmp/tmp.txt	
 		;;
 	menu3xnet)
-		$ESPEAK "Network configuration menu "
+		$ESPEAK "Menu de configuracion de red "
 		$ESPEAK < /etc/opendomo/speech/netmenu.txt
 		/usr/local/opendomo/vr/espeak.sh MenuNetConfig	
 		;;
@@ -263,40 +263,40 @@ then
 		$ESPEAK < /etc/opendomo/speech/INTERFACE	
 		;;
 	menu3xusr)
-		$ESPEAK "User configuration menu. Actual users "
+		$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
 		$ESPEAK < /tmp/usr.txt
 		/usr/local/opendomo/vr/espeak.sh MenuUserConfig		
 		;;
 	menu3xctl)
-		$ESPEAK "Control port configuration menu. Actual ports "
+		$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
 		Generate_control_data
 		$ESPEAK < /tmp/tmp.txt
 		/usr/local/opendomo/vr/espeak.sh MenuControlConfig
 		;;
 	menu3xstat)
-		$ESPEAK "States configuration menu.Actual states "
+		$ESPEAK "Menu de configuracion de estados del sistema.Estados actuales "
 		#create temporary file for keeping provisional states data, until new states data data is saved 
 		ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 		$ESPEAK < /tmp/stat.txt
 		/usr/local/opendomo/vr/espeak.sh MenuStatConfig
 		;;
 	menu3xstatmod)
-		$ESPEAK "Individual state configuration menu "
+		$ESPEAK "Menu de configuracion de un estado del sistema "
 		estado=`cat /var/opendomo/tmp/state.tmp` 
-		echo " State " $estado " Actual values: " > /tmp/tmp.txt
+		echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
 		cat /tmp/stat2.txt >> /tmp/tmp.txt
-		echo " Say , state activate number to activate a daemon, or state deactivate number to deactivate a daemon " >> /tmp/tmp.txt
-		echo " Say , state execute " $estado " to save the changes " >> /tmp/tmp.txt
+		echo " Diga , estado activar numero para activar un demonio, o , estado desactivar numero para desactivar un demonio " >> /tmp/tmp.txt
+		echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 		$ESPEAK < /tmp/tmp.txt
 		;;
 	menu3xplug)
-		$ESPEAK "Plugins configuration menu. Actual states  "
+		$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
 		Generate_plugin_data
 		$ESPEAK < /tmp/plugin.txt
 		/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
 		;;
 	menu3xzone)
-		$ESPEAK "Zone configuration menu. Actual zones  "
+		$ESPEAK "Menu de configuracion de znas del sistema. Zonas actuales  "
 		Prepare_actual_zone_data
 		$ESPEAK < /tmp/tmp.txt
 		/usr/local/opendomo/vr/espeak.sh MenuZoneConfig
@@ -308,7 +308,7 @@ else
 	
 	#Clean posible "opción" prefix
 	par1=`echo $1 |cut -d " " -f1 -`
-	if [ "$par1" = "option" ]
+	if [ "$par1" = "opción" ]
 	then
 		p1=`echo $1 |cut -d " " -f2 -`
 	else
@@ -368,13 +368,13 @@ else
 		case "$script" in
 			about.sh)
 				/usr/local/opendomo/services/config/about.sh > /tmp/tmp.txt
-				echo "Information about actual OpenDomo installation" > about.txt
+				echo "Informacion de instalacion OpenDomo" > about.txt
 				version=`grep INF /tmp/tmp.txt |  cut -d ":" -f2 -`
-				echo "OpenDomo version " $version >> about.txt
+				echo "version  de OpenDomo " $version >> about.txt
 				kernel=`grep kernel /tmp/tmp.txt | awk '{ print $5}'`
-				echo -n "kernel version " >> about.txt
+				echo -n "Version del kernel " >> about.txt
 				echo $kernel >> about.txt
-				echo " Installed packages " >> about.txt
+				echo " Paquetes instalados " >> about.txt
 				for plugin in `grep version /tmp/tmp.txt | cut -f1 -d.`
 				do
         				echo $plugin >> about.txt
@@ -384,7 +384,7 @@ else
 				rm /tmp/tmp.txt
 				;;			
 			reboot.sh)
-				$ESPEAK " Rebooting the system "
+				$ESPEAK " Rearrancando el sistema "
 				/usr/local/opendomo/services/config/reboot.sh > reboot.txt
 				;;
 			manageConfiguration.sh)
@@ -395,14 +395,14 @@ else
 				echo "menu3xvoice" > /usr/local/opendomo/vr/MENU
 				read IDIOMA < /etc/opendomo/lang
 				cd /usr/local/opendomo/vr/characters/$IDIOMA
-				echo "Voice Recognition configuration " > /tmp/tmp.txt
-				echo "Select the character" >> /tmp/tmp.txt
+				echo "Configuracion de reconocimiento de voz " > /tmp/tmp.txt
+				echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
 						
 				for voz in `ls | cut -f1 -d. |uniq `  
 				do	
-					echo -n " To configurate the voice of " >> /tmp/tmp.txt
+					echo -n " Para configurar voz de " >> /tmp/tmp.txt
 					echo -n $voz >> /tmp/tmp.txt
-					echo -n " ,say voice of " >> /tmp/tmp.txt
+					echo -n " ,diga voz de " >> /tmp/tmp.txt
 					echo $voz >> /tmp/tmp.txt
 				done
 				$ESPEAK < /tmp/tmp.txt
@@ -423,7 +423,7 @@ else
 			manageUsers.sh)
 				echo "menu3xusr" > /usr/local/opendomo/vr/MENU
 				#List actual users
-				$ESPEAK "User configuration menu. Actual users "
+				$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
 				#create temporary file for keeping provisional user data, until user data is saved 
 				ls -l /etc/opendomo/udata |grep .info |cut -d"." -f1 | awk '{ print $9}' > /tmp/usr.txt
 				$ESPEAK < /tmp/usr.txt
@@ -432,7 +432,7 @@ else
 			manageControlDevices.sh)
 				echo "menu3xctl" > /usr/local/opendomo/vr/MENU
 				#List actual control data
-				$ESPEAK "Control devices configuration menu. Actual devices "
+				$ESPEAK "Menu de configuracion de dispositivos de control. Dispositivos actuales "
 				Retrieve_control_data				
 				Generate_control_data				
 				$ESPEAK < /tmp/tmp.txt
@@ -441,7 +441,7 @@ else
 			manageSystemStates.sh)
 				echo "menu3xstat" > /usr/local/opendomo/vr/MENU
 				#List actual control data
-				$ESPEAK "States configuration menu. Actual states "
+				$ESPEAK "Menu de configuracion de estados del sistema. Estados actuales "
 				#create temporary file for keeping provisional states data, until new states data data is saved 
 			  	ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 				$ESPEAK < /tmp/stat.txt
@@ -450,7 +450,7 @@ else
 			managePlugins.sh)
 				echo "menu3xplug" > /usr/local/opendomo/vr/MENU
 				#List actual plugin data
-				$ESPEAK "Plugin configuration menu. Actual plugins "
+				$ESPEAK "Menu de configuracion de complementos o plugins del sistema. Complementos actuales "
 				Generate_plugin_data
 				$ESPEAK < /tmp/plugin.txt
 				/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
@@ -458,14 +458,14 @@ else
 			manageZones.sh)
 				echo "menu3xzon" > /usr/local/opendomo/vr/MENU
 				#List actual zone data
-				$ESPEAK "Zone configuration menu. Actual zones "
+				$ESPEAK "Menu de configuracion de zonas  del sistema. Zonas actuales "
 				/usr/local/opendomo/manageZones.sh | grep - | sed 's/-//g' | awk '{print $1":" $2":" $3":"}' > /tmp/zone.txt
 				Prepare_actual_zone_data
 				$ESPEAK < /tmp/tmp.txt
 				/usr/local/opendomo/vr/espeak.sh MenuZoneConfig
 				;;
 			else)
-				$ESPEAK " Option not implemented "
+				$ESPEAK " Opcion no implementada "
 				;;
 		esac
 		;;
@@ -556,22 +556,22 @@ else
 		
 		case "$par2" in
 			1)
-			$ESPEAK " Saving actual configuration with plugins. Wait to hear again beep"
+			$ESPEAK " Salvando configuracion actual con plugins. Espere a oir de nuevo el bip"
 			echo "on" > /var/opendomo/tmp/savestatus
 			/usr/local/opendomo/saveSystemConfig.sh
 			;;
 			2)
-			$ESPEAK " Saving actual configuration without plugins. Wait to hear again beep"
+			$ESPEAK " Salvando configuracion actual sin plugins. Espere a oir de nuevo el bip"
 			echo "off" > /var/opendomo/tmp/savestatus
 			/usr/local/opendomo/saveSystemConfig.sh
 			;;	
 			3)
-			$ESPEAK " Saving default configuration with plugins.Wait to hear again beep"
+			$ESPEAK " Salvando configuracion de defecto con plugins.Espere a oir de nuevo el bip"
 			echo "on" > /var/opendomo/tmp/savestatus
 			/usr/local/opendomo/loadDefaultConfig.sh
 			;;	
 			4)
-			$ESPEAK " Savind default configuration without plugins. Wait to hear again beep"
+			$ESPEAK " Salvando configuracion de defecto sin plugins. Espere a oir de nuevo el bip"
 			echo "off" > /var/opendomo/tmp/savestatus
 			/usr/local/opendomo/loadDefaultConfig.sh
 			;;	
@@ -589,17 +589,17 @@ else
 		if [ `ls | grep -c $par3` -eq 1 ]
 		then				
 			/usr/local/opendomo/services/config/configureVoiceSystem.sh $par3
-			echo -n "Changed the voice character to " > /tmp/tmp.txt
+			echo -n "Cambiada la voz del personaje a " > /tmp/tmp.txt
 			echo $par3 >> /tmp/tmp.txt
 		else
-			echo "The character does not exist " $par3 > /tmp/tmp.txt
-			echo "Please, select the character" >> /tmp/tmp.txt
+			echo "No existe el personaje " $par3 > /tmp/tmp.txt
+			echo "Seleccione a continuacion el personaje que desea" >> /tmp/tmp.txt
 						
 			for voz in `ls | cut -f1 -d. |uniq `   
 			do	
-				echo -n " To configurate the voice of " >> /tmp/tmp.txt
+				echo -n " Para configurar voz de " >> /tmp/tmp.txt
 				echo -n $voz >> /tmp/tmp.txt
-				echo -n " ,say voice of " >> /tmp/tmp.txt
+				echo -n " ,diga voz de " >> /tmp/tmp.txt
 				echo $voz >> /tmp/tmp.txt
 			done
 		fi
@@ -661,12 +661,12 @@ else
 			else)
 				;;
 		esac
-		echo "Network configuration " > /etc/opendomo/speech/netmenu.txt
-		echo "Actual values " > /etc/opendomo/speech/netmenu.txt
-		echo " mode " $MODE >> /etc/opendomo/speech/netmenu.txt
+		echo "Configuracion de red " > /etc/opendomo/speech/netmenu.txt
+		echo "Valores actuales " > /etc/opendomo/speech/netmenu.txt
+		echo " modo " $MODE >> /etc/opendomo/speech/netmenu.txt
 		echo " IP " $IP >> /etc/opendomo/speech/netmenu.txt
-		echo " mask " $MASK >> /etc/opendomo/speech/netmenu.txt
-		echo " gateway " $GW >> /etc/opendomo/speech/netmenu.txt
+		echo " mascara " $MASK >> /etc/opendomo/speech/netmenu.txt
+		echo " puerta de enlace " $GW >> /etc/opendomo/speech/netmenu.txt
 		echo " DNS " $DNS >> /etc/opendomo/speech/netmenu.txt
 		$ESPEAK < /etc/opendomo/speech/netmenu.txt	
 		;;
@@ -678,13 +678,13 @@ else
 		par4=`echo $2 |cut -d " " -f4 -`
 		case "$1" in
 			tema)
-				theme=`grep "theme" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $3}'`
+				theme=`grep "tema" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $3}'`
 				;;
 			piel)
-				skin=`grep "skin" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $3}'`
+				skin=`grep "piel" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $3}'`
 				;;
 			idioma)
-				language=`grep "language" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $6}'`
+				language=`grep "idioma" /etc/opendomo/speech/INTERFACE |grep $par3 |awk '{ print $6}'`
 				;;
 			interfazayuda)
 				$ESPEAK < /etc/opendomo/speech/INTERFACE
@@ -724,9 +724,9 @@ else
 				;;
 			esac			
 			/usr/local/opendomo/services/config/configureInterface.sh $theme $skin $langshort
-			$ESPEAK " Actual interface data have benn saved"
+			$ESPEAK "Los datos de configuracion de interfaz anteriores han sido salvados"
 		else
-			$ESPEAK "If you ned help to configurate interface data, say, interface help"
+			$ESPEAK "Si necesita ayuda para configurar el interfaz diga interfaz ayuda"
 		fi
 		;;
 	menu3xusr)
@@ -740,9 +740,9 @@ else
 				if [ `grep -c $par1 /tmp/usr.txt` -eq 0 ]
 				then
 					echo $par1 "::::nuevo " >> /tmp/usr.txt
-					echo "user " $par1 "is going to be created You shuld complete full name, email and password.To confirm the user data ,say, user execute" $par1 > /tmp/tmp.txt 	
+					echo "usuario " $par1 "va a ser creado ""Debe de completar los datos de nombre completo, email y clave. Para confirmar la creacion diga usuario ejecutar" $par1 > /tmp/tmp.txt 	
 				else
-					echo "User " $par1 " already exists" >> /tmp/tmp.txt
+					echo "El usuario " $par1 " ya existe" >> /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt	
 				;;
@@ -765,9 +765,9 @@ else
 					done < /tmp/usr.txt
 					cp /tmp/usr2.txt /tmp/usr.txt
 					rm /tmp/usr2.txt
-					echo "User " $par1 " marked to be removed "" To confirm the removal, say, user execute " $par1  > /tmp/tmp.txt
+					echo "Usuario " $par1 " marcado para ser borrado "" Para confirmar el borrado diga usuario ejecutar" $par1  > /tmp/tmp.txt
 				else
-					echo "User " $par1 " does not exist" > /tmp/tmp.txt
+					echo "El usuario " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt					
 				;;
@@ -792,9 +792,9 @@ else
 					cp /tmp/usr2.txt /tmp/usr.txt
 					rm /tmp/usr2.txt					
 						
-					echo "User " $par1 " Full name " $par2 " To comfirm the change, say, user execute " $par1  > /tmp/tmp.txt
+					echo "Usuario " $par1 " Nombre completo " $par2 " Para confirmar el cambio diga usuario ejecutar" $par1  > /tmp/tmp.txt
 				else
-					echo "User " $par1 " does not exist" > /tmp/tmp.txt
+					echo "El usuario " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt					
 				;;
@@ -819,9 +819,9 @@ else
 					cp /tmp/usr2.txt /tmp/usr.txt
 					rm /tmp/usr2.txt					
 						
-					echo "User " $par1 " email " $par2 " To confirm the change, say, user execute " $par1  > /tmp/tmp.txt
+					echo "Usuario " $par1 " Correo " $par2 " Para confirmar el cambio diga usuario ejecutar" $par1  > /tmp/tmp.txt
 				else
-					echo "User " $par1 " does not exist" > /tmp/tmp.txt
+					echo "El usuario " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt				
 				;;
@@ -846,9 +846,9 @@ else
 					cp /tmp/usr2.txt /tmp/usr.txt
 					rm /tmp/usr2.txt					
 						
-					echo "User " $par1 " password " $par2 " To confirm the change, say, user execute" $par1  > /tmp/tmp.txt
+					echo "Usuario " $par1 " Clave de usuario " $par2 " Para confirmar el cambio diga usuario ejecutar" $par1  > /tmp/tmp.txt
 				else
-					echo "User " $par1 " does not exist " > /tmp/tmp.txt
+					echo "El usuario " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt						
 				;;
@@ -856,7 +856,7 @@ else
 				#Don't do anything here, do it after, helping in other case, with option usuario ayuda 
 				;;
 			usuarioayuda|else)
-				$ESPEAK "User configuration menu. Actual users "
+				$ESPEAK "Menu de configuracion de usuarios. Usuarios actuales "
 				$ESPEAK < /tmp/usr.txt
 				/usr/local/opendomo/vr/espeak.sh MenuUserConfig		
 				;;
@@ -884,17 +884,17 @@ else
 					done < /tmp/usr.txt
 					cp /tmp/usr2.txt /tmp/usr.txt
 					rm /tmp/usr2.txt
-				echo "User " $par1 " has been removed " > /tmp/tmp.txt
+				echo "Usuario " $par1 " ha sido borrado " > /tmp/tmp.txt
 			else
 				nombre=`cat /tmp/tmp.txt | cut -d":" -f2`
 				email=`cat /tmp/tmp.txt | cut -d":" -f3`
 				clave=`cat /tmp/tmp.txt | cut -d":" -f4`
 				/usr/local/opendomo/modifyUser $par1 $nombre $email $clave
-				echo "User " $par1 " has been modified " > /tmp/tmp.txt 
+				echo "Usuario " $par1 " ha sido modificado " > /tmp/tmp.txt 
 			fi 			
 			$ESPEAK < /tmp/tmp.txt
 		else
-			$ESPEAK "If you need help to configure user data, say, user help"
+			$ESPEAK "Si necesita ayuda para modificar datos de usuario, diga usuario ayuda"
 		fi
 		;;
 	#Control devices
@@ -910,9 +910,9 @@ else
 				if [ `grep -c $par1 /tmp/ctrl.txt` -eq 0 ]
 				then
 					echo $par1 ":::::::nuevo " >> /tmp/ctrl.txt
-					echo "device " $par1 " is going to be created .  You should complete the data of card, port,refresh time, IP, user and password. To confirm the changes, say control execute " $par1 > /tmp/tmp.txt 
+					echo "dispositivo " $par1 "va a ser creado. ""Debe de completar los datos de placa ,puerto, tiempo de refresco, direccion IP, usuario y clave. Para confirmar los cambios diga control ejecutar" $par1 > /tmp/tmp.txt 
 				else
-					echo "Device " $par1 " already exists" >> /tmp/tmp.txt
+					echo "El dispositivo " $par1 " ya existe" >> /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt	
 				;;
@@ -935,9 +935,9 @@ else
 					done < /tmp/ctrl.txt
 					cp /tmp/ctrl2.txt /tmp/ctrl.txt
 					rm /tmp/ctrl2.txt
-					echo "Device " $par1 " marked to be removed  To confirm ermoval, say, control execute" $par1  > /tmp/tmp.txt
+					echo "Dispositivo " $par1 " marcado para ser borrado "" Para confirmar el borrado diga control ejecutar" $par1  > /tmp/tmp.txt
 				else
-					echo " Device " $par1 " does not exist" > /tmp/tmp.txt
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt					
 				;;
@@ -948,7 +948,7 @@ else
 					i=0
 					if [ `grep -c Card /etc/opendomo/speech/portmenu.txt` -ge $par2 ]
 					then
-						card=`grep Card /etc/opendomo/speech/portmenu.txt | grep "."$par2 | cut -d":" -f2`
+						card=`grep Card /etc/opendomo/speech/portmenu.txt | grep $par2 | cut -d":" -f2`
 						echo -n "" > /tmp/ctrl2.txt
 						while read line
 						do	
@@ -971,13 +971,13 @@ else
 						done < /tmp/ctrl.txt
 						cp /tmp/ctrl2.txt /tmp/ctrl.txt
 						rm /tmp/ctrl2.txt
-						echo "Configured " $card " in device " $par1  > /tmp/tmp.txt		
+						echo "Configurado " $card " en dispositivo " $par1  > /tmp/tmp.txt		
 					else
-						echo " Not valid card number. Posible values " > /tmp/tmp.txt
-						grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/card /" |sed -e "s/:/ say, control card {$par1} /" >> /tmp/tmp.txt
+						echo " Numero de placa incorrecto. Valores posibles " > /tmp/tmp.txt
+						grep Card /etc/opendomo/speech/portmenu.txt |sed  -e "s/Card:/placa /" |sed -e "s/:/ diga, control placa {$par1} /" >> /tmp/tmp.txt
 					fi						
 				else
-					echo "Device " $par1 " dues not exist" > /tmp/tmp.txt
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt					
 				;;
@@ -988,7 +988,7 @@ else
 					i=0
 					if [ `grep -c Port /etc/opendomo/speech/portmenu.txt` -ge $par2 ]
 					then
-						port=`grep Port /etc/opendomo/speech/portmenu.txt | grep ":"$par2 | cut -d":" -f2`
+						port=`grep Port /etc/opendomo/speech/portmenu.txt | grep $par2 | cut -d":" -f2`
 						echo -n "" > /tmp/ctrl2.txt
 						while read line
 						do	
@@ -1011,13 +1011,13 @@ else
 						done < /tmp/ctrl.txt
 						cp /tmp/ctrl2.txt /tmp/ctrl.txt
 						rm /tmp/ctrl2.txt
-						echo "Configured " $port " in device " $par1  > /tmp/tmp.txt		
+						echo "Configurado " $port " en dispositivo " $par1  > /tmp/tmp.txt		
 					else
-						echo " Not valid port number. Posible values  " > /tmp/tmp.txt
-						grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/port /" |sed -e "s/:/ say, control port {$par1} /" >> /tmp/tmp.txt
+						echo " Numero de puerto incorrecto. Valores posibles " > /tmp/tmp.txt
+						grep Port /etc/opendomo/speech/portmenu.txt |sed  -e "s/Port:/puerto /" |sed -e "s/:/ diga, control puerto {$par1} /" >> /tmp/tmp.txt
 					fi	
 				else
-					echo "Device " $par1 " does not exist" > /tmp/tmp.txt
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt					
 				;;
@@ -1050,9 +1050,9 @@ else
 					cp /tmp/ctrl2.txt /tmp/ctrl.txt
 					rm /tmp/ctrl2.txt					
 						
-					echo "Device " $par1 "refresh period" $par2 " To confirm the change , say, control execute" $par1  > /tmp/tmp.txt
+					echo "Dispositivo " $par1 "tiempo de refresco " $par2 " Para confirmar el cambio diga control ejecutar" $par1  > /tmp/tmp.txt
 				else
-					echo "Device " $par1 " does not exist" > /tmp/tmp.txt
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt					
 				;;
@@ -1090,9 +1090,9 @@ else
 					cp /tmp/ctrl2.txt /tmp/ctrl.txt
 					rm /tmp/ctrl2.txt					
 						
-					echo "Device " $par1 " IP " $IP " To confirm the change, say, control execute" $par1  > /tmp/tmp.txt
+					echo "Dispositivo " $par1 " IP " $IP " Para confirmar el cambio diga control ejecutar" $par1  > /tmp/tmp.txt
 				else
-					echo "Device " $par1 " does not exist" > /tmp/tmp.txt
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt				
 				;;
@@ -1125,9 +1125,9 @@ else
 					cp /tmp/ctrl2.txt /tmp/ctrl.txt
 					rm /tmp/ctrl2.txt					
 						
-					echo "Device " $par1 "  user " $par2 " To confirm the change, say, control execute " $par1  > /tmp/tmp.txt
+					echo "Dispositivo " $par1 "  usuario " $par2 " Para confirmar el cambio diga control guardar" $par1  > /tmp/tmp.txt
 				else
-					echo "Device " $par1 " does not exist " > /tmp/tmp.txt
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt						
 				;;
@@ -1160,9 +1160,9 @@ else
 					cp /tmp/ctrl2.txt /tmp/ctrl.txt
 					rm /tmp/ctrl2.txt					
 						
-					echo "Device " $par1 " password " $par2 " To confirm the change, say, control execute " $par1  > /tmp/tmp.txt
+					echo "Dispositivo " $par1 " Clave de usuario " $par2 " Para confirmar el cambio diga control guardar" $par1  > /tmp/tmp.txt
 				else
-					echo " Device " $par1 " does not exist " > /tmp/tmp.txt
+					echo "El dispositivo " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt						
 				;;
@@ -1170,7 +1170,7 @@ else
 				#Don't do anything here, do it after, helping in other case, with option usuario ayuda 
 				;;
 			controlayuda|else)
-				$ESPEAK "Control Port Configuration Menu. Actual ports "
+				$ESPEAK "Menu de configuracion de puertos de control. Puertos actuales "
 				Generate_control_data				
 				$ESPEAK < /tmp/tmp.txt
 				/usr/local/opendomo/vr/espeak.sh MenuControlConfig
@@ -1183,7 +1183,7 @@ else
 			if [ `grep -c "borrar" /tmp/tmp.txt` -gt 0 ]
 			then
 				/usr/local/opendomo/delControlDevice.sh $par1
-				echo "Device " $par1 " has been remved " > /tmp/tmp.txt
+				echo "Dispositivo " $par1 " ha sido borrado " > /tmp/tmp.txt
 			else
 				if [ `grep -c "nuevo" /tmp/tmp.txt` -gt 0 ]
 				then
@@ -1196,11 +1196,11 @@ else
 				ip=`cat /tmp/tmp.txt | cut -d":" -f5`
 				username=`cat /tmp/tmp.txt | cut -d":" -f6`
 				password=`cat /tmp/tmp.txt | cut -d":" -f7`
-				if [ -z "$port" ] || [ -z "$model" ]
+				if [ $port=="" || $model=="" ]
 				then
-					echo " You need to configure port and card before to execute the change in " $par1 > /tmp/tmp.txt
+					echo "Necesita configurar el puerto y la placa antes de poder ejecutar el cambio en " $par1 > /tmp/tmp.txt
 				else			
-					echo "Device " $par1 " has been modified " > /tmp/tmp.txt
+					echo "Dispositivo " $par1 " ha sido creado " > /tmp/tmp.txt
 					echo "
 device='$port'
 driver='$model'
@@ -1217,7 +1217,7 @@ ip='$ip'
 			$ESPEAK < /tmp/tmp.txt
 			Retrieve_control_data
 		else
-			$ESPEAK "If you need help to configure control devices , say, control help "
+			$ESPEAK "Si necesita ayuda para modificar datos de dispositivo de control, diga control ayuda"
 		fi
 		;;
 #Menu de configuracion general de estados del sistema
@@ -1231,10 +1231,10 @@ ip='$ip'
 				if [ `grep -c $par1 /tmp/stat.txt` -eq 0 ]
 				then
 					/usr/local/opendomo/addSystemState.sh new $par1
-					echo "State " $par1 " had been created with all daemons deactivated. To modify the  behavior , say, state modify " $par1 > /tmp/tmp.txt 
+					echo "Estado " $par1 " ha sido creado con todos los demonios desactivados. Para modificar el comportamiento dida, estado modificar" $par1 > /tmp/tmp.txt 
 					echo $par1 >> /tmp/stat.txt
 				else
-					echo "State " $par1 " alerady exists" >> /tmp/tmp.txt
+					echo "El estado " $par1 " ya existe" >> /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt	
 				;;
@@ -1248,12 +1248,12 @@ ip='$ip'
 					#Si sigue estando, porque hubo un error en delSystemState.sh no ha sido borrado.
 					if [ `grep -c $par1 /tmp/stat.txt` -gt 0 ]
 					then
-						echo "State " $par1 " has not been removed " > /tmp/tmp.txt
+						echo "Estado " $par1 " No ha sido borrado " > /tmp/tmp.txt
 					else
-						echo "Estado " $par1 " Has been removed "  > /tmp/tmp.txt
+						echo "Estado " $par1 " Ha sido borrado"  > /tmp/tmp.txt
 					fi
 				else
-					echo " State " $par1 " does not exist" > /tmp/tmp.txt
+					echo "El estado " $par1 " no existe" > /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt				
 				;;
@@ -1272,24 +1272,24 @@ ip='$ip'
 						echo -n $line > /tmp/tmp2.txt
 						if test -f /etc/opendomo/states/$par1/$line ;
 						then
-							echo " Number " $i " Active state : yes " >> /tmp/tmp2.txt
+							echo " numero " $i " estado activo : si " >> /tmp/tmp2.txt
 						else
-							echo " Number " $i " Active state : no" >> /tmp/tmp2.txt
+							echo " numero " $i " estado activo : no" >> /tmp/tmp2.txt
 						fi
 						cat /tmp/tmp2.txt >> /tmp/stat2.txt
 						rm /tmp/tmp2.txt
 					done < /tmp/tmp.txt				
-					echo "State " $par1 " actual status of daemons "  > /tmp/tmp.txt
+					echo "Estado " $par1 " estado actual de demonios "  > /tmp/tmp.txt
 					cat /tmp/stat2.txt >> /tmp/tmp.txt 
-					echo " Say , state activate numnber to activate a daemon, or , state deactivate number to deactivate a daemon " >> /tmp/tmp.txt
+					echo " Diga , estado activar numero para activar un demonio, o , estado desactivar numero para desactivar un demonio " >> /tmp/tmp.txt
 					echo "menu3xstatmod" > /usr/local/opendomo/vr/MENU
 				else
-					echo " State " $par1 " does not exist" >> /tmp/tmp.txt
+					echo "El estado " $par1 " no existe" >> /tmp/tmp.txt
 				fi
 				$ESPEAK < /tmp/tmp.txt	
 				;;
 			estadoayuda|else)
-				$ESPEAK " State configuration menu. Actual states  "
+				$ESPEAK "Menu de configuracion de estados del sistema. Estados actuales "
 				#create temporary file for keeping provisional states data, until new states data data is saved 
 			  	ls -l /etc/opendomo/states | awk '{ print $9}' > /tmp/stat.txt
 				$ESPEAK < /tmp/stat.txt
@@ -1310,7 +1310,7 @@ ip='$ip'
 						/usr/local/opendomo/editSystemState.sh $daemon "off"
 					fi
 				done < /tmp/stat2.txt
-				echo "State " $par1 " has been saved , with the following data "  > /tmp/tmp.txt
+				echo "Estado " $par1 " ha sido guardado, con los siguientes datos "  > /tmp/tmp.txt
 				cat /tmp/stat2.txt >> /tmp/tmp.txt 
 				$ESPEAK < /tmp/tmp.txt	
 				;;
@@ -1336,9 +1336,9 @@ ip='$ip'
 						echo -n $daemon >> /tmp/tmp2.txt
 						if [ "$1" == "estadoactivar" ]
 						then
-							echo " number " $i " Active status : yes " >> /tmp/tmp2.txt
+							echo " numero " $i " estado activo : si " >> /tmp/tmp2.txt
 						else 
-							echo " numero " $i " Active status : no " >> /tmp/tmp2.txt
+							echo " numero " $i " estado activo : no " >> /tmp/tmp2.txt
 						fi					
 					else
 						echo $line >> /tmp/tmp2.txt
@@ -1346,9 +1346,9 @@ ip='$ip'
 				done < /tmp/stat2.txt
 				cp /tmp/tmp2.txt /tmp/stat2.txt
 				rm /tmp/tmp2.txt
-				echo " State " $estado " has been marked to modufy. Actual values:  " > /tmp/tmp.txt
+				echo " El estado " $estado " ha sido marcado para modificacion. Valores actuales: " > /tmp/tmp.txt
 				cat /tmp/stat2.txt >> /tmp/tmp.txt
-				echo " Say , state execute " $estado " to save changes " >> /tmp/tmp.txt
+				echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 				;;
 			estadoejecutar)
 				if [ "$estado" == "$par1" ]
@@ -1366,21 +1366,21 @@ ip='$ip'
 							/usr/local/opendomo/editSystemState.sh $daemon "off"
 						fi
 					done < /tmp/stat2.txt
-					echo "State " $estado " has been saved, with the following data "  > /tmp/tmp.txt
+					echo "Estado " $estado " ha sido guardado, con los siguientes datos "  > /tmp/tmp.txt
 					cat /tmp/stat2.txt >> /tmp/tmp.txt
 				else
-					echo "State " $par1 " is not prepared for modification " > /tmp/tmp.txt
-					echo "You only can modify state " $estado >> /tmp/tmp.txt					 
+					echo "Estado " $par1 " no esta preparado para modificar " > /tmp/tmp.txt
+					echo "Solo puede modificar el estado " $estado >> /tmp/tmp.txt					 
 				fi
 				;;
 			else)
-				echo " State " $estado " Actual values : " > /tmp/tmp.txt
+				echo " Estado " $estado " Valores actuales: " > /tmp/tmp.txt
 				cat /tmp/stat2.txt >> /tmp/tmp.txt
-				echo " Say , state activate number to activate a daemon, or , state deactivate number to deactivate a daemon " >> /tmp/tmp.txt
-				echo " Say, state execute " $estado " to save changes " >> /tmp/tmp.txt
+				echo " Diga , estado activar numero para activar un demonio, o , estado desactivar numero para desactivar un demonio " >> /tmp/tmp.txt
+				echo " Diga , estado ejecutar " $estado " para guardar los cambios " >> /tmp/tmp.txt
 				;;
 			esac
-		echo " To return to previous menu, say, go back. To exit menu mode say, menu end " >> /tmp/tmp.txt
+		echo " Para volver al menu anterior, diga , volver. Para salir del modo menu, diga , salir " >> /tmp/tmp.txt
 		$ESPEAK < /tmp/tmp.txt	
 		;;
 	#Menu de configuracion general de plugins del sistema
@@ -1394,12 +1394,12 @@ ip='$ip'
 						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -gt 0 ]
 						then
 							/usr/local/opendomo/installPlugin.sh $plugin
-							echo "Plugin " $plugin " has been installed " > /tmp/tmp.txt 
+							echo "El complemento " $plugin " ha sido instalado " > /tmp/tmp.txt 
 						else
-							echo "Plugin " $plugin " is already installed" >> /tmp/tmp.txt
+							echo "El complemento " $plugin " ya esta instalado" >> /tmp/tmp.txt
 						fi
 					else
-						echo " Does not exist plugin number " $par1 > /tmp/tmp.txt
+						echo " No existe el numero de complemento " $par1 > /tmp/tmp.txt
 					fi	
 					$ESPEAK < /tmp/tmp.txt
 					Generate_plugin_data	
@@ -1412,26 +1412,26 @@ ip='$ip'
 						if [ `grep $par1 /tmp/plugin.txt | grep -c "no instalado"` -eq 0 ]
 						then
 							/usr/local/opendomo/removePlugin.sh $plugin
-							echo "Plugin " $plugin " has been removed " > /tmp/tmp.txt 
+							echo "El complemento " $plugin " ha sido eliminado " > /tmp/tmp.txt 
 						else
-							echo "Plugin " $plugin " is not installed " >> /tmp/tmp.txt
+							echo "El complemento " $plugin " no esta instalado" >> /tmp/tmp.txt
 						fi
 					else
-						echo " Does not exist plugin number " $par1 > /tmp/tmp.txt
+						echo " No existe el numero de complemento " $par1 > /tmp/tmp.txt
 					fi	
 					$ESPEAK < /tmp/tmp.txt
 					Generate_plugin_data		
 					;;
 				pluginupd)
 					usr/local/opendomo/updatePlugins.sh
-					$ESPEAK  " Plugins has been updated with the last official versions "
+					$ESPEAK  " Los complementos han sido actualizados con las ultimas versiones oficiales"
 					;;
 				systemupd)
 					usr/local/opendomo/updateSystem.sh
-					$ESPEAK  " System has been updated with the last official version "
+					$ESPEAK  " El sistema ha sido actualizado con las ultimas versiones oficiales"
 					;;
 				pluginayuda|else)
-					$ESPEAK " Plugin configuration menu. Actual status  "
+					$ESPEAK "Menu de configuracion de complementos del sistema. Estado actual  "
 					$ESPEAK < /tmp/plugin.txt
 					/usr/local/opendomo/vr/espeak.sh MenuPlugConfig
 					;;
@@ -1445,9 +1445,9 @@ ip='$ip'
 					if [ `grep -c $zona /tmp/zone.txt` -eq 0 ]
 					then		
 						echo $zona "::nueva:" >> /tmp/zone.txt
-						echo " Zone " $zona " has been marked to be created. Say zone execute " $zona " to confirm the change"  > /tmp/tmp.txt
+						echo " La zona " $zona " ha sido marcada para crear. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
 					else
-						echo " Already existing zone " $zona >> /tmp/tmp.txt
+						echo " Ya existe la zona " $zona >> /tmp/tmp.txt
 					fi	
 					$ESPEAK < /tmp/tmp.txt	
 					;;
@@ -1466,9 +1466,9 @@ ip='$ip'
 							fi
 						done < /tmp/zone.txt
 						cp /tmp/tmp.txt /tmp/zone.txt
-						echo " Zone " $zona " has been  marked to remove. Say, zone execute " $zona " to confirm change"  > /tmp/tmp.txt
+						echo " La zona " $zona " ha sido marcada para borrar. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
 					else
-						echo " Does not exist " $zona >> /tmp/tmp.txt
+						echo " No existe la zona " $zona >> /tmp/tmp.txt
 					fi	
 					$ESPEAK < /tmp/tmp.txt	
 					;;
@@ -1491,9 +1491,9 @@ ip='$ip'
 							fi
 						done < /tmp/zone.txt
 						cp /tmp/tmp.txt /tmp/zone.txt
-						echo "In zone " $zona " descrition has been marked to be modified. Say, zone execute " $zona " to confirm change"  > /tmp/tmp.txt
+						echo " En la zona" $zona " se ha marcado la descripcion para ser modificada. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
 					else
-						echo " Does not exist zone " $zona >> /tmp/tmp.txt
+						echo " No existe la zona " $zona >> /tmp/tmp.txt
 					fi	
 					$ESPEAK < /tmp/tmp.txt	
 					;;
@@ -1519,9 +1519,9 @@ ip='$ip'
 							fi
 						done < /tmp/zone.txt
 						cp /tmp/tmp.txt /tmp/zone.txt
-						echo " In zone" $zona " coordinates has been marked to be modified. Say zone execute " $zona " to confirm change"  > /tmp/tmp.txt
+						echo " En la zona" $zona " se ha marcado las cooredenadas para ser modificadas. Diga, zona ejecutar " $zona " para aplicar el cambio"  > /tmp/tmp.txt
 					else
-						echo " Does not exist zone " $zona >> /tmp/tmp.txt
+						echo " No existe la zona " $zona >> /tmp/tmp.txt
 					fi	
 					$ESPEAK < /tmp/tmp.txt	
 					;;
@@ -1541,14 +1541,14 @@ ip='$ip'
 						else
 							/usr/local/opendomo/manageZones.sh "update" $zona $descr $coord
 						fi	
-						echo " Updates in zone " $zona " have been executed."  > /tmp/tmp.txt
+						echo " Los cambios en la zona " $zona " han sido ejecutados."  > /tmp/tmp.txt
 					else
-						echo " Does not exist zone " $zona >> /tmp/tmp.txt
+						echo " No existe la zona " $zona >> /tmp/tmp.txt
 					fi	
 					$ESPEAK < /tmp/tmp.txt	
 					;;
 				zonaayuda|else)
-					$ESPEAK "Zone configuration menu. Actual status  "
+					$ESPEAK "Menu de configuracion de zonas del sistema. Estado actual  "
 					Prepare_actual_zone_data
 					$ESPEAK < /tmp/tmp.txt	
 					/usr/local/opendomo/vr/espeak.sh MenuZoneConfig
