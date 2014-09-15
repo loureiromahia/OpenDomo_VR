@@ -126,16 +126,15 @@ cp Recognition/config/defaultMain.dic Recognition/modes/main.dic
 if [ -f /usr/local/opendomo/vr/characters/$IDIOMA/$1/espeak.dat ]  
 then	
 	cp /usr/local/opendomo/vr/characters/$IDIOMA/$1/* /etc/opendomo/speech/.
-		
 else
 	echo "#> Select character"
 	echo "form:`basename $0`"
 	echo "	voice	Voice	list[$VOICES]"
     echo
 	exit 0
-		
 fi
-# Next command is not necessary, as all the commands will be explicitly intalled using plugins commands  
+
+# Next command is not necessary, as all the commands will be explicitly installed using plugins commands  
 #./installDefault
 cd /usr/local/opendomo/vr
 cp generate_port_data_$IDIOMA.sh generate_port_data.sh
@@ -163,8 +162,8 @@ cp generate_port_data_$IDIOMA.sh generate_port_data.sh
 #Create the file /etc/opendomo/speech/SETUPDONE, to indicate that setup has been already performed
 #When running the voice recognition, opendomoVR.sh will check if this file exists, if not, it will run automatically the #setup, with default parameter.
 #
-echo "Create SETUPDONE file, to indicatem setup has been already performed"
+#echo "Create SETUPDONE file, to indicate setup has been already performed"
 touch $CONFIGDIR/SETUPDONE
-echo "DONE!!"
-echo "Now you can start Voice Recognition issuing a voice identification command (usually something like:HOLA OPENDOMO)"
+echo "#INFO System successfully configured"
+echo "#INFO Now you can start Voice Recognition issuing a voice identification command (usually something like:HOLA OPENDOMO)"
 
