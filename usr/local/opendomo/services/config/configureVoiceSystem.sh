@@ -8,6 +8,7 @@ cd /usr/local/opendomo/vr/characters/$IDIOMA
 VOICES=`ls -dx * | sed 's/ /,/g'`
 
 if [ $# -ne 1 ]; then
+	echo "#> Select character"
     echo "form:`basename $0`"
     echo "	voice	Voice	list[$VOICES]"
     echo
@@ -26,7 +27,8 @@ fi
 #sudo apt-get install make gcc sox python-argparse wget espeak xautomation xvkbd 
 #gcc and make are not necessary: No compilation will be done in Production Systems. Only used in development 
 #  
-sudo apt-get install sox python-argparse espeak flac 
+# sudo apt-get install sox python-argparse espeak flac  # DEPRECATED (this is done by installPlugin script)
+
 #For OpenDomo we are going to use /etc/opendomo/speech, instead of $HOME/.palaver.d/
 CONFIGDIR="/etc/opendomo/speech"
 cd /usr/local/opendomo/vr
@@ -126,9 +128,10 @@ then
 	cp /usr/local/opendomo/vr/characters/$IDIOMA/$1/* /etc/opendomo/speech/.
 		
 else
-	echo "usage:`basename $0`"
+	echo "#> Select character"
+	echo "form:`basename $0`"
 	echo "	voice	Voice	list[$VOICES]"
-    	echo
+    echo
 	exit 0
 		
 fi
