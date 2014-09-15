@@ -3,11 +3,15 @@
 # Check Parameters: Only 1 (voice type)
 # To run this script , as there are parts in which it needs to run sudo command, it is necessary to edit /etc/sudoers file, 
 # adding this line: %manu ALL=(ALL) NOPASSWD: NOPASSWD: ALL
+
+CHARDIR="/usr/local/opendomo/vr/characters"
+CONFIGDIR="/etc/opendomo/speech"
+
 read IDIOMA < /etc/opendomo/lang
-cd /usr/local/opendomo/vr/characters/$IDIOMA
+cd $CHARDIR/$IDIOMA
 VOICES=`ls -dx * | sed 's/ /,/g'`
 
-if [ $# -ne 1 ]; then
+if test -z "$1"; then
 	echo "#> Select character"
     echo "form:`basename $0`"
     echo "	voice	Voice	list[$VOICES]"
@@ -18,9 +22,28 @@ if [ $# -ne 1 ]; then
 #    echo " PARAM1: A/M    A: Voz de Antonio ,, M: Voz de Marta"
 #    echo " PARAM1: A/M    A: Voice from Arthur ,, M: Voice from Mary"
     exit 0
+else
+	if test -d "$CHARDIR/$IDIOMA/$1/"
+	then
+		cp $CHARDIR/$IDIOMA/$1/* $CONFIGDIR/.
+	else
+		echo "#ERR: Character directory does not exist"
+		exit 1
+	fi
 fi
  
 
+#if [ -f $CHARDIR/$IDIOMA/$1/espeak.dat ]  
+#then	
+#	cp $CHARDIR/$IDIOMA/$1/* $CONFIGDIR/.
+#else
+#	echo "#> Select character"
+#	echo "form:`basename $0`"
+#	echo "	voice	Voice	list[$VOICES]"
+#    echo
+#	exit 0
+#fi
+ 
 
 # Install first dependencies.
 # 
@@ -29,8 +52,8 @@ fi
 #  
 # sudo apt-get install sox python-argparse espeak flac  # DEPRECATED (this is done by installPlugin script)
 
-#For OpenDomo we are going to use /etc/opendomo/speech, instead of $HOME/.palaver.d/
-CONFIGDIR="/etc/opendomo/speech"
+#For OpenDomo we are going to use $CONFIGDIR, instead of $HOME/.palaver.d/
+
 cd /usr/local/opendomo/vr
 DIR="$(pwd)"
 # As mentioned above, no compilation will be done in Production environment.
@@ -88,11 +111,11 @@ cp Recognition/config/defaultMain.dic Recognition/modes/main.dic
 #		read -p "¿Usar voz de Antonio o de Marta (A/M)? " -n1 answer
 #		if [ "$answer" == "A" ]
 #		then
-#			cp /usr/local/opendomo/vr/characters/antonio.es/* /etc/opendomo/speech/.
+#			cp $CHARDIR/antonio.es/* $CONFIGDIR/.
 #			Bucle=false
 #		elif [ "$answer" == "M" ]
 #		then
-#			cp /usr/local/opendomo/vr/characters/marta.es/* /etc/opendomo/speech/.
+#			cp $CHARDIR/marta.es/* $CONFIGDIR/.
 #			Bucle=false
 #		else
 #			echo "Introduce A (Antonio) o M (Marta)"			
@@ -107,11 +130,11 @@ cp Recognition/config/defaultMain.dic Recognition/modes/main.dic
 #		read -p "Do you want to use the voice from Arthur or from Mary (A/M)? " -n1 answer
 #		if [ "$answer" == "A" ]
 #		then
-#			cp /usr/local/opendomo/vr/characters/paul.en/* /etc/opendomo/speech/.
+#			cp $CHARDIR/paul.en/* $CONFIGDIR/.
 #			Bucle=false
 #		elif [ "$answer" == "M" ]
 #		then
-#			cp /usr/local/opendomo/vr/characters/mary.en/* /etc/opendomo/speech/.
+#			cp $CHARDIR/mary.en/* $CONFIGDIR/.
 #			Bucle=false
 #		else
 #			echo "Enter P (Paul) or M (Mary)"			
@@ -123,9 +146,9 @@ cp Recognition/config/defaultMain.dic Recognition/modes/main.dic
 #Instead , user has to issue the character to be configured in the initial script:  this script will be launched 
 #from web interface:
 #  
-if [ -f /usr/local/opendomo/vr/characters/$IDIOMA/$1/espeak.dat ]  
+if [ -f $CHARDIR/$IDIOMA/$1/espeak.dat ]  
 then	
-	cp /usr/local/opendomo/vr/characters/$IDIOMA/$1/* /etc/opendomo/speech/.
+	cp $CHARDIR/$IDIOMA/$1/* $CONFIGDIR/.
 else
 	echo "#> Select character"
 	echo "form:`basename $0`"
@@ -159,7 +182,7 @@ cp generate_port_data_$IDIOMA.sh generate_port_data.sh
 #echo "Install voiceSystem.sh , so that opendomoVR.sh run forever in background" 
 #sudo cp /usr/local/opendomo/daemons/voiceSystem.sh /etc/init.d/.
 #sudo update-rc.d voiceSystem.sh defaults 99
-#Create the file /etc/opendomo/speech/SETUPDONE, to indicate that setup has been already performed
+#Create the file $CONFIGDIR/SETUPDONE, to indicate that setup has been already performed
 #When running the voice recognition, opendomoVR.sh will check if this file exists, if not, it will run automatically the #setup, with default parameter.
 #
 #echo "Create SETUPDONE file, to indicate setup has been already performed"
