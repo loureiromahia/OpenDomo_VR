@@ -8,7 +8,7 @@ cd /usr/local/opendomo/vr/characters/$IDIOMA
 VOICES=`ls -dx * | sed 's/ /,/g'`
 
 if [ $# -ne 1 ]; then
-    echo "usage:`basename $0`"
+    echo "form:`basename $0`"
     echo "	voice	Voice	list[$VOICES]"
     echo
 #  Skip interactive messages: 
