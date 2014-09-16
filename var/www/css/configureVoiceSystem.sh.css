@@ -1,3 +1,3 @@
-.character {
-	background: url('/images/logo48.png') no-repeat center center;
+#configureVoiceSystem li.character {
+	background-image: url('/images/logo48.png');
 }
