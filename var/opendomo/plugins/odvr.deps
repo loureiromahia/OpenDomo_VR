@@ -1,1 +1,1 @@
-sox python-argparse espeak flac
+sox python-argparse espeak flac alsa-base
