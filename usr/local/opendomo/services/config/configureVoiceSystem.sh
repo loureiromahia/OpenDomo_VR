@@ -8,13 +8,24 @@ CHARDIR="/usr/local/opendomo/vr/characters"
 CONFIGDIR="/etc/opendomo/speech"
 
 read IDIOMA < /etc/opendomo/lang
+if ! test -d "$CHARDIR/$IDIOMA"; then
+	IDIOMA="en"
+fi
+
 cd $CHARDIR/$IDIOMA
 VOICES=`ls -dx * | sed 's/ /,/g'`
 
 if test -z "$1"; then
 	echo "#> Select character"
-    echo "form:`basename $0`"
-    echo "	voice	Voice	list[$VOICES]"
+    echo "list:`basename $0`"
+	for i in *; do
+		if test -d ./$i && test "$i" != "*"
+		then
+			echo "	-$i	$i	character"
+		fi
+	done
+	
+    #echo "	voice	Voice	list[$VOICES]"
     echo
 #  Skip interactive messages: 
 #    echo "Your command line contains $# arguments"
