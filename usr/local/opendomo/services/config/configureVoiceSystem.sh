@@ -17,7 +17,7 @@ VOICES=`ls -dx * | sed 's/ /,/g'`
 
 if test -z "$1"; then
 	echo "#> Select character"
-    echo "list:`basename $0`"
+    echo "list:`basename $0`	iconlist"
 	for i in *; do
 		if test -d ./$i && test "$i" != "*"
 		then
@@ -157,16 +157,17 @@ cp Recognition/config/defaultMain.dic Recognition/modes/main.dic
 #Instead , user has to issue the character to be configured in the initial script:  this script will be launched 
 #from web interface:
 #  
-if [ -f $CHARDIR/$IDIOMA/$1/espeak.dat ]  
-then	
-	cp $CHARDIR/$IDIOMA/$1/* $CONFIGDIR/.
-else
-	echo "#> Select character"
-	echo "form:`basename $0`"
-	echo "	voice	Voice	list[$VOICES]"
-    echo
-	exit 0
-fi
+#if [ -f $CHARDIR/$IDIOMA/$1/espeak.dat ]  
+#then	
+#	cp $CHARDIR/$IDIOMA/$1/* $CONFIGDIR/.
+#else
+#	echo "#> Select character"
+#	echo "form:`basename $0`"
+#	echo "	voice	Voice	list[$VOICES]"
+#	echo
+#	exit 0
+#fi
+#fi
 
 # Next command is not necessary, as all the commands will be explicitly installed using plugins commands  
 #./installDefault
