@@ -14,17 +14,19 @@
    #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # TODO, make this use the mode, context and custom sed script
 
-USER_DIR="/etc/opendomo/speech"
-read ESPEAK < $USER_DIR/espeak.dat
-grep $1 $USER_DIR/frases |cut -d ":" -f2 > FRASE
+TMPFILE="/var/opendomo/tmp/speech.tmp"
+CFGFILE="/etc/opendomo/speech/espeak.conf"
+source $CFGFILE
+
+grep $1 $USER_DIR/frases |cut -d ":" -f2 > $TMPFILE
 if [ $# -ge 2 ]; then
-	grep $2 $USER_DIR/frases |cut -d ":" -f2 >> FRASE
+	grep $2 $USER_DIR/frases |cut -d ":" -f2 >> $TMPFILE
 fi
 if [ $# -ge 3 ]; then
-	grep $3 $USER_DIR/frases |cut -d ":" -f2 >> FRASE
+	grep $3 $USER_DIR/frases |cut -d ":" -f2 >> $TMPFILE
 fi
 if [ $# -ge 4 ]; then
-	grep $4 $USER_DIR/frases |cut -d ":" -f2 >> FRASE
+	grep $4 $USER_DIR/frases |cut -d ":" -f2 >> $TMPFILE
 fi	
 		
-$ESPEAK < FRASE
+/usr/bin/espeak $PARAMS `cat $TMPFILE` 2>/dev/null
