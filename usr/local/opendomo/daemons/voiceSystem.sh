@@ -21,11 +21,11 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local
 DESC="OpenDomo Voice Recognition Daemon"
 NAME=opendomoVR.sh
-DAEMON=/usr/local/opendomo/vr/$NAME
+DAEMON=/usr/local/opendomo/bin/$NAME
 #DAEMON=/usr/sbin/$NAME
 #DAEMON_ARGS="--options args",, No arguments
-PIDFILE=/var/run/$NAME.pid
-SCRIPTNAME=/etc/init.d/voiceSystem.sh
+PIDFILE=/var/opendomo/run/$NAME.pid
+SCRIPTNAME=/usr/local/opendomo/daemons/voiceSystem.sh
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0

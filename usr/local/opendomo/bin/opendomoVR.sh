@@ -9,16 +9,16 @@ else
 	read IDIOMA < /etc/opendomo/lang
 	if [ "$IDIOMA" == "es" ]
 	then
-		/usr/local/opendomo/services/config/configureVoiceSystem.sh antonio.es
+		/usr/local/opendomo/services/config/configureVoiceSystem.sh opendomo.es
 	else
-		/usr/local/opendomo/services/config/configureVoiceSystem.sh arthur.en
+		/usr/local/opendomo/services/config/configureVoiceSystem.sh opendomo.en
 	fi
 fi
-/usr/local/opendomo/vr/generate_port_data.sh
+/usr/local/opendomo/bin/generate_port_data.sh
 # Start audit speech detection in background
-./audit_speech_detect.sh &
+/usr/local/opendomo/bin/audit_speech_detect.sh &
 #Setup path:
-cd /usr/local/opendomo/vr
+cd /usr/local/opendomo/run/
 echo "identification" > MODE
 echo "no" > MENU  
 # File: identification.dic, contains only 1 plugin: OpenDomo_start
@@ -28,7 +28,7 @@ echo $resultado
 while [ $resultado != "OK" ]           
 do     
 	#Loop forever, till "Hola, OpenDomo" command is sent      
-	./autodetect.sh 
+	/usr/local/opendomo/bin/autodetect.sh 
 	read resultado < RESULTADO         
 done 
 echo "main" > MODE	#Normal Operation..All posible commands are accepted
@@ -42,7 +42,7 @@ do
 	read resultado < RESULTADO
 	while [ $resultado != "OK" ] 
 		do           
-			./autodetect.sh 
+			/usr/local/opendomo/bin/autodetect.sh 
 			read resultado < RESULTADO         
 		done
  

@@ -1,5 +1,5 @@
 #!/bin/bash
-play BEEP1.WAV
+play /usr/local/opendomo/sounds/beep.wav
 rec recording.flac rate 16k silence 1 0.1 3% 1 15.0 3% &
 p=$!
 sleep 1
@@ -22,27 +22,27 @@ then
 	kill $p
 fi
 
-./send_speech recording.flac
+/usr/local/opendomo/bin/send_speech.sh recording.flac
 RESULT=`cat result.json | cut -d":" -f4 |cut -d"," -f1 | sed 's/"//g'`
 RESULT=`echo "${RESULT:1:${#RESULT}-1}"`
 RETRY1=`cat result.json | cut -d":" -f6 |cut -d"," -f1 | sed 's/"//g' | sed 's/}//g'`
 RETRY1=`echo "${RETRY1:1:${#RETRY1}-1}"`
 RETRY2=`cat result.json | cut -d":" -f7 |cut -d"," -f1 | sed 's/"//g' | sed 's/}//g'`
 RETRY2=`echo "${RETRY2:1:${#RETRY2}-1}"`
-./recognize "$RESULT" 
+/usr/local/opendomo/bin/recognize.sh "$RESULT" 
 read resultado < RESULTADO
 #if not OK, retry twice 
 if [ "$resultado" == "NOK" ]
 then
 	RETRY1=`cat result.json | cut -d":" -f6 |cut -d"," -f1 | sed 's/"//g' | sed 's/}//g'`
 	RETRY1=`echo "${RETRY1:1:${#RETRY1}-1}"`
-	./recognize "$RETRY1" 
+	/usr/local/opendomo/bin/recognize.sh "$RETRY1" 
 	read resultado < RESULTADO
 	if [ "$resultado" == "NOK" ]
 	then
 		RETRY2=`cat result.json | cut -d":" -f7 |cut -d"," -f1 | sed 's/"//g' | sed 's/}//g'`
 		RETRY2=`echo "${RETRY2:1:${#RETRY2}-1}"`
-		./recognize "$RETRY2" 
+		/usr/local/opendomo/bin/recognize.sh  "$RETRY2" 
 		read resultado < RESULTADO
 		if [ "$resultado" == "NOK" ]
 		then
