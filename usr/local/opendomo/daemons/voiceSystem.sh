@@ -1,5 +1,5 @@
 #!/bin/sh
-#desc:Autostart Voice Recognition System
+#desc:OpenDomoOS Voice Recognition
 ### BEGIN INIT INFO
 # Provides:          OpenDomoVR
 # Required-Start:    $remote_fs $syslog
@@ -19,7 +19,7 @@
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local
-DESC="OpenDomo Voice Recognition Daemon"
+DESC="OpenDomoOS Voice Recognition"
 NAME=opendomoVR.sh
 DAEMON=/usr/local/opendomo/bin/$NAME
 #DAEMON=/usr/sbin/$NAME
@@ -28,10 +28,10 @@ PIDFILE=/var/opendomo/run/$NAME.pid
 SCRIPTNAME=/usr/local/opendomo/daemons/voiceSystem.sh
 
 # Exit if the package is not installed
-[ -x "$DAEMON" ] || exit 0
+#[ -x "$DAEMON" ] || exit 0
 
 # Read configuration variable file if it is present
-[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+#[ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
