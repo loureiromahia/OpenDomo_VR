@@ -26,7 +26,7 @@ do
 	# Start audit speech detection in background
 	/usr/local/opendomo/bin/audit_speech_detect.sh &
 	#Setup path:
-	cd /var/opendomo/run/
+	cd /var/opendomo/tmp/
 	echo "identification" > MODE
 	echo "no" > MENU  
 	# File: identification.dic, contains only 1 plugin: OpenDomo_start

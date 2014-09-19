@@ -453,5 +453,5 @@ done < tmp.txt
 echo " Zonas con reguladores de temperatura:"
 cat /etc/opendomo/speech/varclimate.conf
 #Generate AYUDA 		
-echo "Adios OpenDomo " >> /etc/opendomo/speech/AYUDA		
+echo "Ayuda OpenDomo " >> /etc/opendomo/speech/AYUDA		
 			

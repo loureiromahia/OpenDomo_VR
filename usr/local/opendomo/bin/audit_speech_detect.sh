@@ -12,7 +12,7 @@ do
 		then
 			# If there is no process running of recognize (system is not acting, but in voice recognition
 			p1=`ps -ea |grep autodetect| awk '{ print $1}'`
-			date >> /usr/local/opendomo/vr/AUDIT
+			date >> /var/opendomo/tmp/AUDIT
 			kill $p1
 		fi
 	fi
