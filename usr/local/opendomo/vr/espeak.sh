@@ -16,17 +16,18 @@
 
 TMPFILE="/var/opendomo/tmp/speech.tmp"
 CFGFILE="/etc/opendomo/speech/espeak.conf"
+VOCABULARY="/etc/opendomo/speech/vocabulary.dic"
 source $CFGFILE
 
-grep $1 $USER_DIR/frases |cut -d ":" -f2 > $TMPFILE
+grep $1 $VOCABULARY |cut -d ":" -f2 > $TMPFILE
 if [ $# -ge 2 ]; then
-	grep $2 $USER_DIR/frases |cut -d ":" -f2 >> $TMPFILE
+	grep $2 $VOCABULARY |cut -d ":" -f2 >> $TMPFILE
 fi
 if [ $# -ge 3 ]; then
-	grep $3 $USER_DIR/frases |cut -d ":" -f2 >> $TMPFILE
+	grep $3 $VOCABULARY |cut -d ":" -f2 >> $TMPFILE
 fi
 if [ $# -ge 4 ]; then
-	grep $4 $USER_DIR/frases |cut -d ":" -f2 >> $TMPFILE
+	grep $4 $VOCABULARY |cut -d ":" -f2 >> $TMPFILE
 fi	
 		
 /usr/bin/espeak $PARAMS `cat $TMPFILE` 2>/dev/null
