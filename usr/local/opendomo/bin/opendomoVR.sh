@@ -19,13 +19,14 @@ else
 	fi
 fi
 
+
 while test -f $PIDFILE
 do
 	/usr/local/opendomo/bin/generate_port_data.sh
 	# Start audit speech detection in background
 	/usr/local/opendomo/bin/audit_speech_detect.sh &
 	#Setup path:
-	cd /usr/local/opendomo/run/
+	cd /var/opendomo/run/
 	echo "identification" > MODE
 	echo "no" > MENU  
 	# File: identification.dic, contains only 1 plugin: OpenDomo_start

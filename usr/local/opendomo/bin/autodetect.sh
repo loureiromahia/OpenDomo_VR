@@ -1,6 +1,13 @@
 #!/bin/bash
-play /usr/local/opendomo/sounds/beep.wav
-rec recording.flac rate 16k silence 1 0.1 3% 1 15.0 3% &
+if test -x /usr/bin/play && test -x /usr/bin/rec
+then
+	/usr/bin/play /usr/local/opendomo/sounds/beep.wav
+	/usr/bin/rec recording.flac rate 16k silence 1 0.1 3% 1 15.0 3% &
+else
+	exit 1
+fi
+
+
 p=$!
 sleep 1
 until [ "$var1" != "$var2" ]; do
