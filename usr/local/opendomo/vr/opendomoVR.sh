@@ -15,7 +15,7 @@ else
 	fi
 fi
 /usr/local/opendomo/vr/generate_port_data.sh
-# Start audit speech detection in backgroud
+# Start audit speech detection in background
 ./audit_speech_detect.sh &
 #Setup path:
 cd /usr/local/opendomo/vr

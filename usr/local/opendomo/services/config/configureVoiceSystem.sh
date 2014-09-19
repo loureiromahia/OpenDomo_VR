@@ -24,21 +24,16 @@ if test -z "$1"; then
 			echo "	-$i	$i	character"
 		fi
 	done
-	
-    #echo "	voice	Voice	list[$VOICES]"
     echo
-#  Skip interactive messages: 
-#    echo "Your command line contains $# arguments"
-#    echo "Usage: ./configureVoiceSystem.sh PARAM1"
-#    echo " PARAM1: A/M    A: Voz de Antonio ,, M: Voz de Marta"
-#    echo " PARAM1: A/M    A: Voice from Arthur ,, M: Voice from Mary"
     exit 0
 else
+	mkdir -p $CONFIGDIR 2>/dev/null
 	if test -d "$CHARDIR/$IDIOMA/$1/"
 	then
 		cp $CHARDIR/$IDIOMA/$1/* $CONFIGDIR/.
 	else
 		echo "#ERR: Character directory does not exist"
+		echo
 		exit 1
 	fi
 fi
