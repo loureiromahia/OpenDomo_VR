@@ -53,7 +53,7 @@ then
 		read resultado < RESULTADO
 		if [ "$resultado" == "NOK" ]
 		then
-			/usr/local/opendomo/vr/espeak.sh "NoEntendido"
+			/usr/local/opendomo/bin/espeak.sh "NoEntendido"
      		fi
 	fi
 fi
