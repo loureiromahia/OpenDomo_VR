@@ -1,7 +1,0 @@
-name = ExamplePlugin
-version = 1.0
-file = gmaps
-description = Search places at Google Maps
-author = M.Loureiro
-actions =
-where is <place>, Look for a place at Google Maps
