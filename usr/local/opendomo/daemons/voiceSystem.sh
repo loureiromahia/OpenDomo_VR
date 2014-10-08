@@ -1,12 +1,12 @@
 #!/bin/sh
-#desc:OpenDomoOS Voice Recognition
+#desc:Voice control
 ### BEGIN INIT INFO
 # Provides:          OpenDomoVR
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: OpenDomoOS Voice Recognition
+# Short-Description: Voice control
 # Description:       This file should be used to construct scripts to be
 #                    placed in /etc/init.d.
 # 		     Automate start up by: update-rc.d opendomoVRd 99 
